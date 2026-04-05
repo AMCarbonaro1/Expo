@@ -35,8 +35,9 @@ export default function Home() {
             <span className="text-[#d97757]">in your pocket.</span>
           </h1>
           <p className="text-lg sm:text-xl text-[#30302e] max-w-lg mx-auto lg:mx-0">
-            Think of Expo as a business partner who never sleeps, always has
-            the numbers, and fits right in your text messages.
+            An AI business partner you can text about anything — sales,
+            costs, staffing, cash flow, invoices. It connects to your POS
+            and bank, then talks to you like a partner who knows every detail.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
             <Link
@@ -66,7 +67,7 @@ export default function Home() {
         <div className="max-w-5xl mx-auto px-6 py-10 grid grid-cols-2 sm:grid-cols-4 gap-8 text-center">
           <div>
             <div className="text-3xl font-bold text-[#d97757]">10 sec</div>
-            <div className="text-sm text-[#87867f] mt-1">to know your numbers</div>
+            <div className="text-sm text-[#87867f] mt-1">to get any answer</div>
           </div>
           <div>
             <div className="text-3xl font-bold text-[#d97757]">7am</div>
@@ -99,11 +100,11 @@ export default function Home() {
       <section className="border-y border-[#d4d2c9]">
         <div className="max-w-5xl mx-auto px-6 py-20 sm:py-28">
           <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4 font-serif">
-            There&apos;s an easier way to know your numbers
+            There&apos;s an easier way to run your restaurant
           </h2>
           <p className="text-[#87867f] text-center mb-16 max-w-2xl mx-auto">
             You didn&apos;t get into this business to stare at spreadsheets.
-            Expo gives you the information you need, the way you actually want it.
+            Expo lets you talk through your business the way you&apos;d talk to a trusted partner.
           </p>
           <div className="grid sm:grid-cols-2 gap-8">
             <div className="bg-white rounded-lg p-8 border border-[#d4d2c9] space-y-5">
@@ -132,10 +133,10 @@ export default function Home() {
                 {[
                   "Wake up to yesterday's full recap in your texts",
                   "Snap a photo of each invoice — Expo tracks it all",
-                  "Know your food cost percentage in real time",
-                  "Get a text when labor is running high",
-                  "Cash flow warning days before you'd be short",
-                  "Price increase alert the moment it hits your invoice",
+                  "Ask \"what's my food cost?\" and get a real answer",
+                  "Get a text when labor is running high — then ask what to do",
+                  "\"Will I make rent this month?\" — Expo knows before you do",
+                  "Talk through pricing, staffing, costs — like a real partner",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3">
                     <svg className="w-5 h-5 text-[#5a9a6e] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -163,7 +164,7 @@ export default function Home() {
           {[
             { step: "1", title: "Connect Your POS", desc: "Tap one button to connect Square. Expo starts pulling your sales, orders, and labor data right away." },
             { step: "2", title: "Connect Your Bank", desc: "Link your business checking in 60 seconds through Plaid. Expo watches your deposits, bills, and balance." },
-            { step: "3", title: "Text Expo", desc: "Ask anything about your restaurant in plain English. \"How did we do today?\" \"Am I making money?\" Just ask." },
+            { step: "3", title: "Start Talking", desc: "Text Expo like you'd text a business partner. Ask questions, talk through decisions, get advice — all in plain English." },
           ].map((item) => (
             <div key={item.step} className="text-center space-y-4">
               <div className="w-14 h-14 mx-auto rounded-full bg-[#d97757]/10 text-[#d97757] flex items-center justify-center text-xl font-bold">
@@ -180,20 +181,20 @@ export default function Home() {
       <section id="features" className="border-y border-[#d4d2c9]">
         <div className="max-w-5xl mx-auto px-6 py-20 sm:py-28">
           <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4 font-serif">
-            Your business, one text away
+            Like texting a partner who knows everything
           </h2>
           <p className="text-[#87867f] text-center mb-16 max-w-xl mx-auto">
-            Expo watches your restaurant around the clock and texts you
-            when something needs your attention — or whenever you ask.
+            Expo doesn&apos;t just report numbers — it thinks with you. Ask it
+            anything about your business and get a real conversation, not a dashboard.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { title: "Morning Recaps", desc: "Every morning at 7am, Expo texts you yesterday's numbers — sales, labor, top sellers, and anything that looks off." },
-              { title: "Smart Alerts", desc: "Labor running high? Sales dropping? Deposit missing? Expo lets you know before small problems become big ones." },
-              { title: "Food Cost Tracking", desc: "Text a photo of any supplier invoice. Expo reads every line item, tracks prices over time, and tells you your food cost %." },
-              { title: "Invoice Scanning", desc: "No more shoeboxes. Snap a photo of your Sysco or US Foods invoice and text it over. Expo handles the rest." },
-              { title: "Cash Flow Monitoring", desc: "Expo knows your balance and upcoming bills. If rent is due and things are tight, you'll hear about it in time." },
-              { title: "Ask Anything", desc: "\"Am I making money?\" \"What's my busiest hour?\" \"Should I cut someone?\" Just ask like you'd ask a partner." },
+              { title: "Morning Recaps", desc: "Every morning at 7am, Expo texts you a recap of yesterday — what went well, what didn't, and what to watch today. Like a manager's briefing, in your texts." },
+              { title: "Smart Alerts", desc: "Labor creeping up? Sales dropping? A deposit missing? Expo texts you the moment something looks off — before it becomes a real problem." },
+              { title: "Food Cost Conversations", desc: "Text a photo of any invoice and Expo tracks it. Then ask \"what's my food cost running?\" or \"did chicken go up?\" and talk through it." },
+              { title: "Invoice Scanning", desc: "No more shoeboxes. Snap a photo of your Sysco or US Foods invoice and text it over. Expo reads every line item and confirms with you." },
+              { title: "Cash Flow Advice", desc: "\"Can I afford a new hire?\" \"Is rent going to be tight?\" Expo knows your balance, your bills, and when things are coming due." },
+              { title: "Talk Through Anything", desc: "\"Should I cut someone today?\" \"How does this week compare to last?\" \"Am I actually making money?\" Have real conversations about your business." },
             ].map((feature) => (
               <div
                 key={feature.title}
