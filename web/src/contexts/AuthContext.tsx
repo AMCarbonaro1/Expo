@@ -13,6 +13,10 @@ type AuthState = {
   restaurant: Restaurant | null;
   token: string | null;
   loading: boolean;
+  subscriptionStatus: string | null;
+  trialActive: boolean;
+  daysLeft: number;
+  isActive: boolean;
   login: (email: string, password: string) => Promise<void>;
   signup: (data: {
     email: string;
@@ -59,7 +63,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
   const [token, setTokenState] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [subscriptionStatus, setSubscriptionStatus] = useState<string | null>(null);
+  const [trialActive, setTrialActive] = useState(false);
+  const [daysLeft, setDaysLeft] = useState(0);
+  const [isActive, setIsActive] = useState(false);
   const router = useRouter();
+
+  function updateSubscription(data: { subscription_status?: string; trial_active?: boolean; days_left?: number; is_active?: boolean }) {
+    setSubscriptionStatus(data.subscription_status || null);
+    setTrialActive(data.trial_active || false);
+    setDaysLeft(data.days_left || 0);
+    setIsActive(data.is_active || false);
+  }
 
   useEffect(() => {
     const saved = localStorage.getItem("expo_token");
@@ -71,6 +86,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           if (data.user) {
             setUser(data.user);
             setRestaurant(data.restaurant);
+            updateSubscription(data);
           } else {
             clearToken();
           }
@@ -133,7 +149,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, restaurant, token, loading, login, signup, logout }}>
+    <AuthContext.Provider value={{ user, restaurant, token, loading, subscriptionStatus, trialActive, daysLeft, isActive, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );

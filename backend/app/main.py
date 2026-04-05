@@ -11,6 +11,7 @@ from app.routers.sync import router as sync_router
 from app.routers.sms import router as sms_router
 from app.routers.admin import router as admin_router
 from app.routers.auth import router as auth_router
+from app.routers.billing import router as billing_router
 from app.routers.plaid_link import router as plaid_link_router
 from app.scheduler import start_scheduler, shutdown_scheduler
 
@@ -41,6 +42,7 @@ app.include_router(sms_router)
 app.include_router(admin_router)
 app.include_router(plaid_link_router)
 app.include_router(auth_router)
+app.include_router(billing_router)
 
 
 @app.get("/health")

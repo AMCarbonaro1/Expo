@@ -87,11 +87,13 @@ async def signup(data: SignupRequest, db: AsyncSession = Depends(get_db)):
     db.add(restaurant)
     await db.flush()
 
-    # Create user
+    # Create user with 7-day trial
     user = User(
         email=data.email,
         password_hash=_bcrypt.hashpw(data.password.encode(), _bcrypt.gensalt()).decode(),
         restaurant_id=restaurant.id,
+        trial_ends_at=datetime.utcnow() + timedelta(days=7),
+        subscription_status="trialing",
     )
     db.add(user)
     await db.commit()
@@ -129,9 +131,23 @@ async def login(data: LoginRequest, db: AsyncSession = Depends(get_db)):
 async def me(user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(Restaurant).where(Restaurant.id == user.restaurant_id))
     restaurant = result.scalar_one()
+
+    now = datetime.utcnow()
+    trial_active = (
+        user.subscription_status == "trialing"
+        and user.trial_ends_at
+        and user.trial_ends_at > now
+    )
+    days_left = max(0, (user.trial_ends_at - now).days) if user.trial_ends_at and user.trial_ends_at > now else 0
+
     return {
         "user": UserResponse.model_validate(user).model_dump(),
         "restaurant": RestaurantResponse.model_validate(restaurant).model_dump(),
+        "subscription_status": user.subscription_status,
+        "trial_ends_at": str(user.trial_ends_at) if user.trial_ends_at else None,
+        "trial_active": trial_active,
+        "days_left": days_left,
+        "is_active": user.subscription_status == "active" or trial_active,
     }
 
 

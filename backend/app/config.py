@@ -38,6 +38,12 @@ class Settings(BaseSettings):
     # Database
     database_url: str = ""
 
+    # Stripe
+    stripe_secret_key: str = ""
+    stripe_publishable_key: str = ""
+    stripe_price_id: str = ""
+    stripe_webhook_secret: str = ""
+
     # JWT
     jwt_secret_key: str = ""
     jwt_algorithm: str = "HS256"
