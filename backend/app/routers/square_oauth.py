@@ -29,6 +29,7 @@ async def get_auth_url(restaurant_id: int = Query(...)):
         "scope": " ".join(SCOPES),
         "session": "false",
         "state": str(restaurant_id),
+        "redirect_uri": REDIRECT_URI,
     }
     url = f"{settings.square_base_url}/oauth2/authorize?{urllib.parse.urlencode(params)}"
     return {"url": url}
