@@ -29,10 +29,15 @@ export default function Home() {
           <div className="inline-block bg-[#d97757]/10 text-[#d97757] text-sm font-medium px-4 py-1.5 rounded-full">
             Built for independent restaurant owners
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight font-serif">
-            What if your restaurant
-            <br />
-            had a brain — <span className="text-[#d97757]">and you could text it?</span>
+          <h1 className="font-bold tracking-tight font-serif">
+            <span className="block text-3xl sm:text-4xl lg:text-5xl leading-tight text-[#87867f]">
+              What if your restaurant
+              <br className="hidden sm:block" />
+              had a brain —
+            </span>
+            <span className="block text-4xl sm:text-5xl lg:text-7xl leading-tight mt-2 text-[#d97757]">
+              and you could text it?
+            </span>
           </h1>
           <p className="text-lg sm:text-xl text-[#30302e] max-w-lg mx-auto lg:mx-0">
             Your personal AI business phone number you can text about
