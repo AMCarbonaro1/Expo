@@ -38,6 +38,11 @@ class Settings(BaseSettings):
     # Database
     database_url: str = ""
 
+    # JWT
+    jwt_secret_key: str = ""
+    jwt_algorithm: str = "HS256"
+    jwt_expire_minutes: int = 1440
+
     # URLs
     backend_url: str = "http://localhost:8000"
     frontend_url: str = "http://localhost:3000"

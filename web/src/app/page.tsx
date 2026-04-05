@@ -11,6 +11,9 @@ export default function Home() {
           <a href="#how-it-works" className="text-sm text-gray-500 hover:text-gray-900 transition hidden sm:block">How It Works</a>
           <a href="#features" className="text-sm text-gray-500 hover:text-gray-900 transition hidden sm:block">Features</a>
           <a href="#pricing" className="text-sm text-gray-500 hover:text-gray-900 transition hidden sm:block">Pricing</a>
+          <Link href="/login" className="text-sm text-gray-500 hover:text-gray-900 transition">
+            Log In
+          </Link>
           <Link
             href="/signup"
             className="bg-emerald-600 text-white font-medium px-5 py-2.5 rounded-lg hover:bg-emerald-700 transition text-sm"
