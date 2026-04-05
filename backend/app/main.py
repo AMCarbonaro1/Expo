@@ -28,7 +28,11 @@ app = FastAPI(title="Expo", version="0.1.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.frontend_url],
+    allow_origins=[
+        settings.frontend_url,
+        settings.frontend_url.replace("://", "://www."),
+        "https://expo-rose-eight.vercel.app",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
