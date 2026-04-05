@@ -220,16 +220,13 @@ export default function Home() {
       <section className="bg-gray-900 text-white">
         <div className="max-w-3xl mx-auto px-6 py-20 sm:py-24 text-center space-y-6">
           <h2 className="text-3xl sm:text-4xl font-bold">
-            Text this number.
+            Ready to see what
             <br />
-            It knows your restaurant.
+            you&apos;ve been missing?
           </h2>
-          <a
-            href="sms:+13134749394"
-            className="text-4xl sm:text-5xl font-bold text-emerald-400 block"
-          >
-            (313) 474-9394
-          </a>
+          <p className="text-gray-400 text-lg">
+            Set up in 5 minutes. No credit card required.
+          </p>
           <div className="pt-4">
             <Link
               href="/signup"
