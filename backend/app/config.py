@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     # Square
     square_access_token: str = ""
     square_application_id: str = ""
+    square_application_secret: str = ""
     square_environment: str = "sandbox"
 
     # Plaid

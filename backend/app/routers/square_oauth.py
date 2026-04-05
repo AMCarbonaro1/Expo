@@ -49,7 +49,7 @@ async def square_callback(
             f"{settings.square_base_url}/oauth2/token",
             json={
                 "client_id": settings.square_application_id,
-                "client_secret": settings.square_access_token,
+                "client_secret": settings.square_application_secret,
                 "code": code,
                 "grant_type": "authorization_code",
                 "redirect_uri": REDIRECT_URI,
