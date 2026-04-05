@@ -164,6 +164,10 @@ RESTAURANT PROFILE:
 - Type: {restaurant.restaurant_type or "Not specified"}
 - Hours: {restaurant.hours or "Not specified"}
 - Food cost target: {restaurant.food_cost_baseline or "Not set"}%
+
+CURRENT SETTINGS:
+- Morning recap: {"enabled" if getattr(restaurant, 'recap_enabled', True) else "disabled"}, {getattr(restaurant, 'recap_hour', 7)}:{"0" + str(getattr(restaurant, 'recap_minute', 0)) if getattr(restaurant, 'recap_minute', 0) < 10 else getattr(restaurant, 'recap_minute', 0)} {"AM" if getattr(restaurant, 'recap_hour', 7) < 12 else "PM"}
+- Alerts: {"enabled" if getattr(restaurant, 'alerts_enabled', True) else "disabled"}
 """
 
     if summaries:
@@ -221,6 +225,8 @@ GUIDELINES:
 - When asked about deposits: reference deposit match data, flag any gaps
 - When asked "am I making money": combine POS sales, bank expenses, and invoice data for an estimate
 - When asked about trends: reference the daily summaries above
+- When asked about settings: tell them their current settings from the CURRENT SETTINGS section above
+- When asked to change a setting (recap time, food cost target, alerts, hours): acknowledge the request naturally — the system will handle the actual change separately
 - Proactively flag concerning trends if relevant to the question
 - Use line breaks sparingly for readability in SMS
 """

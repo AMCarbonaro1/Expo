@@ -20,6 +20,13 @@ from app.services.invoice_processor import (
     process_invoice_image,
     reject_invoice,
 )
+from app.services.settings_handler import (
+    apply_pending_change,
+    cancel_pending_change,
+    create_pending_change,
+    detect_settings_intent,
+    get_pending_change,
+)
 
 CONFIRM_WORDS = {"yes", "y", "yep", "yeah", "correct", "confirmed", "looks good", "lgtm"}
 REJECT_WORDS = {"no", "n", "nope", "wrong", "reject", "discard"}
@@ -32,6 +39,23 @@ async def handle_incoming_message(
     media_url: str | None = None,
     media_content_type: str | None = None,
 ) -> str:
+    # Check for pending settings confirmation
+    pending_setting = await get_pending_change(db, restaurant_id)
+    if pending_setting and not media_url:
+        normalized_body = body.strip().lower()
+        if normalized_body in CONFIRM_WORDS:
+            response = await apply_pending_change(db, restaurant_id)
+            out_msg = Message(restaurant_id=restaurant_id, direction="out", body=response)
+            db.add(out_msg)
+            await db.commit()
+            return response
+        elif normalized_body in REJECT_WORDS:
+            response = await cancel_pending_change(db, restaurant_id)
+            out_msg = Message(restaurant_id=restaurant_id, direction="out", body=response)
+            db.add(out_msg)
+            await db.commit()
+            return response
+
     # Check for pending invoice confirmation
     pending = await get_pending_invoice(db, restaurant_id)
     if pending and not media_url:
@@ -54,6 +78,20 @@ async def handle_incoming_message(
     if media_url and media_content_type and media_content_type.startswith("image/"):
         response = await process_invoice_image(
             db, restaurant_id, media_url, media_content_type
+        )
+        out_msg = Message(restaurant_id=restaurant_id, direction="out", body=response)
+        db.add(out_msg)
+        await db.commit()
+        return response
+
+    # Check for settings change request
+    settings_intent = await detect_settings_intent(body)
+    if settings_intent:
+        response = await create_pending_change(
+            db, restaurant_id,
+            field=settings_intent["field"],
+            value=str(settings_intent["value"]),
+            description=settings_intent["description"],
         )
         out_msg = Message(restaurant_id=restaurant_id, direction="out", body=response)
         db.add(out_msg)

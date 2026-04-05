@@ -2,6 +2,7 @@ import logging
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
+from apscheduler.triggers.interval import IntervalTrigger
 
 from app.services.nightly_pipeline import run_nightly_pipeline
 from app.services.morning_send import send_morning_recaps
@@ -18,14 +19,15 @@ def start_scheduler():
         id="nightly_pipeline",
         replace_existing=True,
     )
+    # Run recap check every 15 minutes — each restaurant has its own preferred time
     scheduler.add_job(
         send_morning_recaps,
-        CronTrigger(hour=7, minute=0),
+        IntervalTrigger(minutes=15),
         id="morning_recaps",
         replace_existing=True,
     )
     scheduler.start()
-    logger.info("Scheduler started: nightly at 1:00 AM, recaps at 7:00 AM")
+    logger.info("Scheduler started: nightly at 1:00 AM, recaps every 15 min (per-restaurant)")
 
 
 def shutdown_scheduler():

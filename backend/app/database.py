@@ -24,5 +24,6 @@ async def init_db():
     import app.models.invoice  # noqa: F401
     import app.models.bank  # noqa: F401
     import app.models.user  # noqa: F401
+    import app.models.settings_change  # noqa: F401
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
