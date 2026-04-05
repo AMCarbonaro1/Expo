@@ -103,4 +103,4 @@ async def square_callback(
 
     await db.commit()
 
-    return RedirectResponse(url=f"{settings.frontend_url}/signup/success")
+    return RedirectResponse(url=f"{settings.frontend_url}/signup/bank?restaurant_id={restaurant_id}")
