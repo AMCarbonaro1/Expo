@@ -14,4 +14,6 @@ class Message(Base):
     direction: Mapped[str] = mapped_column(String(3))  # "in" or "out"
     body: Mapped[str] = mapped_column(Text)
     twilio_sid: Mapped[str | None] = mapped_column(String(255))
+    media_url: Mapped[str | None] = mapped_column(String(1024))
+    media_content_type: Mapped[str | None] = mapped_column(String(100))
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())

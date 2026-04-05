@@ -8,6 +8,7 @@ from app.models.alert import Alert
 from app.models.restaurant import Restaurant
 from app.models.square_data import DailySummary, Order, OrderItem
 from app.services.claude_service import get_claude_response
+from app.services.context_builder import get_food_cost_summary
 
 logger = logging.getLogger(__name__)
 
@@ -83,6 +84,15 @@ async def generate_morning_recap(db: AsyncSession, restaurant_id: int) -> str | 
     top_items_str = ", ".join(f"{name}" for name, _ in top_items[:3]) if top_items else "N/A"
     alert_str = "; ".join(a.message for a in alerts) if alerts else "None"
 
+    # Food cost
+    food_cost = await get_food_cost_summary(db, restaurant_id)
+    food_cost_str = "No invoice data yet"
+    if food_cost:
+        food_cost_str = (
+            f"{food_cost['food_cost_pct']:.1f}% "
+            f"(${food_cost['invoice_total']:,.0f} invoices / ${food_cost['sales_total']:,.0f} sales)"
+        )
+
     system = (
         "You are Expo, generating a morning business recap SMS for a restaurant owner. "
         "Keep it under 450 characters (3 SMS segments max). Use line breaks for readability. "
@@ -96,6 +106,7 @@ async def generate_morning_recap(db: AsyncSession, restaurant_id: int) -> str | 
         f"- {comparison}\n"
         f"- Labor: {summary.labor_percentage:.1f}% (${summary.labor_cost:.0f})\n"
         f"- Top sellers: {top_items_str}\n"
+        f"- Food cost (7-day): {food_cost_str}\n"
         f"- Alerts: {alert_str}\n\n"
         f"Generate the recap message."
     )

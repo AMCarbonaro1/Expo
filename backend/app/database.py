@@ -21,5 +21,6 @@ async def init_db():
     import app.models.square_data  # noqa: F401
     import app.models.message  # noqa: F401
     import app.models.alert  # noqa: F401
+    import app.models.invoice  # noqa: F401
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
