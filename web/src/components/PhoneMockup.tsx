@@ -37,10 +37,12 @@ export default function PhoneMockup() {
   const [isTyping, setIsTyping] = useState(false);
   const [msgIndex, setMsgIndex] = useState(0);
   const [paused, setPaused] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
   }, [visibleMessages, isTyping]);
 
   useEffect(() => {
@@ -96,7 +98,7 @@ export default function PhoneMockup() {
         </div>
 
         {/* Messages area */}
-        <div className="h-[360px] sm:h-[400px] bg-white px-3 py-4 flex flex-col gap-2 overflow-y-auto scrollbar-hide">
+        <div ref={scrollRef} className="h-[360px] sm:h-[400px] bg-white px-3 py-4 flex flex-col gap-2 overflow-y-auto scrollbar-hide">
           {visibleMessages.map((msg, i) => (
             <div
               key={i}
@@ -114,7 +116,6 @@ export default function PhoneMockup() {
               <TypingIndicator />
             </div>
           )}
-          <div ref={messagesEndRef} />
         </div>
 
         {/* Input bar */}
