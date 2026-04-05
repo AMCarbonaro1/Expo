@@ -35,9 +35,10 @@ export default function Home() {
             <span className="text-[#d97757]">in your pocket.</span>
           </h1>
           <p className="text-lg sm:text-xl text-[#30302e] max-w-lg mx-auto lg:mx-0">
-            An AI business partner you can text about anything — sales,
-            costs, staffing, cash flow, invoices. It connects to your POS
-            and bank, then talks to you like a partner who knows every detail.
+            Your personal AI business phone number you can text about
+            anything — sales, costs, staffing, cash flow, invoices. It
+            connects to your POS and bank, then talks to you like a partner
+            who knows every detail.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
             <Link
