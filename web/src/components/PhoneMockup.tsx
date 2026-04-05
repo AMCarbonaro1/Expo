@@ -90,7 +90,7 @@ export default function PhoneMockup() {
 
         {/* Chat header */}
         <div className="bg-white border-b border-gray-200 px-4 py-3 flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white text-xs font-bold">
+          <div className="w-8 h-8 rounded-full bg-[#d97757] flex items-center justify-center text-white text-xs font-bold">
             E
           </div>
           <div>
@@ -106,7 +106,7 @@ export default function PhoneMockup() {
               key={`${convoIndex}-${i}`}
               className={`max-w-[85%] px-4 py-2.5 text-sm leading-relaxed animate-[fadeSlideUp_0.3s_ease-out] ${
                 msg.from === "user"
-                  ? "self-end bg-emerald-500 text-white rounded-2xl rounded-br-sm"
+                  ? "self-end bg-[#d97757] text-white rounded-2xl rounded-br-sm"
                   : "self-start bg-gray-100 text-gray-800 rounded-2xl rounded-bl-sm"
               }`}
             >
@@ -125,7 +125,7 @@ export default function PhoneMockup() {
           <div className="flex-1 bg-gray-100 rounded-full px-4 py-2 text-sm text-gray-400">
             Text message
           </div>
-          <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-full bg-[#d97757] flex items-center justify-center">
             <svg
               className="w-4 h-4 text-white"
               fill="none"

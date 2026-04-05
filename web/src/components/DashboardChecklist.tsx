@@ -48,7 +48,7 @@ export default function DashboardChecklist() {
   }, []);
 
   if (!status) {
-    return <div className="text-zinc-500">Loading...</div>;
+    return <div className="text-[#87867f]">Loading...</div>;
   }
 
   const completed = [status.square_connected, status.bank_connected, status.has_texted, status.has_invoice].filter(Boolean).length;
@@ -83,12 +83,12 @@ export default function DashboardChecklist() {
     return (
       <div className="space-y-8">
         {/* Success state */}
-        <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-8 text-center space-y-4">
+        <div className="bg-[#5a9a6e]/10 border border-[#5a9a6e]/30 rounded-lg p-8 text-center space-y-4">
           <div className="text-4xl">✓</div>
-          <h2 className="text-2xl font-bold text-white">
+          <h2 className="text-2xl font-bold text-[#141413]">
             You&apos;re all set up!
           </h2>
-          <p className="text-zinc-400 max-w-md mx-auto">
+          <p className="text-[#87867f] max-w-md mx-auto">
             Expo is connected to your POS, bank, and ready to go. You&apos;ll
             get your first morning recap tomorrow at 7am. In the meantime, text
             Expo anytime.
@@ -97,76 +97,76 @@ export default function DashboardChecklist() {
 
         {/* Connections */}
         <div className="space-y-4">
-          <h3 className="font-semibold text-white">Your Connections</h3>
+          <h3 className="font-semibold text-[#141413]">Your Connections</h3>
           <div className="grid sm:grid-cols-2 gap-3">
-            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 space-y-3">
+            <div className="bg-white border border-[#d4d2c9] rounded-lg p-5 space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center">
-                    <svg className="w-4 h-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <div className="w-8 h-8 rounded-lg bg-[#f5f4f0] flex items-center justify-center">
+                    <svg className="w-4 h-4 text-[#87867f]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                     </svg>
                   </div>
                   <div>
-                    <p className="text-white text-sm font-medium">Square POS</p>
-                    <p className="text-emerald-400 text-xs">Connected</p>
+                    <p className="text-[#141413] text-sm font-medium">Square POS</p>
+                    <p className="text-[#5a9a6e] text-xs">Connected</p>
                   </div>
                 </div>
                 <button
                   onClick={connectSquare}
-                  className="text-zinc-500 text-xs hover:text-white transition"
+                  className="text-[#87867f] text-xs hover:text-[#141413] transition"
                 >
                   Reconnect
                 </button>
               </div>
             </div>
 
-            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 space-y-3">
+            <div className="bg-white border border-[#d4d2c9] rounded-lg p-5 space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center">
-                    <svg className="w-4 h-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <div className="w-8 h-8 rounded-lg bg-[#f5f4f0] flex items-center justify-center">
+                    <svg className="w-4 h-4 text-[#87867f]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                     </svg>
                   </div>
                   <div>
-                    <p className="text-white text-sm font-medium">Bank Account</p>
-                    <p className="text-emerald-400 text-xs">Connected</p>
+                    <p className="text-[#141413] text-sm font-medium">Bank Account</p>
+                    <p className="text-[#5a9a6e] text-xs">Connected</p>
                   </div>
                 </div>
                 <button
                   onClick={connectBank}
-                  className="text-zinc-500 text-xs hover:text-white transition"
+                  className="text-[#87867f] text-xs hover:text-[#141413] transition"
                 >
                   Reconnect
                 </button>
               </div>
             </div>
 
-            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
+            <div className="bg-white border border-[#d4d2c9] rounded-lg p-5">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center">
-                  <svg className="w-4 h-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="w-8 h-8 rounded-lg bg-[#f5f4f0] flex items-center justify-center">
+                  <svg className="w-4 h-4 text-[#87867f]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                   </svg>
                 </div>
                 <div>
-                  <p className="text-white text-sm font-medium">SMS</p>
-                  <p className="text-emerald-400 text-xs">Active — (313) 474-9394</p>
+                  <p className="text-[#141413] text-sm font-medium">SMS</p>
+                  <p className="text-[#5a9a6e] text-xs">Active — (313) 474-9394</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
+            <div className="bg-white border border-[#d4d2c9] rounded-lg p-5">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center">
-                  <svg className="w-4 h-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="w-8 h-8 rounded-lg bg-[#f5f4f0] flex items-center justify-center">
+                  <svg className="w-4 h-4 text-[#87867f]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                 </div>
                 <div>
-                  <p className="text-white text-sm font-medium">Invoice Scanning</p>
-                  <p className="text-emerald-400 text-xs">Ready — text photos anytime</p>
+                  <p className="text-[#141413] text-sm font-medium">Invoice Scanning</p>
+                  <p className="text-[#5a9a6e] text-xs">Ready — text photos anytime</p>
                 </div>
               </div>
             </div>
@@ -175,7 +175,7 @@ export default function DashboardChecklist() {
 
         {/* Example texts */}
         <div className="space-y-4">
-          <h3 className="font-semibold text-white">
+          <h3 className="font-semibold text-[#141413]">
             Try texting Expo any of these:
           </h3>
           <div className="grid sm:grid-cols-2 gap-3">
@@ -190,19 +190,19 @@ export default function DashboardChecklist() {
               <a
                 key={item.text}
                 href={`sms:+13134749394&body=${encodeURIComponent(item.text)}`}
-                className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 hover:border-emerald-500/50 transition block"
+                className="bg-white border border-[#d4d2c9] rounded-lg p-4 hover:border-[#d97757]/40 transition block"
               >
-                <p className="text-white font-medium text-sm">
+                <p className="text-[#141413] font-medium text-sm">
                   &quot;{item.text}&quot;
                 </p>
-                <p className="text-zinc-500 text-xs mt-1">{item.desc}</p>
+                <p className="text-[#87867f] text-xs mt-1">{item.desc}</p>
               </a>
             ))}
           </div>
           <div className="text-center pt-2">
             <a
               href="sms:+13134749394"
-              className="inline-block bg-emerald-600 text-white font-semibold px-6 py-3 rounded-xl hover:bg-emerald-700 transition"
+              className="inline-block bg-[#d97757] text-[#141413] font-semibold px-6 py-3 rounded-lg hover:bg-[#c4654a] transition"
             >
               Text Expo Now — (313) 474-9394
             </a>
@@ -217,12 +217,12 @@ export default function DashboardChecklist() {
       {/* Progress */}
       <div className="space-y-2">
         <div className="flex justify-between text-sm">
-          <span className="text-zinc-400">Setup progress</span>
-          <span className="text-white font-medium">{completed} of 4 complete</span>
+          <span className="text-[#87867f]">Setup progress</span>
+          <span className="text-[#141413] font-medium">{completed} of 4 complete</span>
         </div>
-        <div className="h-2 bg-zinc-800 rounded-full overflow-hidden">
+        <div className="h-2 bg-[#f5f4f0] rounded-full overflow-hidden">
           <div
-            className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+            className="h-full bg-[#5a9a6e] rounded-full transition-all duration-500"
             style={{ width: `${(completed / 4) * 100}%` }}
           />
         </div>
@@ -242,7 +242,7 @@ export default function DashboardChecklist() {
           action={
             <button
               onClick={connectSquare}
-              className="bg-emerald-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-emerald-700 transition"
+              className="bg-[#d97757] text-[#141413] text-sm font-medium px-4 py-2 rounded-lg hover:bg-[#c4654a] transition"
             >
               Connect Square
             </button>
@@ -262,7 +262,7 @@ export default function DashboardChecklist() {
             <button
               onClick={connectBank}
               disabled={plaidLoading}
-              className="bg-emerald-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-emerald-700 transition disabled:opacity-50"
+              className="bg-[#d97757] text-[#141413] text-sm font-medium px-4 py-2 rounded-lg hover:bg-[#c4654a] transition disabled:opacity-50"
             >
               {plaidLoading ? "Connecting..." : "Connect Bank"}
             </button>
@@ -283,16 +283,16 @@ export default function DashboardChecklist() {
             <div className="space-y-3">
               <a
                 href="sms:+13134749394&body=Hey"
-                className="inline-block bg-emerald-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-emerald-700 transition"
+                className="inline-block bg-[#d97757] text-[#141413] text-sm font-medium px-4 py-2 rounded-lg hover:bg-[#c4654a] transition"
               >
                 Text (313) 474-9394
               </a>
-              <p className="text-zinc-600 text-xs">
+              <p className="text-[#87867f] text-xs">
                 Save this number as &quot;Expo&quot;
               </p>
               <button
                 onClick={markTexted}
-                className="text-zinc-500 text-xs hover:text-zinc-300 transition underline"
+                className="text-[#87867f] text-xs hover:text-[#141413] transition underline"
               >
                 I&apos;ve texted Expo — mark as complete
               </button>
@@ -312,13 +312,13 @@ export default function DashboardChecklist() {
           }
           action={
             <div className="space-y-3">
-              <p className="text-zinc-400 text-sm">
+              <p className="text-[#87867f] text-sm">
                 Take a photo of any invoice and text it to{" "}
-                <span className="text-white">(313) 474-9394</span>
+                <span className="text-[#141413]">(313) 474-9394</span>
               </p>
               <button
                 onClick={markInvoice}
-                className="text-zinc-500 text-xs hover:text-zinc-300 transition underline"
+                className="text-[#87867f] text-xs hover:text-[#141413] transition underline"
               >
                 I&apos;ve sent an invoice — mark as complete
               </button>
