@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -10,39 +10,41 @@ function BankConnect() {
   const router = useRouter();
   const restaurantId = searchParams.get("restaurant_id");
   const [loading, setLoading] = useState(false);
+  const [connected, setConnected] = useState(false);
 
-  async function handleConnect() {
+  // Listen for message from Plaid popup
+  useEffect(() => {
+    function handleMessage(event: MessageEvent) {
+      if (event.data === "plaid-connected") {
+        setConnected(true);
+        setTimeout(() => router.push("/signup/success"), 1500);
+      }
+    }
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, [router]);
+
+  function handleConnect() {
     setLoading(true);
-    // Open Plaid Link page in new window, then redirect to success
     window.open(
       `${API_URL}/api/plaid/link-page/${restaurantId}`,
       "plaid",
       "width=500,height=700"
     );
-
-    // Poll for connection (check every 2 seconds for up to 2 minutes)
-    let attempts = 0;
-    const check = setInterval(async () => {
-      attempts++;
-      try {
-        const res = await fetch(
-          `${API_URL}/api/admin/bank-balance/${restaurantId}`
-        );
-        const data = await res.json();
-        if (data.balance !== undefined && !data.error) {
-          clearInterval(check);
-          router.push("/signup/success");
-        }
-      } catch {}
-      if (attempts > 60) {
-        clearInterval(check);
-        setLoading(false);
-      }
-    }, 2000);
   }
 
   function handleSkip() {
     router.push("/signup/success");
+  }
+
+  if (connected) {
+    return (
+      <div className="space-y-3">
+        <div className="text-3xl">✓</div>
+        <p className="text-zinc-300 font-semibold">Bank connected!</p>
+        <p className="text-zinc-500 text-sm">Redirecting...</p>
+      </div>
+    );
   }
 
   return (
@@ -52,7 +54,7 @@ function BankConnect() {
         disabled={loading}
         className="w-full bg-white text-zinc-950 font-semibold py-3 rounded-lg hover:bg-zinc-200 transition disabled:opacity-50"
       >
-        {loading ? "Waiting for connection..." : "Connect Bank Account"}
+        {loading ? "Complete connection in the popup..." : "Connect Bank Account"}
       </button>
 
       <button

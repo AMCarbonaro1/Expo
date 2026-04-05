@@ -134,7 +134,9 @@ async function init() {{
           institution_name: metadata.institution ? metadata.institution.name : null
         }})
       }});
-      document.getElementById('status').innerHTML = '<b>Connected!</b> You can close this page.';
+      document.getElementById('status').innerHTML = '<b>Connected!</b> This window will close.';
+      if (window.opener) {{ window.opener.postMessage('plaid-connected', '*'); }}
+      setTimeout(() => window.close(), 1500);
     }},
     onExit: (err) => {{
       if (err) document.getElementById('status').textContent = 'Connection cancelled.';
