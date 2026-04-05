@@ -61,11 +61,11 @@ async def twilio_webhook(
     normalized = normalize_phone(from_number)
     digits_only = normalized.lstrip("+").lstrip("1") if len(normalized) > 11 else normalized.lstrip("+")
 
-    # Look up restaurant by phone
+    # Look up restaurant by phone (use most recent if duplicates)
     result = await db.execute(
         select(Restaurant).where(
             Restaurant.phone.in_([normalized, digits_only, from_number])
-        )
+        ).order_by(Restaurant.id.desc()).limit(1)
     )
     restaurant = result.scalar_one_or_none()
 
