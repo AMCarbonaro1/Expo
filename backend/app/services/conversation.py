@@ -13,6 +13,7 @@ from app.services.context_builder import (
     get_recent_messages,
     get_recent_summaries,
 )
+from app.services.first_sync import maybe_first_sync
 from app.services.invoice_processor import (
     confirm_invoice,
     get_pending_invoice,
@@ -58,6 +59,9 @@ async def handle_incoming_message(
         db.add(out_msg)
         await db.commit()
         return response
+
+    # Trigger first sync if needed
+    await maybe_first_sync(db, restaurant_id)
 
     # Normal Claude conversation
     result = await db.execute(
