@@ -43,7 +43,7 @@ export default function Home() {
               href="/signup"
               className="bg-[#d97757] text-white font-semibold px-8 py-4 rounded-lg hover:bg-[#c4654a] transition text-lg"
             >
-              Try Expo Free
+              Get Started
             </Link>
             <a
               href="#how-it-works"
@@ -272,9 +272,9 @@ export default function Home() {
               href="/signup"
               className="block bg-[#d97757] text-white font-semibold px-8 py-4 rounded-lg hover:bg-[#c4654a] transition text-lg"
             >
-              Try Expo Free
+              Get Started
             </Link>
-            <p className="text-[#87867f] text-sm">No credit card required to get started</p>
+            <p className="text-[#87867f] text-sm">Cancel anytime. No contracts.</p>
           </div>
         </div>
       </section>
@@ -310,14 +310,14 @@ export default function Home() {
             a partner who never sleeps.
           </h2>
           <p className="text-[#87867f] text-lg">
-            Set up in 5 minutes. No credit card required. Just text.
+            Set up in 5 minutes. Cancel anytime. Just text.
           </p>
           <div className="pt-4">
             <Link
               href="/signup"
               className="inline-block bg-[#d97757] text-white font-semibold px-8 py-4 rounded-lg hover:bg-[#c4654a] transition text-lg"
             >
-              Try Expo Free
+              Get Started
             </Link>
           </div>
           <p className="text-[#87867f]/50 text-sm pt-8">EXPO</p>
