@@ -10,8 +10,10 @@ from app.services.context_builder import (
     build_system_prompt,
     get_bank_summary,
     get_food_cost_summary,
+    get_invoice_history,
     get_recent_messages,
     get_recent_summaries,
+    get_weekly_comparison,
 )
 from app.services.first_sync import maybe_first_sync
 from app.services.invoice_processor import (
@@ -110,6 +112,8 @@ async def handle_incoming_message(
     summaries = await get_recent_summaries(db, restaurant_id)
     food_cost = await get_food_cost_summary(db, restaurant_id)
     bank = await get_bank_summary(db, restaurant_id)
+    invoices = await get_invoice_history(db, restaurant_id)
+    weekly = await get_weekly_comparison(db, restaurant_id)
 
     # Fetch recent alerts
     alert_result = await db.execute(
@@ -121,6 +125,7 @@ async def handle_incoming_message(
     system_prompt = build_system_prompt(
         restaurant, summaries, alerts=recent_alerts,
         food_cost=food_cost, bank_summary=bank,
+        invoice_history=invoices, weekly_comparison=weekly,
     )
 
     recent_messages = await get_recent_messages(db, restaurant_id)

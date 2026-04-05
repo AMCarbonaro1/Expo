@@ -4,14 +4,14 @@ from sqlalchemy import select, and_, func as sa_func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.bank import PlaidToken, BankTransaction, DepositMatch
-from app.models.invoice import Invoice
+from app.models.invoice import Invoice, InvoiceItem
 from app.models.message import Message
 from app.models.restaurant import Restaurant
 from app.models.square_data import DailySummary
 
 
 async def get_recent_summaries(
-    db: AsyncSession, restaurant_id: int, days: int = 7
+    db: AsyncSession, restaurant_id: int, days: int = 30
 ) -> list[DailySummary]:
     result = await db.execute(
         select(DailySummary)
@@ -35,11 +35,10 @@ async def get_recent_messages(
 
 
 async def get_food_cost_summary(
-    db: AsyncSession, restaurant_id: int, days: int = 7
+    db: AsyncSession, restaurant_id: int, days: int = 30
 ) -> dict | None:
     cutoff = date.today() - timedelta(days=days)
 
-    # Sum confirmed invoices
     result = await db.execute(
         select(sa_func.sum(Invoice.total_amount)).where(
             and_(
@@ -51,7 +50,6 @@ async def get_food_cost_summary(
     )
     invoice_total = result.scalar() or 0
 
-    # Sum sales
     result = await db.execute(
         select(sa_func.sum(DailySummary.total_sales)).where(
             and_(
@@ -75,6 +73,89 @@ async def get_food_cost_summary(
     }
 
 
+async def get_invoice_history(
+    db: AsyncSession, restaurant_id: int, limit: int = 10
+) -> list[dict]:
+    result = await db.execute(
+        select(Invoice).where(
+            and_(
+                Invoice.restaurant_id == restaurant_id,
+                Invoice.status == "confirmed",
+            )
+        ).order_by(Invoice.invoice_date.desc()).limit(limit)
+    )
+    invoices = result.scalars().all()
+
+    history = []
+    for inv in invoices:
+        result = await db.execute(
+            select(InvoiceItem).where(InvoiceItem.invoice_id == inv.id)
+            .order_by(InvoiceItem.total_price.desc()).limit(5)
+        )
+        top_items = result.scalars().all()
+        history.append({
+            "vendor": inv.vendor_name,
+            "date": str(inv.invoice_date) if inv.invoice_date else "Unknown",
+            "total": inv.total_amount,
+            "top_items": [
+                f"{i.product_name} ${i.unit_price:.2f}/{i.unit or 'ea'}"
+                for i in top_items if i.unit_price
+            ],
+        })
+    return history
+
+
+async def get_weekly_comparison(
+    db: AsyncSession, restaurant_id: int
+) -> dict | None:
+    today = date.today()
+    this_week_start = today - timedelta(days=today.weekday())
+    last_week_start = this_week_start - timedelta(days=7)
+    last_week_end = this_week_start - timedelta(days=1)
+
+    result = await db.execute(
+        select(
+            sa_func.sum(DailySummary.total_sales),
+            sa_func.sum(DailySummary.order_count),
+            sa_func.avg(DailySummary.labor_percentage),
+        ).where(
+            and_(
+                DailySummary.restaurant_id == restaurant_id,
+                DailySummary.summary_date >= this_week_start,
+                DailySummary.summary_date <= today,
+            )
+        )
+    )
+    this_week = result.first()
+
+    result = await db.execute(
+        select(
+            sa_func.sum(DailySummary.total_sales),
+            sa_func.sum(DailySummary.order_count),
+            sa_func.avg(DailySummary.labor_percentage),
+        ).where(
+            and_(
+                DailySummary.restaurant_id == restaurant_id,
+                DailySummary.summary_date >= last_week_start,
+                DailySummary.summary_date <= last_week_end,
+            )
+        )
+    )
+    last_week = result.first()
+
+    if not this_week[0] and not last_week[0]:
+        return None
+
+    return {
+        "this_week_sales": round(this_week[0] or 0, 0),
+        "this_week_orders": this_week[1] or 0,
+        "this_week_labor": round(this_week[2] or 0, 1),
+        "last_week_sales": round(last_week[0] or 0, 0),
+        "last_week_orders": last_week[1] or 0,
+        "last_week_labor": round(last_week[2] or 0, 1),
+    }
+
+
 async def get_bank_summary(db: AsyncSession, restaurant_id: int) -> dict | None:
     result = await db.execute(
         select(PlaidToken).where(PlaidToken.restaurant_id == restaurant_id)
@@ -89,7 +170,6 @@ async def get_bank_summary(db: AsyncSession, restaurant_id: int) -> dict | None:
         "institution": token.institution_name,
     }
 
-    # Monthly expense breakdown by category
     cutoff = date.today() - timedelta(days=30)
     result = await db.execute(
         select(
@@ -108,8 +188,8 @@ async def get_bank_summary(db: AsyncSession, restaurant_id: int) -> dict | None:
     )
     expenses = {cat: round(total, 0) for cat, total in result.all() if cat}
     summary["monthly_expenses"] = expenses
+    summary["total_monthly_expenses"] = sum(expenses.values())
 
-    # Recurring expenses
     result = await db.execute(
         select(BankTransaction).where(
             and_(
@@ -148,15 +228,19 @@ def build_system_prompt(
     alerts: list | None = None,
     food_cost: dict | None = None,
     bank_summary: dict | None = None,
+    invoice_history: list[dict] | None = None,
+    weekly_comparison: dict | None = None,
 ) -> str:
     prompt = f"""You are Expo, an SMS-based AI business partner for restaurant owners. You communicate via text message.
 
 PERSONALITY:
-- Friendly, direct, and data-driven
-- Speak like a knowledgeable restaurant industry peer, not a generic AI
-- Keep responses concise — under 320 characters when possible (fits in 2 SMS segments)
-- Use specific numbers when available
-- Never make up data. If you don't have information, say so.
+- You're a knowledgeable restaurant industry partner, not a generic AI or a dashboard
+- Talk like a smart friend who happens to know everything about their business
+- Be direct, specific, and actionable — always reference real numbers
+- When giving advice, reason through the problem using their actual data
+- Keep responses conversational but concise — under 400 characters when possible
+- Never make up data. If you don't have information, say so honestly.
+- It's okay to give longer responses when the question needs it (comparisons, advice, summaries)
 
 RESTAURANT PROFILE:
 - Name: {restaurant.restaurant_name}
@@ -171,27 +255,44 @@ CURRENT SETTINGS:
 """
 
     if summaries:
-        prompt += "\nRECENT DAILY SUMMARIES:\n"
+        prompt += "\nDAILY SUMMARIES (last 30 days):\n"
         for s in summaries:
-            weekday = s.summary_date.strftime("%A")
+            weekday = s.summary_date.strftime("%a")
             prompt += (
                 f"- {s.summary_date} ({weekday}): ${s.total_sales:.0f} sales, "
-                f"{s.order_count} orders, ${s.avg_ticket:.2f} avg ticket, "
+                f"{s.order_count} orders, ${s.avg_ticket:.2f} avg, "
                 f"labor {s.labor_percentage:.1f}%\n"
             )
     else:
         prompt += "\nNo daily summaries available yet — data is still being collected.\n"
 
+    if weekly_comparison:
+        wc = weekly_comparison
+        prompt += f"""
+WEEK OVER WEEK:
+- This week so far: ${wc['this_week_sales']:,.0f} sales, {wc['this_week_orders']} orders, labor {wc['this_week_labor']:.1f}%
+- Last week total: ${wc['last_week_sales']:,.0f} sales, {wc['last_week_orders']} orders, labor {wc['last_week_labor']:.1f}%
+"""
+
     if food_cost:
         prompt += (
             f"\nFOOD COST (last {food_cost['days']} days):\n"
-            f"- Invoices: ${food_cost['invoice_total']:,.0f}\n"
-            f"- Sales: ${food_cost['sales_total']:,.0f}\n"
+            f"- Total invoices: ${food_cost['invoice_total']:,.0f}\n"
+            f"- Total sales: ${food_cost['sales_total']:,.0f}\n"
             f"- Food cost: {food_cost['food_cost_pct']:.1f}%"
         )
         if restaurant.food_cost_baseline:
             prompt += f" (target: {restaurant.food_cost_baseline}%)"
         prompt += "\n"
+
+    if invoice_history:
+        prompt += "\nRECENT INVOICES:\n"
+        for inv in invoice_history[:5]:
+            items_str = ", ".join(inv["top_items"][:3]) if inv["top_items"] else ""
+            prompt += f"- {inv['vendor']} ({inv['date']}): ${inv['total']:,.0f}"
+            if items_str:
+                prompt += f" — {items_str}"
+            prompt += "\n"
 
     if bank_summary:
         prompt += f"\nBANK ACCOUNT ({bank_summary.get('institution', 'Connected')}):\n"
@@ -200,12 +301,14 @@ CURRENT SETTINGS:
             if bank_summary.get("balance_date"):
                 prompt += f" (as of {bank_summary['balance_date']})"
             prompt += "\n"
+        if bank_summary.get("total_monthly_expenses"):
+            prompt += f"- Total monthly expenses: ${bank_summary['total_monthly_expenses']:,.0f}\n"
         if bank_summary.get("monthly_expenses"):
-            prompt += "- Monthly expenses by category:\n"
+            prompt += "- By category:\n"
             for cat, amt in list(bank_summary["monthly_expenses"].items())[:6]:
                 prompt += f"  - {cat}: ${amt:,.0f}\n"
         if bank_summary.get("recurring"):
-            prompt += "- Recurring expenses:\n"
+            prompt += "- Recurring bills:\n"
             for r in bank_summary["recurring"][:5]:
                 prompt += f"  - {r['name']}: ${r['amount']:,.0f} (~day {r['day_of_month']})\n"
 
@@ -215,19 +318,28 @@ CURRENT SETTINGS:
             prompt += f"- [{a.severity.upper()}] {a.message}\n"
 
     prompt += """
-GUIDELINES:
-- When asked about sales: reference specific numbers, compare to averages
-- When asked about labor: mention percentage and compare to 30% industry target
-- When asked "how did we do": give yesterday's sales, compare to average, mention labor %
-- When asked about food cost: reference the food cost data above with specific numbers
-- When asked about bank balance: give the current balance and note the date
-- When asked about expenses: reference the category breakdown from bank data
-- When asked about deposits: reference deposit match data, flag any gaps
-- When asked "am I making money": combine POS sales, bank expenses, and invoice data for an estimate
-- When asked about trends: reference the daily summaries above
-- When asked about settings: tell them their current settings from the CURRENT SETTINGS section above
-- When asked to change a setting (recap time, food cost target, alerts, hours): acknowledge the request naturally — the system will handle the actual change separately
-- Proactively flag concerning trends if relevant to the question
-- Use line breaks sparingly for readability in SMS
+GUIDELINES FOR CONVERSATIONS:
+
+Data Questions:
+- When asked about sales, labor, food cost: reference specific numbers from the data above
+- When asked "how did we do": give yesterday's sales, compare to the same weekday average from the summaries
+- When asked about trends: look at the daily summaries and identify patterns (up/down/flat, best/worst days)
+- When asked to compare periods: use the week-over-week data and daily summaries
+- When asked about a specific vendor or product: reference the invoice history
+
+Business Advice:
+- When asked "should I raise prices": consider food cost %, average ticket, and whether costs are rising from invoices
+- When asked "can I afford to hire": look at labor %, revenue trends, and bank balance vs recurring expenses
+- When asked "what should I cut": identify the biggest expense categories from bank data and compare to industry benchmarks
+- When asked about scheduling/staffing: look at sales by day of week from summaries to identify slow vs busy days
+- When asked "am I making money": estimate by combining monthly sales minus bank expenses minus food costs
+- When asked about rent: compare rent (from recurring expenses) to monthly revenue — industry benchmark is under 10%
+
+General:
+- When asked about settings: tell them their current settings
+- When asked to change a setting: acknowledge naturally, the system handles the change
+- When you spot something concerning in the data, mention it even if they didn't ask
+- Give actionable advice, not just data — tell them what you'd recommend
+- Use line breaks for readability when giving longer answers
 """
     return prompt
