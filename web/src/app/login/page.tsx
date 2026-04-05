@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
 import PhoneMockup from "@/components/PhoneMockup";
+import ExpoLogo from "@/components/ExpoLogo";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -32,8 +33,8 @@ export default function LoginPage() {
       <div className="flex-1 bg-[#e8e6dc] flex flex-col justify-center px-6 sm:px-12 lg:px-20 py-12">
         <div className="w-full max-w-md mx-auto space-y-8">
           <div>
-            <Link href="/" className="text-2xl font-bold tracking-tight text-[#141413]">
-              EXPO
+            <Link href="/">
+              <ExpoLogo size={32} textClass="text-2xl" />
             </Link>
             <h1 className="text-3xl font-bold mt-8 text-[#141413] font-serif">
               Welcome back

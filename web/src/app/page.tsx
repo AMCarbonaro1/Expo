@@ -1,12 +1,13 @@
 import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
+import ExpoLogo from "@/components/ExpoLogo";
 
 export default function Home() {
   return (
     <div className="bg-[#e8e6dc] text-[#141413]">
       {/* Nav */}
       <nav className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
-        <span className="text-xl font-bold tracking-tight">EXPO</span>
+        <ExpoLogo />
         <div className="flex items-center gap-6">
           <a href="#how-it-works" className="text-sm text-[#87867f] hover:text-[#141413] transition hidden sm:block">How It Works</a>
           <a href="#features" className="text-sm text-[#87867f] hover:text-[#141413] transition hidden sm:block">Features</a>
@@ -320,7 +321,9 @@ export default function Home() {
               Get Started
             </Link>
           </div>
-          <p className="text-[#87867f]/50 text-sm pt-8">EXPO</p>
+          <div className="pt-8 flex justify-center opacity-50">
+            <ExpoLogo size={20} color="#87867f" textClass="text-sm" />
+          </div>
         </div>
       </section>
     </div>

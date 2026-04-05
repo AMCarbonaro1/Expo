@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
+import ExpoLogo from "./ExpoLogo";
 
 const tabs = [
   { href: "/dashboard", label: "Home" },
@@ -19,8 +20,8 @@ export default function DashboardNav() {
     <header className="bg-white border-b border-[#d4d2c9]">
       <div className="max-w-4xl mx-auto px-6">
         <div className="flex items-center justify-between py-4">
-          <Link href="/dashboard" className="text-xl font-bold tracking-tight text-[#141413]">
-            EXPO
+          <Link href="/dashboard">
+            <ExpoLogo />
           </Link>
           <div className="flex items-center gap-4">
             <span className="text-[#87867f] text-sm hidden sm:block">

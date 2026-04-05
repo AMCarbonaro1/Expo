@@ -3,6 +3,7 @@
 import { useAuth, apiFetch } from "@/contexts/AuthContext";
 import DashboardChecklist from "@/components/DashboardChecklist";
 import DashboardNav from "@/components/DashboardNav";
+import ExpoLogo from "@/components/ExpoLogo";
 import { useState } from "react";
 
 export default function DashboardPage() {
@@ -34,7 +35,7 @@ export default function DashboardPage() {
       <div className="min-h-screen bg-[#e8e6dc]">
         <header className="bg-white border-b border-[#d4d2c9]">
           <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-            <span className="text-xl font-bold tracking-tight text-[#141413]">EXPO</span>
+            <ExpoLogo />
             <button onClick={logout} className="text-[#87867f] text-sm hover:text-[#141413] transition">
               Log out
             </button>
