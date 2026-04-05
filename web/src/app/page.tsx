@@ -31,9 +31,7 @@ export default function Home() {
           </div>
           <h1 className="font-bold tracking-tight font-serif">
             <span className="block text-3xl sm:text-4xl lg:text-5xl leading-tight text-[#141413]">
-              What if your restaurant
-              <br className="hidden sm:block" />
-              had a brain —
+              What if your restaurant had a brain —
             </span>
             <span className="block text-4xl sm:text-5xl lg:text-7xl leading-tight mt-2 text-[#d97757]">
               and you could text it?
