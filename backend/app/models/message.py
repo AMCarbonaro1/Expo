@@ -7,7 +7,7 @@ from app.database import Base
 
 
 class Message(Base):
-    __tablename__ = "messages"
+    __tablename__ = "sms_messages"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     restaurant_id: Mapped[int] = mapped_column(ForeignKey("restaurants.id"))
