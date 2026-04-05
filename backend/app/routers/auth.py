@@ -169,3 +169,76 @@ async def onboarding_status(user: User = Depends(get_current_user), db: AsyncSes
         has_texted=msgs.scalar_one_or_none() is not None,
         has_invoice=invs.scalar_one_or_none() is not None,
     )
+
+
+class SettingsResponse(BaseModel):
+    recap_enabled: bool
+    recap_hour: int
+    recap_minute: int
+    alerts_enabled: bool
+    food_cost_baseline: float | None
+    hours: str | None
+    restaurant_type: str | None
+
+
+class SettingsUpdate(BaseModel):
+    recap_enabled: bool | None = None
+    recap_hour: int | None = None
+    recap_minute: int | None = None
+    alerts_enabled: bool | None = None
+    food_cost_baseline: float | None = None
+    hours: str | None = None
+    restaurant_type: str | None = None
+
+
+@router.get("/settings", response_model=SettingsResponse)
+async def get_settings(user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Restaurant).where(Restaurant.id == user.restaurant_id))
+    r = result.scalar_one()
+    return SettingsResponse(
+        recap_enabled=r.recap_enabled if r.recap_enabled is not None else True,
+        recap_hour=r.recap_hour if r.recap_hour is not None else 7,
+        recap_minute=r.recap_minute if r.recap_minute is not None else 0,
+        alerts_enabled=r.alerts_enabled if r.alerts_enabled is not None else True,
+        food_cost_baseline=r.food_cost_baseline,
+        hours=r.hours,
+        restaurant_type=r.restaurant_type,
+    )
+
+
+@router.put("/settings", response_model=SettingsResponse)
+async def update_settings(
+    data: SettingsUpdate,
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    result = await db.execute(select(Restaurant).where(Restaurant.id == user.restaurant_id))
+    r = result.scalar_one()
+
+    if data.recap_enabled is not None:
+        r.recap_enabled = data.recap_enabled
+    if data.recap_hour is not None:
+        r.recap_hour = data.recap_hour
+    if data.recap_minute is not None:
+        r.recap_minute = data.recap_minute
+    if data.alerts_enabled is not None:
+        r.alerts_enabled = data.alerts_enabled
+    if data.food_cost_baseline is not None:
+        r.food_cost_baseline = data.food_cost_baseline
+    if data.hours is not None:
+        r.hours = data.hours
+    if data.restaurant_type is not None:
+        r.restaurant_type = data.restaurant_type
+
+    await db.commit()
+    await db.refresh(r)
+
+    return SettingsResponse(
+        recap_enabled=r.recap_enabled if r.recap_enabled is not None else True,
+        recap_hour=r.recap_hour if r.recap_hour is not None else 7,
+        recap_minute=r.recap_minute if r.recap_minute is not None else 0,
+        alerts_enabled=r.alerts_enabled if r.alerts_enabled is not None else True,
+        food_cost_baseline=r.food_cost_baseline,
+        hours=r.hours,
+        restaurant_type=r.restaurant_type,
+    )

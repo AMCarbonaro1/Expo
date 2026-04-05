@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useAuth, apiFetch } from "@/contexts/AuthContext";
+import DashboardNav from "@/components/DashboardNav";
 
 export default function BillingPage() {
   const { subscriptionStatus, trialActive, daysLeft, isActive, loading } = useAuth();
@@ -41,16 +41,7 @@ export default function BillingPage() {
 
   return (
     <div className="min-h-screen bg-[#e8e6dc] text-[#141413]">
-      <header className="border-b border-[#d4d2c9]">
-        <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/dashboard" className="text-xl font-bold tracking-tight">
-            EXPO
-          </Link>
-          <Link href="/dashboard" className="text-[#87867f] text-sm hover:text-[#141413] transition">
-            Back to Dashboard
-          </Link>
-        </div>
-      </header>
+      <DashboardNav />
 
       <main className="max-w-2xl mx-auto px-6 py-10 space-y-8">
         <div>

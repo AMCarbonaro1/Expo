@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useAuth, apiFetch } from "@/contexts/AuthContext";
 import DashboardChecklist from "@/components/DashboardChecklist";
+import DashboardNav from "@/components/DashboardNav";
 import { useState } from "react";
 
 export default function DashboardPage() {
@@ -77,31 +77,13 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-[#e8e6dc]">
-      <header className="bg-white border-b border-[#d4d2c9]">
-        <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-          <span className="text-xl font-bold tracking-tight text-[#141413]">EXPO</span>
-          <div className="flex items-center gap-4">
-            <Link href="/dashboard/billing" className="text-[#87867f] text-sm hover:text-[#141413] transition">
-              Billing
-            </Link>
-            <span className="text-[#87867f] text-sm hidden sm:block">{restaurant?.restaurant_name}</span>
-            <button onClick={logout} className="text-[#87867f] text-sm hover:text-[#141413] transition">
-              Log out
-            </button>
-          </div>
-        </div>
-      </header>
+      <DashboardNav />
 
       {subscriptionStatus === "active" && (
         <div className="bg-[#5a9a6e]/10 border-b border-[#5a9a6e]/20">
-          <div className="max-w-4xl mx-auto px-6 py-2 flex items-center justify-between">
-            <p className="text-[#5a9a6e] text-sm flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#5a9a6e]" />
-              Active subscription
-            </p>
-            <Link href="/dashboard/billing" className="text-[#5a9a6e]/60 text-xs hover:text-[#5a9a6e] transition">
-              Manage
-            </Link>
+          <div className="max-w-4xl mx-auto px-6 py-2 flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#5a9a6e] animate-pulse" />
+            <p className="text-[#5a9a6e] text-sm">Active subscription</p>
           </div>
         </div>
       )}
