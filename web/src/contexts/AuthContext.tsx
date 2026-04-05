@@ -113,6 +113,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setTokenState(data.token);
     setUser(data.user);
     setRestaurant(data.restaurant);
+    updateSubscription(data);
     router.push("/dashboard");
   }
 
@@ -137,14 +138,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setTokenState(data.token);
     setUser(data.user);
     setRestaurant(data.restaurant);
+    updateSubscription(data);
     router.push("/dashboard");
   }
 
   function logout() {
     clearToken();
+    localStorage.removeItem("expo_texted");
+    localStorage.removeItem("expo_invoice");
     setTokenState(null);
     setUser(null);
     setRestaurant(null);
+    setSubscriptionStatus(null);
+    setTrialActive(false);
+    setDaysLeft(0);
+    setIsActive(false);
     router.push("/login");
   }
 

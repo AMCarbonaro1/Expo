@@ -62,6 +62,11 @@ class AuthResponse(BaseModel):
     token: str
     user: UserResponse
     restaurant: RestaurantResponse
+    subscription_status: str
+    trial_ends_at: str | None
+    trial_active: bool
+    days_left: int
+    is_active: bool
 
 
 class OnboardingStatus(BaseModel):
@@ -69,6 +74,26 @@ class OnboardingStatus(BaseModel):
     bank_connected: bool
     has_texted: bool
     has_invoice: bool
+
+
+def _build_auth_response(token: str, user: User, restaurant: Restaurant) -> AuthResponse:
+    now = datetime.utcnow()
+    trial_active = (
+        user.subscription_status == "trialing"
+        and user.trial_ends_at
+        and user.trial_ends_at > now
+    )
+    days_left = max(0, (user.trial_ends_at - now).days) if user.trial_ends_at and user.trial_ends_at > now else 0
+    return AuthResponse(
+        token=token,
+        user=UserResponse.model_validate(user),
+        restaurant=RestaurantResponse.model_validate(restaurant),
+        subscription_status=user.subscription_status or "trialing",
+        trial_ends_at=str(user.trial_ends_at) if user.trial_ends_at else None,
+        trial_active=trial_active,
+        days_left=days_left,
+        is_active=user.subscription_status == "active" or trial_active,
+    )
 
 
 @router.post("/signup", response_model=AuthResponse)
@@ -101,11 +126,7 @@ async def signup(data: SignupRequest, db: AsyncSession = Depends(get_db)):
     await db.refresh(restaurant)
 
     token = create_token(user.id, restaurant.id)
-    return AuthResponse(
-        token=token,
-        user=UserResponse.model_validate(user),
-        restaurant=RestaurantResponse.model_validate(restaurant),
-    )
+    return _build_auth_response(token, user, restaurant)
 
 
 @router.post("/login", response_model=AuthResponse)
@@ -120,11 +141,7 @@ async def login(data: LoginRequest, db: AsyncSession = Depends(get_db)):
     restaurant = result.scalar_one()
 
     token = create_token(user.id, restaurant.id)
-    return AuthResponse(
-        token=token,
-        user=UserResponse.model_validate(user),
-        restaurant=RestaurantResponse.model_validate(restaurant),
-    )
+    return _build_auth_response(token, user, restaurant)
 
 
 @router.get("/me")
