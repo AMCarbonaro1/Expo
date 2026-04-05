@@ -30,9 +30,9 @@ export default function Home() {
             Built for independent restaurant owners
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight font-serif">
-            Your entire restaurant,
+            What if your restaurant
             <br />
-            <span className="text-[#d97757]">in your pocket.</span>
+            had a brain — <span className="text-[#d97757]">and you could text it?</span>
           </h1>
           <p className="text-lg sm:text-xl text-[#30302e] max-w-lg mx-auto lg:mx-0">
             Your personal AI business phone number you can text about
