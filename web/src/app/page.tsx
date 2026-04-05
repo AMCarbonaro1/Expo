@@ -197,7 +197,7 @@ export default function Home() {
             ].map((feature) => (
               <div
                 key={feature.title}
-                className="bg-white rounded-lg p-6 border border-[#d4d2c9] space-y-3 hover:border-[#d97757]/40 transition"
+                className="bg-white rounded-lg p-6 border border-[#d4d2c9] space-y-3 hover:border-[#d97757]/40 hover:shadow-md hover:-translate-y-1 transition-all duration-200"
               >
                 <h3 className="font-semibold text-lg">{feature.title}</h3>
                 <p className="text-[#87867f] text-sm leading-relaxed">{feature.desc}</p>
