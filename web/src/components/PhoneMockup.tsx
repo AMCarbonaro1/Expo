@@ -9,20 +9,27 @@ type Message = {
 
 const conversations: Message[][] = [
   [
-    { from: "user", text: "How did we do today?" },
+    { from: "user", text: "Should I cut someone today?" },
     {
       from: "expo",
-      text: "Yesterday: $3,847 sales across 187 orders ($20.57 avg). That's 8% above your Tuesday average. Labor was 28.3%. Looking solid!",
+      text: "You've only done $840 by 1:30pm. Your Wednesday average is $1,620 by now. I'd send someone home — you're looking at 38% labor if you keep the full crew.",
     },
   ],
   [
-    { from: "expo", text: "GM! Yesterday: $4,230 (192 orders, $22.03 avg). Labor: 27.1%. Food cost running 31.2% vs your 30% target. Top seller: Gyro Platter (43 sold). No alerts. Have a great day!" },
+    { from: "expo", text: "GM! Yesterday: $4,230 (192 orders). Labor 27.1%. Food cost 31.2% vs your 30% target. Gyro Platter was #1 (43 sold). Heads up: gyro meat up 12% on your last Sysco order." },
   ],
   [
-    { from: "user", text: "What's in my bank account?" },
+    { from: "user", text: "Am I making money?" },
     {
       from: "expo",
-      text: "Chase balance: $12,450. You've got rent ($4,200) hitting in 3 days. After that you'll be at ~$8,250. Cash flow looks healthy.",
+      text: "$18K revenue this month, $5.4K food (30%), $5K labor (28%), $4.2K rent. You're netting ~$2.4K. Not bad but tight — raising your avg ticket by $2 would add $3K/month.",
+    },
+  ],
+  [
+    { from: "user", text: "Can I afford to hire someone?" },
+    {
+      from: "expo",
+      text: "Your labor is 28% right now which is solid. Adding someone at $15/hr for 30hrs would push it to 32%. Your bank balance is $12,450 with rent due in 3 days. I'd wait until after rent clears.",
     },
   ],
 ];

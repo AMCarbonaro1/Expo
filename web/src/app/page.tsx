@@ -38,10 +38,9 @@ export default function Home() {
             </span>
           </h1>
           <p className="text-lg sm:text-xl text-[#30302e] max-w-lg mx-auto lg:mx-0">
-            Your personal AI business phone number you can text about
-            anything — sales, costs, staffing, cash flow, invoices. It
-            connects to your POS and bank, then talks to you like a partner
-            who knows every detail.
+            Expo connects to your POS, bank, and invoices — then you
+            just text it. &quot;Should I cut someone?&quot; &quot;Am I making money?&quot;
+            &quot;Can I afford to hire?&quot; Real answers, real data, real conversations.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
             <Link
@@ -58,7 +57,7 @@ export default function Home() {
             </a>
           </div>
           <p className="text-sm text-[#87867f]">
-            No app to download. No dashboard to learn. If you can text, you can use Expo.
+            No app. No dashboard. No spreadsheets. Just text like you&apos;d text a friend.
           </p>
         </div>
         <div className="flex-shrink-0">
