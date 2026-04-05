@@ -47,6 +47,14 @@ class Settings(BaseSettings):
         return "https://connect.squareup.com"
 
     @property
+    def plaid_base_url(self) -> str:
+        if self.plaid_env == "sandbox":
+            return "https://sandbox.plaid.com"
+        elif self.plaid_env == "development":
+            return "https://development.plaid.com"
+        return "https://production.plaid.com"
+
+    @property
     def async_database_url(self) -> str:
         url = self.database_url
         if url.startswith("postgres://"):

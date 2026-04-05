@@ -5,6 +5,7 @@ from sqlalchemy import select, and_
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.alert import Alert
+from app.models.bank import PlaidToken, BankTransaction, DepositMatch
 from app.models.invoice import Invoice, InvoiceItem
 from app.models.restaurant import Restaurant
 from app.models.square_data import DailySummary
@@ -187,6 +188,118 @@ async def check_price_changes(
                         "pct_change": pct_change,
                     }),
                     summary_date=invoice.invoice_date or summary.summary_date if 'summary' in dir() else invoice.created_at.date(),
+                )
+                db.add(alert)
+                alerts.append(alert)
+
+    if alerts:
+        await db.commit()
+    return alerts
+
+
+async def check_bank_alerts(
+    db: AsyncSession, restaurant_id: int, target_date: date
+) -> list[Alert]:
+    """Check for deposit gaps and cash flow warnings."""
+    alerts = []
+
+    # Deposit gap alert
+    result = await db.execute(
+        select(DepositMatch).where(
+            and_(
+                DepositMatch.restaurant_id == restaurant_id,
+                DepositMatch.match_date == target_date,
+            )
+        )
+    )
+    match = result.scalar_one_or_none()
+
+    if match and match.status == "gap" and match.gap_amount and match.gap_amount > 50:
+        severity = "critical" if match.gap_percentage and match.gap_percentage > 15 else "warning"
+        # Check for duplicate
+        existing = await db.execute(
+            select(Alert).where(
+                and_(
+                    Alert.restaurant_id == restaurant_id,
+                    Alert.alert_type == "deposit_gap",
+                    Alert.summary_date == target_date,
+                )
+            )
+        )
+        if not existing.scalar_one_or_none():
+            alert = Alert(
+                restaurant_id=restaurant_id,
+                alert_type="deposit_gap",
+                severity=severity,
+                message=(
+                    f"POS showed ${match.pos_card_sales:,.0f} in card sales but only "
+                    f"${match.bank_deposit:,.0f} deposited on {target_date}. "
+                    f"${match.gap_amount:,.0f} gap."
+                ),
+                data_json=json.dumps({"pos": match.pos_card_sales, "deposit": match.bank_deposit}),
+                summary_date=target_date,
+            )
+            db.add(alert)
+            alerts.append(alert)
+
+    # Cash flow warning
+    result = await db.execute(
+        select(PlaidToken).where(PlaidToken.restaurant_id == restaurant_id)
+    )
+    plaid_token = result.scalar_one_or_none()
+
+    if plaid_token and plaid_token.current_balance is not None:
+        # Find upcoming recurring expenses in next 7 days
+        today_dom = target_date.day
+        result = await db.execute(
+            select(BankTransaction).where(
+                and_(
+                    BankTransaction.restaurant_id == restaurant_id,
+                    BankTransaction.is_recurring == True,
+                    BankTransaction.amount > 0,
+                )
+            )
+        )
+        recurring = result.scalars().all()
+
+        # Estimate upcoming based on day-of-month patterns
+        upcoming_total = 0
+        upcoming_items = []
+        for txn in recurring:
+            txn_dom = txn.date.day
+            days_until = (txn_dom - target_date.day) % 30
+            if 0 < days_until <= 7:
+                upcoming_total += txn.amount
+                upcoming_items.append((txn.merchant_name or txn.name, txn.amount, txn_dom))
+
+        if upcoming_total > 0 and plaid_token.current_balance < upcoming_total * 1.2:
+            severity = "critical" if plaid_token.current_balance < upcoming_total else "warning"
+            items_str = ", ".join(f"{name} ~${amt:,.0f}" for name, amt, _ in upcoming_items[:2])
+
+            existing = await db.execute(
+                select(Alert).where(
+                    and_(
+                        Alert.restaurant_id == restaurant_id,
+                        Alert.alert_type == "cash_flow_warning",
+                        Alert.summary_date == target_date,
+                    )
+                )
+            )
+            if not existing.scalar_one_or_none():
+                alert = Alert(
+                    restaurant_id=restaurant_id,
+                    alert_type="cash_flow_warning",
+                    severity=severity,
+                    message=(
+                        f"Balance is ${plaid_token.current_balance:,.0f}. "
+                        f"~${upcoming_total:,.0f} in recurring expenses coming in the next 7 days"
+                        f"{f' ({items_str})' if items_str else ''}."
+                    ),
+                    data_json=json.dumps({
+                        "balance": plaid_token.current_balance,
+                        "upcoming": upcoming_total,
+                    }),
+                    summary_date=target_date,
                 )
                 db.add(alert)
                 alerts.append(alert)

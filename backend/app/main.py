@@ -10,6 +10,7 @@ from app.routers.square_oauth import router as square_oauth_router
 from app.routers.sync import router as sync_router
 from app.routers.sms import router as sms_router
 from app.routers.admin import router as admin_router
+from app.routers.plaid_link import router as plaid_link_router
 from app.scheduler import start_scheduler, shutdown_scheduler
 
 
@@ -37,6 +38,7 @@ app.include_router(square_oauth_router)
 app.include_router(sync_router)
 app.include_router(sms_router)
 app.include_router(admin_router)
+app.include_router(plaid_link_router)
 
 
 @app.get("/health")

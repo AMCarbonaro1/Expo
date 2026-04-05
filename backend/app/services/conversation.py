@@ -4,9 +4,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.message import Message
 from app.models.restaurant import Restaurant
 from app.services.claude_service import get_claude_response
+from app.models.alert import Alert
 from app.services.context_builder import (
     build_conversation_history,
     build_system_prompt,
+    get_bank_summary,
     get_food_cost_summary,
     get_recent_messages,
     get_recent_summaries,
@@ -65,7 +67,19 @@ async def handle_incoming_message(
 
     summaries = await get_recent_summaries(db, restaurant_id)
     food_cost = await get_food_cost_summary(db, restaurant_id)
-    system_prompt = build_system_prompt(restaurant, summaries, alerts=None, food_cost=food_cost)
+    bank = await get_bank_summary(db, restaurant_id)
+
+    # Fetch recent alerts
+    alert_result = await db.execute(
+        select(Alert).where(Alert.restaurant_id == restaurant_id)
+        .order_by(Alert.created_at.desc()).limit(10)
+    )
+    recent_alerts = list(alert_result.scalars().all())
+
+    system_prompt = build_system_prompt(
+        restaurant, summaries, alerts=recent_alerts,
+        food_cost=food_cost, bank_summary=bank,
+    )
 
     recent_messages = await get_recent_messages(db, restaurant_id)
     conversation = build_conversation_history(recent_messages)

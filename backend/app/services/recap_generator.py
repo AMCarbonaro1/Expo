@@ -8,9 +8,34 @@ from app.models.alert import Alert
 from app.models.restaurant import Restaurant
 from app.models.square_data import DailySummary, Order, OrderItem
 from app.services.claude_service import get_claude_response
+from app.models.bank import PlaidToken, DepositMatch
 from app.services.context_builder import get_food_cost_summary
 
 logger = logging.getLogger(__name__)
+
+
+async def _bank_recap_line(db: AsyncSession, restaurant_id: int, target_date: date) -> str:
+    result = await db.execute(
+        select(PlaidToken).where(PlaidToken.restaurant_id == restaurant_id)
+    )
+    token = result.scalar_one_or_none()
+    if not token or token.current_balance is None:
+        return "Bank: Not connected\n"
+
+    result = await db.execute(
+        select(DepositMatch).where(
+            and_(
+                DepositMatch.restaurant_id == restaurant_id,
+                DepositMatch.match_date == target_date,
+            )
+        )
+    )
+    match = result.scalar_one_or_none()
+
+    line = f"Bank balance: ${token.current_balance:,.0f}"
+    if match:
+        line += f". Deposit: ${match.bank_deposit:,.0f} vs ${match.pos_card_sales:,.0f} POS ({match.status})"
+    return line + "\n"
 
 
 async def generate_morning_recap(db: AsyncSession, restaurant_id: int) -> str | None:
@@ -107,6 +132,7 @@ async def generate_morning_recap(db: AsyncSession, restaurant_id: int) -> str | 
         f"- Labor: {summary.labor_percentage:.1f}% (${summary.labor_cost:.0f})\n"
         f"- Top sellers: {top_items_str}\n"
         f"- Food cost (7-day): {food_cost_str}\n"
+        f"- {await _bank_recap_line(db, restaurant_id, yesterday)}"
         f"- Alerts: {alert_str}\n\n"
         f"Generate the recap message."
     )
