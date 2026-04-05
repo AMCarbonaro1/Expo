@@ -30,7 +30,7 @@ export default function Home() {
             Built for independent restaurant owners
           </div>
           <h1 className="font-bold tracking-tight font-serif">
-            <span className="block text-3xl sm:text-4xl lg:text-5xl leading-tight text-[#87867f]">
+            <span className="block text-3xl sm:text-4xl lg:text-5xl leading-tight text-[#141413]">
               What if your restaurant
               <br className="hidden sm:block" />
               had a brain —
