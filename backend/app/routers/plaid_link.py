@@ -158,7 +158,7 @@ async def send_bank_link(restaurant_id: int, db: AsyncSession = Depends(get_db))
         return {"error": "Restaurant not found"}
 
     # In production this would be the deployed server URL
-    link_url = f"http://localhost:8000/api/plaid/link-page/{restaurant_id}"
+    link_url = f"{settings.backend_url}/api/plaid/link-page/{restaurant_id}"
     await send_sms(
         restaurant.phone,
         f"Connect your bank to Expo in 60 seconds: {link_url}"

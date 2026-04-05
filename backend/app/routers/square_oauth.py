@@ -19,7 +19,7 @@ SCOPES = [
     "TIMECARDS_READ",
     "MERCHANT_PROFILE_READ",
 ]
-REDIRECT_URI = "http://localhost:8000/api/square/callback"
+REDIRECT_URI = f"{settings.backend_url}/api/square/callback"
 
 
 @router.get("/auth-url")
