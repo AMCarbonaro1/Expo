@@ -68,22 +68,18 @@ export default function Home() {
 
       {/* Stats bar */}
       <section className="border-y border-[#d4d2c9]">
-        <div className="max-w-5xl mx-auto px-6 py-10 grid grid-cols-2 sm:grid-cols-4 gap-8 text-center">
+        <div className="max-w-4xl mx-auto px-6 py-10 grid grid-cols-3 gap-8 text-center">
           <div>
-            <div className="text-3xl font-bold text-[#d97757]">10 sec</div>
-            <div className="text-sm text-[#87867f] mt-1">to get any answer</div>
+            <div className="text-3xl font-bold text-[#d97757]">SMS</div>
+            <div className="text-sm text-[#87867f] mt-1">that&apos;s it — just text</div>
           </div>
           <div>
-            <div className="text-3xl font-bold text-[#d97757]">7am</div>
-            <div className="text-sm text-[#87867f] mt-1">recap waiting for you</div>
+            <div className="text-3xl font-bold text-[#d97757]">0</div>
+            <div className="text-sm text-[#87867f] mt-1">apps to download</div>
           </div>
           <div>
-            <div className="text-3xl font-bold text-[#d97757]">3</div>
-            <div className="text-sm text-[#87867f] mt-1">sources, one conversation</div>
-          </div>
-          <div>
-            <div className="text-3xl font-bold text-[#d97757]">$0</div>
-            <div className="text-sm text-[#87867f] mt-1">apps to install</div>
+            <div className="text-3xl font-bold text-[#d97757]">24/7</div>
+            <div className="text-sm text-[#87867f] mt-1">your partner never sleeps</div>
           </div>
         </div>
       </section>
