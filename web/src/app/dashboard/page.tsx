@@ -6,7 +6,7 @@ import DashboardChecklist from "@/components/DashboardChecklist";
 import { useState } from "react";
 
 export default function DashboardPage() {
-  const { user, restaurant, logout, loading, subscriptionStatus, trialActive, daysLeft, isActive } = useAuth();
+  const { user, restaurant, logout, loading, subscriptionStatus, isActive } = useAuth();
   const [checkoutLoading, setCheckoutLoading] = useState(false);
 
   async function handleSubscribe() {
@@ -28,7 +28,7 @@ export default function DashboardPage() {
     );
   }
 
-  // Paywall — trial expired and no active subscription
+  // Paywall — no active subscription
   if (!isActive && !loading) {
     return (
       <div className="min-h-screen bg-zinc-950 text-white">
@@ -41,20 +41,44 @@ export default function DashboardPage() {
           </div>
         </header>
         <main className="max-w-lg mx-auto px-6 py-20 text-center space-y-6">
-          <div className="text-5xl">&#128274;</div>
-          <h1 className="text-2xl font-bold">Your free trial has ended</h1>
-          <p className="text-zinc-400">
-            Subscribe to keep using Expo — daily recaps, alerts, invoice scanning,
-            and everything else. Just $49/month.
+          <h1 className="text-3xl font-bold">
+            Activate Expo
+          </h1>
+          <p className="text-zinc-400 leading-relaxed">
+            Subscribe to get started with Expo — daily recaps, smart alerts,
+            invoice scanning, cash flow monitoring, and your entire restaurant
+            in your pocket.
           </p>
-          <button
-            onClick={handleSubscribe}
-            disabled={checkoutLoading}
-            className="bg-emerald-600 text-white font-semibold px-8 py-4 rounded-xl hover:bg-emerald-700 transition text-lg disabled:opacity-50"
-          >
-            {checkoutLoading ? "Loading..." : "Subscribe — $49/month"}
-          </button>
-          <p className="text-zinc-600 text-sm">Cancel anytime. No contracts.</p>
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 space-y-4">
+            <div>
+              <span className="text-4xl font-bold">$49</span>
+              <span className="text-zinc-500 text-lg">/month</span>
+            </div>
+            <ul className="text-left text-sm text-zinc-400 space-y-2 max-w-xs mx-auto">
+              {[
+                "Daily morning recaps via text",
+                "Unlimited questions to Expo",
+                "POS + bank integration",
+                "Invoice photo scanning",
+                "Food cost & labor alerts",
+              ].map((item) => (
+                <li key={item} className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <button
+              onClick={handleSubscribe}
+              disabled={checkoutLoading}
+              className="w-full bg-emerald-600 text-white font-semibold px-8 py-4 rounded-xl hover:bg-emerald-700 transition text-lg disabled:opacity-50"
+            >
+              {checkoutLoading ? "Loading..." : "Subscribe — $49/month"}
+            </button>
+            <p className="text-zinc-600 text-xs">Cancel anytime. No contracts.</p>
+          </div>
         </main>
       </div>
     );
@@ -83,24 +107,6 @@ export default function DashboardPage() {
         </div>
       </header>
 
-      {/* Trial banner */}
-      {trialActive && (
-        <div className="bg-yellow-500/10 border-b border-yellow-500/20">
-          <div className="max-w-4xl mx-auto px-6 py-3 flex items-center justify-between">
-            <p className="text-yellow-400 text-sm">
-              <span className="font-medium">Free trial:</span> {daysLeft} day{daysLeft !== 1 ? "s" : ""} remaining
-            </p>
-            <button
-              onClick={handleSubscribe}
-              disabled={checkoutLoading}
-              className="bg-yellow-500 text-black text-xs font-semibold px-3 py-1.5 rounded-lg hover:bg-yellow-400 transition disabled:opacity-50"
-            >
-              {checkoutLoading ? "..." : "Subscribe — $49/mo"}
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* Active subscription badge */}
       {subscriptionStatus === "active" && (
         <div className="bg-emerald-500/10 border-b border-emerald-500/20">
@@ -123,9 +129,7 @@ export default function DashboardPage() {
             Welcome{restaurant?.owner_name ? `, ${restaurant.owner_name.split(" ")[0]}` : ""}
           </h1>
           <p className="text-zinc-400 mt-1">
-            {trialActive
-              ? "Complete the steps below to get Expo fully connected to your restaurant."
-              : "Your restaurant is connected. Text Expo anytime."}
+            Complete the steps below to get Expo fully connected to your restaurant.
           </p>
         </div>
 

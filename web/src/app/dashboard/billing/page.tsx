@@ -78,38 +78,16 @@ export default function BillingPage() {
             </div>
           )}
 
-          {trialActive && (
-            <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-yellow-500" />
-                <span className="text-yellow-400 font-medium">
-                  Free Trial — {daysLeft} day{daysLeft !== 1 ? "s" : ""} remaining
-                </span>
-              </div>
-              <p className="text-zinc-500 text-sm">
-                Your trial includes full access to Expo. Subscribe before it ends to
-                keep using all features.
-              </p>
-              <button
-                onClick={handleSubscribe}
-                disabled={checkoutLoading}
-                className="bg-emerald-600 text-white font-semibold px-6 py-3 rounded-xl hover:bg-emerald-700 transition disabled:opacity-50"
-              >
-                {checkoutLoading ? "Loading..." : "Subscribe — $49/month"}
-              </button>
-            </div>
-          )}
-
-          {!isActive && !trialActive && (
+          {!isActive && (
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-red-500" />
                 <span className="text-red-400 font-medium">
-                  {subscriptionStatus === "canceled" ? "Canceled" : "Trial Expired"}
+                  {subscriptionStatus === "canceled" ? "Canceled" : "Not subscribed"}
                 </span>
               </div>
               <p className="text-zinc-500 text-sm">
-                Subscribe to regain access to Expo and all its features.
+                Subscribe to access Expo and all its features.
               </p>
               <button
                 onClick={handleSubscribe}
