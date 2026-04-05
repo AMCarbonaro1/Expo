@@ -21,7 +21,15 @@ export default function DashboardChecklist() {
   async function loadStatus() {
     const res = await apiFetch("/api/auth/onboarding-status");
     const data = await res.json();
-    setStatus(data);
+
+    // Check localStorage for manual completions
+    const manualTexted = localStorage.getItem("expo_texted") === "true";
+    const manualInvoice = localStorage.getItem("expo_invoice") === "true";
+    setStatus({
+      ...data,
+      has_texted: data.has_texted || manualTexted,
+      has_invoice: data.has_invoice || manualInvoice,
+    });
   }
 
   useEffect(() => {
@@ -44,6 +52,7 @@ export default function DashboardChecklist() {
   }
 
   const completed = [status.square_connected, status.bank_connected, status.has_texted, status.has_invoice].filter(Boolean).length;
+  const allComplete = completed === 4;
 
   async function connectSquare() {
     const res = await apiFetch(`/api/square/auth-url?restaurant_id=${restaurant?.id}`);
@@ -57,6 +66,71 @@ export default function DashboardChecklist() {
       `${API_URL}/api/plaid/link-page/${restaurant?.id}`,
       "plaid",
       "width=500,height=700"
+    );
+  }
+
+  function markTexted() {
+    localStorage.setItem("expo_texted", "true");
+    setStatus((prev) => prev ? { ...prev, has_texted: true } : prev);
+  }
+
+  function markInvoice() {
+    localStorage.setItem("expo_invoice", "true");
+    setStatus((prev) => prev ? { ...prev, has_invoice: true } : prev);
+  }
+
+  if (allComplete) {
+    return (
+      <div className="space-y-8">
+        {/* Success state */}
+        <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-8 text-center space-y-4">
+          <div className="text-4xl">✓</div>
+          <h2 className="text-2xl font-bold text-white">
+            You&apos;re all set up!
+          </h2>
+          <p className="text-zinc-400 max-w-md mx-auto">
+            Expo is connected to your POS, bank, and ready to go. You&apos;ll
+            get your first morning recap tomorrow at 7am. In the meantime, text
+            Expo anytime.
+          </p>
+        </div>
+
+        {/* Example texts */}
+        <div className="space-y-4">
+          <h3 className="font-semibold text-white">
+            Try texting Expo any of these:
+          </h3>
+          <div className="grid sm:grid-cols-2 gap-3">
+            {[
+              { text: "How did we do today?", desc: "Get yesterday's sales recap" },
+              { text: "What's my labor this week?", desc: "See labor cost and percentage" },
+              { text: "What's in my bank account?", desc: "Check your current balance" },
+              { text: "What's my food cost running?", desc: "See food cost % from invoices" },
+              { text: "Am I making money?", desc: "Get a full financial picture" },
+              { text: "What's my busiest hour?", desc: "Find your peak times" },
+            ].map((item) => (
+              <a
+                key={item.text}
+                href={`sms:+13134749394&body=${encodeURIComponent(item.text)}`}
+                className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 hover:border-emerald-500/50 transition block"
+              >
+                <p className="text-white font-medium text-sm">
+                  &quot;{item.text}&quot;
+                </p>
+                <p className="text-zinc-500 text-xs mt-1">{item.desc}</p>
+              </a>
+            ))}
+          </div>
+          <div className="text-center pt-2">
+            <a
+              href="sms:+13134749394"
+              className="inline-block bg-emerald-600 text-white font-semibold px-6 py-3 rounded-xl hover:bg-emerald-700 transition"
+            >
+              Text Expo Now — (313) 474-9394
+            </a>
+          </div>
+        </div>
+      </div>
     );
   }
 
@@ -121,21 +195,29 @@ export default function DashboardChecklist() {
           title="Text Expo"
           description="Send your first text to Expo to start getting insights about your restaurant."
           connected={status.has_texted}
-          connectedText="Texted"
+          connectedText="Done"
           icon={
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
           }
           action={
-            <div className="space-y-2">
+            <div className="space-y-3">
               <a
                 href="sms:+13134749394&body=Hey"
                 className="inline-block bg-emerald-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-emerald-700 transition"
               >
                 Text (313) 474-9394
               </a>
-              <p className="text-zinc-600 text-xs">Save this number as &quot;Expo&quot;</p>
+              <p className="text-zinc-600 text-xs">
+                Save this number as &quot;Expo&quot;
+              </p>
+              <button
+                onClick={markTexted}
+                className="text-zinc-500 text-xs hover:text-zinc-300 transition underline"
+              >
+                I&apos;ve texted Expo — mark as complete
+              </button>
             </div>
           }
         />
@@ -144,16 +226,25 @@ export default function DashboardChecklist() {
           title="Send Your First Invoice"
           description="Text a photo of any supplier invoice to Expo. We'll read every line item automatically."
           connected={status.has_invoice}
-          connectedText="Sent"
+          connectedText="Done"
           icon={
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           }
           action={
-            <p className="text-zinc-400 text-sm">
-              Take a photo of any invoice and text it to <span className="text-white">(313) 474-9394</span>
-            </p>
+            <div className="space-y-3">
+              <p className="text-zinc-400 text-sm">
+                Take a photo of any invoice and text it to{" "}
+                <span className="text-white">(313) 474-9394</span>
+              </p>
+              <button
+                onClick={markInvoice}
+                className="text-zinc-500 text-xs hover:text-zinc-300 transition underline"
+              >
+                I&apos;ve sent an invoice — mark as complete
+              </button>
+            </div>
           }
         />
       </div>
