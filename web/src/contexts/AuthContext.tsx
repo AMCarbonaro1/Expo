@@ -17,6 +17,7 @@ type AuthState = {
   trialActive: boolean;
   daysLeft: number;
   isActive: boolean;
+  isAdmin: boolean;
   login: (email: string, password: string) => Promise<void>;
   signup: (data: {
     email: string;
@@ -67,13 +68,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [trialActive, setTrialActive] = useState(false);
   const [daysLeft, setDaysLeft] = useState(0);
   const [isActive, setIsActive] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const router = useRouter();
 
-  function updateSubscription(data: { subscription_status?: string; trial_active?: boolean; days_left?: number; is_active?: boolean }) {
+  function updateSubscription(data: { subscription_status?: string; trial_active?: boolean; days_left?: number; is_active?: boolean; is_admin?: boolean }) {
     setSubscriptionStatus(data.subscription_status || null);
     setTrialActive(data.trial_active || false);
     setDaysLeft(data.days_left || 0);
     setIsActive(data.is_active || false);
+    setIsAdmin(data.is_admin || false);
   }
 
   useEffect(() => {
@@ -114,7 +117,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(data.user);
     setRestaurant(data.restaurant);
     updateSubscription(data);
-    router.push("/dashboard");
+    router.push(data.is_admin ? "/admin" : "/dashboard");
   }
 
   async function signup(formData: {
@@ -153,11 +156,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setTrialActive(false);
     setDaysLeft(0);
     setIsActive(false);
+    setIsAdmin(false);
     router.push("/login");
   }
 
   return (
-    <AuthContext.Provider value={{ user, restaurant, token, loading, subscriptionStatus, trialActive, daysLeft, isActive, login, signup, logout }}>
+    <AuthContext.Provider value={{ user, restaurant, token, loading, subscriptionStatus, trialActive, daysLeft, isActive, isAdmin, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );

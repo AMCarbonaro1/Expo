@@ -16,9 +16,25 @@ from app.routers.plaid_link import router as plaid_link_router
 from app.scheduler import start_scheduler, shutdown_scheduler
 
 
+async def _seed_admin():
+    from sqlalchemy import select
+    from app.database import async_session
+    from app.models.user import User
+    try:
+        async with async_session() as db:
+            result = await db.execute(select(User).where(User.email == "amcarbonaro@gmail.com"))
+            user = result.scalar_one_or_none()
+            if user and not user.is_admin:
+                user.is_admin = True
+                await db.commit()
+    except Exception:
+        pass
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await init_db()
+    await _seed_admin()
     start_scheduler()
     yield
     shutdown_scheduler()

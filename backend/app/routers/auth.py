@@ -67,6 +67,7 @@ class AuthResponse(BaseModel):
     trial_active: bool
     days_left: int
     is_active: bool
+    is_admin: bool
 
 
 class OnboardingStatus(BaseModel):
@@ -86,6 +87,7 @@ def _build_auth_response(token: str, user: User, restaurant: Restaurant) -> Auth
         trial_active=False,
         days_left=0,
         is_active=user.subscription_status == "active",
+        is_admin=user.is_admin if user.is_admin is not None else False,
     )
 
 
@@ -149,6 +151,7 @@ async def me(user: User = Depends(get_current_user), db: AsyncSession = Depends(
         "trial_active": False,
         "days_left": 0,
         "is_active": user.subscription_status == "active",
+        "is_admin": user.is_admin if user.is_admin is not None else False,
     }
 
 
