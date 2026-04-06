@@ -14,8 +14,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Expo — Your Restaurant's Second Set of Eyes",
+  title: "Expo — What if your restaurant had a brain?",
   description: "An SMS-based AI business partner that connects to your POS, bank account, and supplier invoices — then texts you what matters, every day, in plain English.",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
