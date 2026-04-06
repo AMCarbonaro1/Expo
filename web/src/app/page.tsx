@@ -40,8 +40,8 @@ export default function Home() {
           </h1>
           <p className="text-lg sm:text-xl text-[#30302e] max-w-lg mx-auto lg:mx-0">
             Expo connects to your POS, bank, and invoices — then you
-            just text it. &quot;Should I cut someone?&quot; &quot;Am I making money?&quot;
-            &quot;Can I afford to hire?&quot; Real answers, real data, real conversations.
+            just text it. &quot;How much did we sell today?&quot; &quot;Did Lauren make the drop?&quot;
+            &quot;Can I afford to hire someone?&quot; Real answers, real data, real conversations.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
             <Link
