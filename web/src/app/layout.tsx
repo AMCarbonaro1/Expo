@@ -17,7 +17,10 @@ export const metadata: Metadata = {
   title: "Expo — What if your restaurant had a brain?",
   description: "An SMS-based AI business partner that connects to your POS, bank account, and supplier invoices — then texts you what matters, every day, in plain English.",
   icons: {
-    icon: "/favicon.svg",
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
   },
 };
 
