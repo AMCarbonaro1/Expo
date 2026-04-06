@@ -5,17 +5,18 @@ import { useEffect, useState, useRef } from "react";
 type Message = {
   from: "user" | "expo";
   text: string;
+  isImage?: boolean;
 };
 
 const thread: Message[] = [
   { from: "user", text: "How much did we sell today?" },
   { from: "expo", text: "$3,847 across 187 orders. That's 8% above your Tuesday average. Labor was 28.3%." },
   { from: "user", text: "Did Lauren make the drop?" },
-  { from: "expo", text: "Yes, a $2,910 deposit hit your Chase account this evening." },
-  { from: "user", text: "Why is that less than sales?" },
-  { from: "expo", text: "Card fees, tips paid out, and cash transactions. The gap is normal — nothing missing." },
-  { from: "user", text: "What's my food cost this week?" },
-  { from: "expo", text: "Running 31.2% vs your 30% target. Gyro meat went up 12% on your last Sysco order — that's the main driver." },
+  { from: "expo", text: "Yes, a $2,910 deposit hit your Chase account at 9:47pm. Everything looks right." },
+  { from: "user", text: "📎 This week's schedule", isImage: true },
+  { from: "expo", text: "Got it — saved. You've got 6 people on Thursday and 4 on Friday. Friday looks light for a typical weekend. Want me to flag if sales outpace your staffing?" },
+  { from: "user", text: "How did we finish?" },
+  { from: "expo", text: "Closed at $4,620 today. 214 orders, $21.59 avg ticket. Your best Wednesday in 3 weeks. Labor finished at 26.8% — solid day." },
   { from: "user", text: "Am I making money?" },
   { from: "expo", text: "$18K revenue this month, $5.4K food, $5K labor, $4.2K rent. Netting ~$2.4K. Raising your avg ticket by $2 would add $3K/month." },
   { from: "user", text: "Can I afford to hire someone?" },
@@ -32,11 +33,34 @@ function TypingIndicator() {
   );
 }
 
+function ScheduleImage() {
+  return (
+    <div className="bg-[#d97757] rounded-xl p-3 space-y-1.5 text-white text-xs w-full">
+      <div className="flex justify-between font-semibold text-[10px] uppercase tracking-wider opacity-80">
+        <span>This Week</span>
+        <span>Staff</span>
+      </div>
+      {[
+        { day: "Mon", names: "Alex, Sam, Tina", count: 3 },
+        { day: "Tue", names: "Alex, Sam, Kim", count: 3 },
+        { day: "Wed", names: "Alex, Sam, Tina, Jo", count: 4 },
+        { day: "Thu", names: "All staff", count: 6 },
+        { day: "Fri", names: "Alex, Sam, Kim, Jo", count: 4 },
+      ].map((row) => (
+        <div key={row.day} className="flex justify-between items-center bg-white/15 rounded px-2 py-1">
+          <span className="font-medium w-8">{row.day}</span>
+          <span className="flex-1 truncate opacity-80 text-[10px] px-2">{row.names}</span>
+          <span className="font-semibold">{row.count}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function PhoneMockup() {
   const [visibleMessages, setVisibleMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [msgIndex, setMsgIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -46,10 +70,7 @@ export default function PhoneMockup() {
   }, [visibleMessages, isTyping]);
 
   useEffect(() => {
-    if (paused) return;
-
     if (msgIndex >= thread.length) {
-      // Pause at end, then restart
       const timer = setTimeout(() => {
         setVisibleMessages([]);
         setMsgIndex(0);
@@ -74,7 +95,7 @@ export default function PhoneMockup() {
       }, 1200);
       return () => clearTimeout(timer);
     }
-  }, [msgIndex, paused]);
+  }, [msgIndex]);
 
   return (
     <div className="relative mx-auto w-[280px] sm:w-[320px]">
@@ -102,13 +123,30 @@ export default function PhoneMockup() {
           {visibleMessages.map((msg, i) => (
             <div
               key={i}
-              className={`max-w-[85%] px-4 py-2.5 text-sm leading-relaxed animate-[fadeSlideUp_0.3s_ease-out] ${
+              className={`max-w-[85%] animate-[fadeSlideUp_0.3s_ease-out] ${
                 msg.from === "user"
-                  ? "self-end bg-[#d97757] text-white rounded-2xl rounded-br-sm"
-                  : "self-start bg-gray-100 text-gray-800 rounded-2xl rounded-bl-sm"
+                  ? "self-end"
+                  : "self-start"
               }`}
             >
-              {msg.text}
+              {msg.isImage ? (
+                <div className="space-y-1">
+                  <ScheduleImage />
+                  <div className="bg-[#d97757] text-white rounded-2xl rounded-br-sm px-4 py-2.5 text-sm leading-relaxed">
+                    {msg.text}
+                  </div>
+                </div>
+              ) : (
+                <div
+                  className={`px-4 py-2.5 text-sm leading-relaxed ${
+                    msg.from === "user"
+                      ? "bg-[#d97757] text-white rounded-2xl rounded-br-sm"
+                      : "bg-gray-100 text-gray-800 rounded-2xl rounded-bl-sm"
+                  }`}
+                >
+                  {msg.text}
+                </div>
+              )}
             </div>
           ))}
           {isTyping && (
