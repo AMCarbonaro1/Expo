@@ -45,6 +45,8 @@ export default function AccountDetailPage() {
         food_cost_baseline: String(data.restaurant?.food_cost_baseline || ""),
         subscription_status: String(data.user?.subscription_status || ""),
         recap_hour: String(data.restaurant?.recap_hour ?? "7"),
+        recap_enabled: String(data.restaurant?.recap_enabled ?? "true"),
+        alerts_enabled: String(data.restaurant?.alerts_enabled ?? "true"),
       });
     });
     apiFetch(`/api/admin/accounts/${id}/notes`).then((r) => r.json()).then((data) => setNotes(data.notes || ""));
@@ -60,12 +62,14 @@ export default function AccountDetailPage() {
 
   async function handleSave() {
     setSaving(true);
-    const payload: Record<string, string | number | null> = {};
+    const payload: Record<string, string | number | boolean | null> = {};
     for (const [key, value] of Object.entries(editData)) {
       if (key === "food_cost_baseline") {
         payload[key] = value ? parseFloat(value) : null;
       } else if (key === "recap_hour") {
         payload[key] = parseInt(value);
+      } else if (key === "recap_enabled" || key === "alerts_enabled") {
+        payload[key] = value === "true";
       } else {
         payload[key] = value;
       }
@@ -170,6 +174,8 @@ export default function AccountDetailPage() {
             { key: "food_cost_baseline", label: "Food Cost Target (%)" },
             { key: "subscription_status", label: "Subscription Status" },
             { key: "recap_hour", label: "Recap Hour (0-23)" },
+            { key: "recap_enabled", label: "Recap Enabled (true/false)" },
+            { key: "alerts_enabled", label: "Alerts Enabled (true/false)" },
           ].map((field) => (
             <div key={field.key}>
               <label className="text-[#87867f] text-xs">{field.label}</label>
@@ -243,6 +249,46 @@ export default function AccountDetailPage() {
           <button onClick={handlePreviewPrompt}
             className="bg-[#f5f4f0] text-[#141413] text-xs font-medium px-3 py-2 rounded-lg hover:bg-[#d4d2c9] transition">
             Preview Prompt
+          </button>
+          <button onClick={async () => {
+            const res = await apiFetch(`/api/admin/accounts/${id}/impersonate`, { method: "POST" });
+            const data = await res.json();
+            if (data.token) {
+              window.open(`${window.location.origin}/dashboard?impersonate=${data.token}`, "_blank");
+              setActionResult("Impersonate tab opened");
+            }
+          }} className="bg-[#f5f4f0] text-[#141413] text-xs font-medium px-3 py-2 rounded-lg hover:bg-[#d4d2c9] transition">
+            Login As User
+          </button>
+          <button onClick={async () => {
+            const res = await apiFetch(`/api/admin/accounts/${id}/comp`, { method: "POST", body: JSON.stringify({ action: "activate" }) });
+            const data = await res.json();
+            setActionResult(data.status || data.error);
+            apiFetch(`/api/admin/accounts/${id}`).then((r) => r.json()).then(setAccount);
+          }} className="bg-[#5a9a6e] text-white text-xs font-medium px-3 py-2 rounded-lg hover:bg-[#4a8a5e] transition">
+            Comp / Activate
+          </button>
+          <button onClick={async () => {
+            const res = await apiFetch(`/api/admin/accounts/${id}/comp`, { method: "POST", body: JSON.stringify({ action: "cancel" }) });
+            const data = await res.json();
+            setActionResult(data.status || data.error);
+            apiFetch(`/api/admin/accounts/${id}`).then((r) => r.json()).then(setAccount);
+          }} className="bg-[#87867f] text-white text-xs font-medium px-3 py-2 rounded-lg hover:bg-[#6a6963] transition">
+            Cancel Sub
+          </button>
+          <button onClick={async () => {
+            const res = await apiFetch(`/api/admin/accounts/${id}/export`);
+            const data = await res.json();
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `expo-account-${id}-export.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            setActionResult("Data exported");
+          }} className="bg-[#f5f4f0] text-[#141413] text-xs font-medium px-3 py-2 rounded-lg hover:bg-[#d4d2c9] transition">
+            Export Data
           </button>
           {!confirmDelete ? (
             <button onClick={() => setConfirmDelete(true)}

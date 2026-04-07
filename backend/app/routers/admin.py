@@ -667,3 +667,113 @@ async def revenue_metrics(admin: User = Depends(get_admin_user), db: AsyncSessio
         "status_breakdown": status_breakdown,
         "signups_by_month": signups_by_month,
     }
+
+
+# ─── Impersonate (Login As) ──────────────────────────────────
+
+@router.post("/accounts/{rid}/impersonate")
+async def impersonate_user(rid: int, admin: User = Depends(get_admin_user), db: AsyncSession = Depends(get_db)):
+    """Generate a JWT token for the given restaurant's user — admin can log in as them."""
+    from app.routers.auth import create_token
+    result = await db.execute(select(User).where(User.restaurant_id == rid))
+    user = result.scalar_one_or_none()
+    if not user:
+        return {"error": "User not found"}
+    token = create_token(user.id, user.restaurant_id)
+    return {"token": token, "email": user.email, "restaurant_id": rid}
+
+
+# ─── Comp / Extend Subscription ──────────────────────────────
+
+class CompRequest(BaseModel):
+    action: str  # "activate", "comp_month", "cancel"
+
+
+@router.post("/accounts/{rid}/comp")
+async def comp_subscription(rid: int, data: CompRequest, admin: User = Depends(get_admin_user), db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(User).where(User.restaurant_id == rid))
+    user = result.scalar_one_or_none()
+    if not user:
+        return {"error": "User not found"}
+
+    if data.action == "activate":
+        user.subscription_status = "active"
+        msg = "Subscription manually activated"
+    elif data.action == "comp_month":
+        user.subscription_status = "active"
+        msg = "Complimentary month activated"
+    elif data.action == "cancel":
+        user.subscription_status = "canceled"
+        msg = "Subscription canceled"
+    else:
+        return {"error": "Invalid action"}
+
+    await db.commit()
+    return {"status": msg}
+
+
+# ─── Export Data as CSV ───────────────────────────────────────
+
+@router.get("/accounts/{rid}/export")
+async def export_data(rid: int, admin: User = Depends(get_admin_user), db: AsyncSession = Depends(get_db)):
+    """Export all account data as JSON (frontend converts to CSV)."""
+    import json
+
+    # Messages
+    result = await db.execute(select(Message).where(Message.restaurant_id == rid).order_by(Message.created_at.asc()))
+    messages = [{"direction": m.direction, "body": m.body, "created_at": str(m.created_at)} for m in result.scalars().all()]
+
+    # Invoices
+    result = await db.execute(select(Invoice).where(Invoice.restaurant_id == rid).order_by(Invoice.created_at.desc()))
+    invoices_list = []
+    for inv in result.scalars().all():
+        item_result = await db.execute(select(InvoiceItem).where(InvoiceItem.invoice_id == inv.id))
+        items = [{"product": i.product_name, "qty": i.quantity, "unit": i.unit, "unit_price": i.unit_price, "total_price": i.total_price} for i in item_result.scalars().all()]
+        invoices_list.append({"vendor": inv.vendor_name, "date": str(inv.invoice_date), "total": inv.total_amount, "status": inv.status, "items": items})
+
+    # Daily summaries
+    result = await db.execute(select(DailySummary).where(DailySummary.restaurant_id == rid).order_by(DailySummary.summary_date.desc()))
+    summaries = [{"date": str(s.summary_date), "total_sales": s.total_sales, "order_count": s.order_count, "avg_ticket": s.avg_ticket, "labor_percentage": s.labor_percentage, "labor_cost": s.labor_cost} for s in result.scalars().all()]
+
+    # Alerts
+    result = await db.execute(select(Alert).where(Alert.restaurant_id == rid).order_by(Alert.created_at.desc()))
+    alerts = [{"type": a.alert_type, "severity": a.severity, "message": a.message, "date": str(a.summary_date)} for a in result.scalars().all()]
+
+    return {"messages": messages, "invoices": invoices_list, "summaries": summaries, "alerts": alerts}
+
+
+# ─── Error Logs / Failed Syncs ────────────────────────────────
+
+@router.get("/error-logs")
+async def error_logs(admin: User = Depends(get_admin_user), db: AsyncSession = Depends(get_db)):
+    """Return recent alerts that indicate errors or issues across all accounts."""
+    # Get recent zero-sales alerts (potential sync failures)
+    result = await db.execute(
+        select(Alert, Restaurant.restaurant_name)
+        .join(Restaurant, Alert.restaurant_id == Restaurant.id)
+        .where(Alert.alert_type.in_(["zero_sales", "deposit_gap", "cash_flow_warning"]))
+        .order_by(Alert.created_at.desc())
+        .limit(50)
+    )
+    rows = result.all()
+
+    # Get restaurants with Square tokens but no recent summaries (sync failures)
+    week_ago = date.today() - timedelta(days=7)
+    result = await db.execute(
+        select(Restaurant.id, Restaurant.restaurant_name)
+        .join(SquareToken, SquareToken.restaurant_id == Restaurant.id)
+        .outerjoin(
+            DailySummary,
+            and_(DailySummary.restaurant_id == Restaurant.id, DailySummary.summary_date >= week_ago)
+        )
+        .where(DailySummary.id.is_(None))
+    )
+    stale_syncs = [{"restaurant_id": r[0], "restaurant_name": r[1], "issue": "No daily summary in 7+ days"} for r in result.all()]
+
+    return {
+        "recent_alerts": [
+            {"restaurant_name": r[1], "type": r[0].alert_type, "severity": r[0].severity, "message": r[0].message, "date": str(r[0].created_at)}
+            for r in rows
+        ],
+        "stale_syncs": stale_syncs,
+    }

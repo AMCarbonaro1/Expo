@@ -37,6 +37,7 @@ export default function ToolsPage() {
   const [bulkSmsBody, setBulkSmsBody] = useState("");
   const [bulkSmsLoading, setBulkSmsLoading] = useState(false);
   const [bulkSmsResult, setBulkSmsResult] = useState("");
+  const [errorLogs, setErrorLogs] = useState<{ stale_syncs: { restaurant_name: string; issue: string }[]; recent_alerts: { restaurant_name: string; type: string; message: string; date: string }[] } | null>(null);
 
   useEffect(() => {
     apiFetch("/api/admin/revenue").then((r) => r.json()).then(setRevenue);
@@ -215,6 +216,45 @@ export default function ToolsPage() {
           ))}
           {(!messages || messages.length === 0) && <p className="text-[#87867f] text-sm">No messages yet.</p>}
         </div>
+      </div>
+
+      {/* Error Logs */}
+      <div className="bg-white border border-[#d4d2c9] rounded-lg p-5 space-y-3">
+        <div className="flex items-center justify-between">
+          <h3 className="font-semibold text-[#141413]">Error Logs / Failed Syncs</h3>
+          <button onClick={async () => {
+            const res = await apiFetch("/api/admin/error-logs");
+            const data = await res.json();
+            setErrorLogs(data);
+          }} className="text-[#d97757] text-xs font-medium hover:underline">Refresh</button>
+        </div>
+        {errorLogs ? (
+          <div className="space-y-3">
+            {errorLogs.stale_syncs?.length > 0 && (
+              <div>
+                <p className="text-xs font-semibold text-[#c0392b] mb-1">Stale Syncs (no data in 7+ days)</p>
+                {errorLogs.stale_syncs.map((s: { restaurant_name: string; issue: string }, i: number) => (
+                  <p key={i} className="text-xs text-[#30302e]">{s.restaurant_name}: {s.issue}</p>
+                ))}
+              </div>
+            )}
+            {errorLogs.recent_alerts?.length > 0 && (
+              <div>
+                <p className="text-xs font-semibold text-[#d97757] mb-1">Recent Issue Alerts</p>
+                {errorLogs.recent_alerts.slice(0, 10).map((a: { restaurant_name: string; type: string; message: string; date: string }, i: number) => (
+                  <div key={i} className="text-xs text-[#30302e] border-b border-[#d4d2c9] pb-1 mb-1 last:border-0">
+                    <span className="font-medium">{a.restaurant_name}</span> · {a.type} · {a.message.slice(0, 80)}
+                  </div>
+                ))}
+              </div>
+            )}
+            {(!errorLogs.stale_syncs?.length && !errorLogs.recent_alerts?.length) && (
+              <p className="text-[#5a9a6e] text-sm">No errors or issues found.</p>
+            )}
+          </div>
+        ) : (
+          <p className="text-[#87867f] text-xs">Click Refresh to load error logs.</p>
+        )}
       </div>
 
       {/* Scheduler Info */}
