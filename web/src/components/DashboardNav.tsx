@@ -7,6 +7,7 @@ import ExpoLogo from "./ExpoLogo";
 
 const tabs = [
   { href: "/dashboard", label: "Home" },
+  { href: "/dashboard/integrations", label: "Integrations" },
   { href: "/dashboard/guide", label: "Guide" },
   { href: "/dashboard/settings", label: "Settings" },
   { href: "/dashboard/billing", label: "Billing" },

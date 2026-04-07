@@ -44,6 +44,67 @@ class Settings(BaseSettings):
     stripe_price_id: str = ""
     stripe_webhook_secret: str = ""
 
+    # QuickBooks
+    quickbooks_client_id: str = ""
+    quickbooks_client_secret: str = ""
+    quickbooks_environment: str = "sandbox"
+
+    # Xero
+    xero_client_id: str = ""
+    xero_client_secret: str = ""
+
+    # 7shifts
+    sevenshifts_client_id: str = ""
+    sevenshifts_client_secret: str = ""
+
+    # DoorDash
+    doordash_developer_id: str = ""
+    doordash_key_id: str = ""
+    doordash_signing_secret: str = ""
+
+    # Toast (needs partner approval)
+    toast_client_id: str = ""
+    toast_client_secret: str = ""
+
+    # Clover (needs app market approval)
+    clover_app_id: str = ""
+    clover_app_secret: str = ""
+    clover_environment: str = "sandbox"
+
+    # Lightspeed
+    lightspeed_client_id: str = ""
+    lightspeed_client_secret: str = ""
+
+    # Uber Eats (needs NDA)
+    ubereats_client_id: str = ""
+    ubereats_client_secret: str = ""
+
+    # Grubhub (needs NDA)
+    grubhub_partner_key: str = ""
+
+    # OpenTable (needs affiliate approval)
+    opentable_client_id: str = ""
+    opentable_client_secret: str = ""
+
+    # MarketMan (needs partner)
+    marketman_api_key: str = ""
+    marketman_api_password: str = ""
+
+    # MarginEdge
+    marginedge_api_key: str = ""
+
+    # Restaurant365 (needs support contact)
+    r365_username: str = ""
+    r365_password: str = ""
+
+    # Revel (needs partner)
+    revel_api_key: str = ""
+    revel_api_secret: str = ""
+
+    # HungerRush (needs account manager)
+    hungerrush_client_id: str = ""
+    hungerrush_client_secret: str = ""
+
     # JWT
     jwt_secret_key: str = ""
     jwt_algorithm: str = "HS256"
