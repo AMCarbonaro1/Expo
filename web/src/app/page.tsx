@@ -3,6 +3,7 @@ import PhoneMockup from "@/components/PhoneMockup";
 import ExpoLogo from "@/components/ExpoLogo";
 import StickyNav from "@/components/StickyNav";
 import FadeIn from "@/components/FadeIn";
+import TypingHero from "@/components/TypingHero";
 import { SquareLogo, PlaidLogo, TwilioLogo, ClaudeLogo } from "@/components/PartnerLogos";
 
 export default function Home() {
@@ -14,8 +15,8 @@ export default function Home() {
       {/* Hero */}
       <section className="max-w-6xl mx-auto px-6 py-16 sm:py-24 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
         <div className="flex-1 text-center lg:text-left space-y-6">
-          <div className="inline-block bg-[#d97757]/10 text-[#d97757] text-sm font-medium px-4 py-1.5 rounded-full">
-            Built for independent restaurant owners
+          <div className="flex justify-center lg:justify-start mb-2">
+            <TypingHero />
           </div>
           <h1 className="font-bold tracking-tight font-serif">
             <span className="block text-3xl sm:text-4xl lg:text-5xl leading-tight text-[#141413]">
