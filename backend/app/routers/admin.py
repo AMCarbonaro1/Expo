@@ -185,6 +185,7 @@ class AccountUpdate(BaseModel):
     restaurant_name: str | None = None
     owner_name: str | None = None
     phone: str | None = None
+    email: str | None = None
     restaurant_type: str | None = None
     hours: str | None = None
     food_cost_baseline: float | None = None
@@ -206,10 +207,13 @@ async def update_account(rid: int, data: AccountUpdate, admin: User = Depends(ge
         if val is not None:
             setattr(restaurant, field, val)
 
-    if data.subscription_status is not None:
-        result = await db.execute(select(User).where(User.restaurant_id == rid))
-        user = result.scalar_one_or_none()
-        if user:
+    result = await db.execute(select(User).where(User.restaurant_id == rid))
+    user = result.scalar_one_or_none()
+
+    if data.email is not None and user:
+        user.email = data.email
+
+    if data.subscription_status is not None and user:
             user.subscription_status = data.subscription_status
 
     await db.commit()
@@ -448,3 +452,218 @@ async def get_bank_balance(rid: int, admin: User = Depends(get_admin_user), db: 
     if not token:
         return {"error": "No bank connected"}
     return {"balance": token.current_balance, "institution": token.institution_name, "updated_at": str(token.balance_updated_at) if token.balance_updated_at else None}
+
+
+# ─── Password Reset ───────────────────────────────────────────
+
+class PasswordResetRequest(BaseModel):
+    new_password: str
+
+
+@router.post("/accounts/{rid}/reset-password")
+async def reset_password(rid: int, data: PasswordResetRequest, admin: User = Depends(get_admin_user), db: AsyncSession = Depends(get_db)):
+    import bcrypt as _bcrypt
+    result = await db.execute(select(User).where(User.restaurant_id == rid))
+    user = result.scalar_one_or_none()
+    if not user:
+        return {"error": "User not found"}
+    user.password_hash = _bcrypt.hashpw(data.new_password.encode(), _bcrypt.gensalt()).decode()
+    await db.commit()
+    return {"status": "password_reset"}
+
+
+# ─── Admin Notes ──────────────────────────────────────────────
+
+@router.get("/accounts/{rid}/notes")
+async def get_notes(rid: int, admin: User = Depends(get_admin_user), db: AsyncSession = Depends(get_db)):
+    from app.models.integration import IntegrationToken
+    result = await db.execute(
+        select(IntegrationToken).where(
+            and_(IntegrationToken.restaurant_id == rid, IntegrationToken.service == "_admin_notes")
+        )
+    )
+    token = result.scalar_one_or_none()
+    notes = token.access_token if token else ""
+    return {"notes": notes}
+
+
+class NotesUpdate(BaseModel):
+    notes: str
+
+
+@router.put("/accounts/{rid}/notes")
+async def update_notes(rid: int, data: NotesUpdate, admin: User = Depends(get_admin_user), db: AsyncSession = Depends(get_db)):
+    from app.models.integration import IntegrationToken
+    result = await db.execute(
+        select(IntegrationToken).where(
+            and_(IntegrationToken.restaurant_id == rid, IntegrationToken.service == "_admin_notes")
+        )
+    )
+    existing = result.scalar_one_or_none()
+    if existing:
+        existing.access_token = data.notes
+    else:
+        note = IntegrationToken(
+            restaurant_id=rid, service="_admin_notes",
+            access_token=data.notes, external_name="Admin Notes",
+        )
+        db.add(note)
+    await db.commit()
+    return {"status": "saved"}
+
+
+# ─── Bulk SMS ─────────────────────────────────────────────────
+
+class BulkSmsRequest(BaseModel):
+    body: str
+
+
+@router.post("/bulk-sms")
+async def bulk_sms(data: BulkSmsRequest, admin: User = Depends(get_admin_user), db: AsyncSession = Depends(get_db)):
+    result = await db.execute(
+        select(Restaurant).join(User, User.restaurant_id == Restaurant.id).where(User.subscription_status == "active")
+    )
+    restaurants = result.scalars().all()
+    sent = 0
+    for r in restaurants:
+        try:
+            msg = Message(restaurant_id=r.id, direction="out", body=data.body)
+            db.add(msg)
+            await send_sms(r.phone, data.body)
+            sent += 1
+        except Exception:
+            pass
+    await db.commit()
+    return {"status": "sent", "count": sent, "total": len(restaurants)}
+
+
+# ─── Health Check ─────────────────────────────────────────────
+
+@router.get("/health-check")
+async def health_check(admin: User = Depends(get_admin_user), db: AsyncSession = Depends(get_db)):
+    import httpx
+    from app.config import settings
+
+    checks = {}
+
+    # Database
+    try:
+        result = await db.execute(sa_func.now())
+        checks["database"] = {"status": "ok"}
+    except Exception as e:
+        checks["database"] = {"status": "error", "message": str(e)}
+
+    # Twilio
+    try:
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(
+                f"https://api.twilio.com/2010-04-01/Accounts/{settings.twilio_account_sid}.json",
+                auth=(settings.twilio_account_sid, settings.twilio_auth_token),
+                timeout=10.0,
+            )
+            data = resp.json()
+            checks["twilio"] = {"status": "ok", "account_status": data.get("status")}
+    except Exception as e:
+        checks["twilio"] = {"status": "error", "message": str(e)}
+
+    # Claude API
+    try:
+        async with httpx.AsyncClient() as client:
+            resp = await client.post(
+                "https://api.anthropic.com/v1/messages",
+                headers={
+                    "x-api-key": settings.anthropic_api_key,
+                    "anthropic-version": "2023-06-01",
+                    "content-type": "application/json",
+                },
+                json={"model": "claude-sonnet-4-20250514", "max_tokens": 5, "messages": [{"role": "user", "content": "hi"}]},
+                timeout=10.0,
+            )
+            checks["claude_api"] = {"status": "ok" if resp.status_code == 200 else "error", "http_code": resp.status_code}
+    except Exception as e:
+        checks["claude_api"] = {"status": "error", "message": str(e)}
+
+    # Stripe
+    try:
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(
+                "https://api.stripe.com/v1/balance",
+                auth=(settings.stripe_secret_key, ""),
+                timeout=10.0,
+            )
+            checks["stripe"] = {"status": "ok" if resp.status_code == 200 else "error"}
+    except Exception as e:
+        checks["stripe"] = {"status": "error", "message": str(e)}
+
+    all_ok = all(c.get("status") == "ok" for c in checks.values())
+    return {"status": "healthy" if all_ok else "degraded", "checks": checks}
+
+
+# ─── Recent Messages (all accounts) ──────────────────────────
+
+@router.get("/recent-messages")
+async def recent_messages(admin: User = Depends(get_admin_user), db: AsyncSession = Depends(get_db)):
+    result = await db.execute(
+        select(Message, Restaurant.restaurant_name, Restaurant.owner_name)
+        .join(Restaurant, Message.restaurant_id == Restaurant.id)
+        .order_by(Message.created_at.desc())
+        .limit(50)
+    )
+    rows = result.all()
+    return {"messages": [
+        {
+            "restaurant_name": r[1],
+            "owner_name": r[2],
+            "direction": r[0].direction,
+            "body": r[0].body,
+            "created_at": str(r[0].created_at),
+        }
+        for r in rows
+    ]}
+
+
+# ─── Revenue Metrics ──────────────────────────────────────────
+
+@router.get("/revenue")
+async def revenue_metrics(admin: User = Depends(get_admin_user), db: AsyncSession = Depends(get_db)):
+    from datetime import datetime
+
+    # Current MRR
+    active = (await db.execute(
+        select(sa_func.count()).select_from(User).where(User.subscription_status == "active")
+    )).scalar() or 0
+    mrr = active * 49
+
+    # Signups by month (last 6 months)
+    six_months_ago = datetime.utcnow() - timedelta(days=180)
+    result = await db.execute(
+        select(
+            sa_func.date_trunc("month", User.created_at).label("month"),
+            sa_func.count().label("count"),
+        )
+        .where(User.created_at >= six_months_ago)
+        .group_by("month")
+        .order_by("month")
+    )
+    signups_by_month = [{"month": str(r[0])[:7], "count": r[1]} for r in result.all()]
+
+    # Status breakdown
+    result = await db.execute(
+        select(User.subscription_status, sa_func.count())
+        .group_by(User.subscription_status)
+    )
+    status_breakdown = {r[0] or "unknown": r[1] for r in result.all()}
+
+    # Churn (canceled / total ever)
+    total_users = (await db.execute(select(sa_func.count()).select_from(User))).scalar() or 0
+    canceled = status_breakdown.get("canceled", 0)
+    churn_rate = (canceled / total_users * 100) if total_users > 0 else 0
+
+    return {
+        "mrr": mrr,
+        "active_subscriptions": active,
+        "total_users": total_users,
+        "churn_rate": round(churn_rate, 1),
+        "status_breakdown": status_breakdown,
+        "signups_by_month": signups_by_month,
+    }
