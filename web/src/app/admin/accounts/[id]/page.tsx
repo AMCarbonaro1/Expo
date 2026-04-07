@@ -250,13 +250,24 @@ export default function AccountDetailPage() {
             className="bg-[#f5f4f0] text-[#141413] text-xs font-medium px-3 py-2 rounded-lg hover:bg-[#d4d2c9] transition">
             Preview Prompt
           </button>
-          <button onClick={async () => {
-            const res = await apiFetch(`/api/admin/accounts/${id}/impersonate`, { method: "POST" });
-            const data = await res.json();
-            if (data.token) {
-              window.open(`${window.location.origin}/dashboard?impersonate=${data.token}`, "_blank");
-              setActionResult("Impersonate tab opened");
-            }
+          <button onClick={() => {
+            // Open window synchronously (before async) to avoid popup blocker
+            const newWindow = window.open("about:blank", "_blank");
+            apiFetch(`/api/admin/accounts/${id}/impersonate`, { method: "POST" })
+              .then((res) => res.json())
+              .then((data) => {
+                if (data.token && newWindow) {
+                  // Write a small page that sets the token and redirects to dashboard
+                  newWindow.document.write(`
+                    <html><body><script>
+                      localStorage.setItem('expo_token', '${data.token}');
+                      document.cookie = 'expo_token=${data.token}; path=/; max-age=86400; SameSite=Lax';
+                      window.location.href = '${window.location.origin}/dashboard';
+                    </script><p>Redirecting to dashboard...</p></body></html>
+                  `);
+                  setActionResult("Opened as " + data.email);
+                }
+              });
           }} className="bg-[#f5f4f0] text-[#141413] text-xs font-medium px-3 py-2 rounded-lg hover:bg-[#d4d2c9] transition">
             Login As User
           </button>
