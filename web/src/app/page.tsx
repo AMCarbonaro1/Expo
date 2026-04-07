@@ -15,17 +15,12 @@ export default function Home() {
       {/* Hero */}
       <section className="max-w-6xl mx-auto px-6 py-16 sm:py-24 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
         <div className="flex-1 text-center lg:text-left space-y-6">
-          <div className="flex justify-center lg:justify-start mb-2">
+          <div className="inline-block bg-[#d97757]/10 text-[#d97757] text-sm font-medium px-4 py-1.5 rounded-full">
+            Built for independent restaurant owners
+          </div>
+          <div className="lg:text-left text-center">
             <TypingHero />
           </div>
-          <h1 className="font-bold tracking-tight font-serif">
-            <span className="block text-3xl sm:text-4xl lg:text-5xl leading-tight text-[#141413]">
-              What if your restaurant had a brain —
-            </span>
-            <span className="block text-4xl sm:text-5xl lg:text-7xl leading-tight mt-2 text-[#d97757]">
-              and you could text it?
-            </span>
-          </h1>
           <p className="text-lg sm:text-xl text-[#30302e] max-w-lg mx-auto lg:mx-0">
             Expo connects to your POS, bank, and invoices — then you
             just text it. &quot;How much did we sell today?&quot; &quot;Did Lauren make the drop?&quot;

@@ -106,10 +106,12 @@ export default function TypingHero() {
   }, [charIndex, isDeleting, phraseIndex, shuffledPhrases]);
 
   return (
-    <div className="flex items-center gap-4">
-      <LogoSignal size={48} color="#d97757" />
-      <div className="relative">
-        <span className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#141413] font-serif">
+    <div className="flex items-start gap-4">
+      <div className="flex-shrink-0 mt-1">
+        <LogoSignal size={48} color="#d97757" />
+      </div>
+      <div className="min-h-[3rem] sm:min-h-[3.5rem] lg:min-h-[4rem] flex items-center">
+        <span className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#141413] font-serif">
           {displayText}
           <span className="animate-pulse text-[#d97757]">|</span>
         </span>
