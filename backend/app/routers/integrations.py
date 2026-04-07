@@ -86,15 +86,43 @@ async def get_integration_status(
             connected = True
             external_name = connected_tokens[svc["id"]].external_name
 
+        # Check if credentials are actually configured for "available" services
+        effective_status = svc["status"]
+        if not connected and effective_status == "available":
+            if not _has_credentials(svc["id"]):
+                effective_status = "coming_soon"
+
         integrations.append({
             "id": svc["id"],
             "name": svc["name"],
             "category": svc["category"],
-            "status": "connected" if connected else svc["status"],
+            "status": "connected" if connected else effective_status,
             "external_name": external_name,
         })
 
     return {"integrations": integrations}
+
+
+def _has_credentials(service: str) -> bool:
+    """Check if API credentials are configured for a service."""
+    checks = {
+        "quickbooks": bool(settings.quickbooks_client_id),
+        "xero": bool(settings.xero_client_id),
+        "7shifts": bool(settings.sevenshifts_client_id),
+        "doordash": bool(settings.doordash_developer_id),
+        "toast": bool(settings.toast_client_id),
+        "clover": bool(settings.clover_app_id),
+        "lightspeed": bool(settings.lightspeed_client_id),
+        "ubereats": bool(settings.ubereats_client_id),
+        "grubhub": bool(settings.grubhub_partner_key),
+        "opentable": bool(settings.opentable_client_id),
+        "marketman": bool(settings.marketman_api_key),
+        "marginedge": bool(settings.marginedge_api_key),
+        "r365": bool(settings.r365_username),
+        "revel": bool(settings.revel_api_key),
+        "hungerrush": bool(settings.hungerrush_client_id),
+    }
+    return checks.get(service, False)
 
 
 @router.post("/disconnect/{service}")
@@ -122,6 +150,8 @@ async def disconnect_integration(
 
 @router.get("/quickbooks/auth-url")
 async def quickbooks_auth_url(user: User = Depends(get_current_user)):
+    if not settings.quickbooks_client_id:
+        return {"error": "QuickBooks integration not configured yet"}
     params = {
         "client_id": settings.quickbooks_client_id,
         "redirect_uri": f"{settings.backend_url}/api/integrations/quickbooks/callback",
@@ -180,6 +210,8 @@ async def quickbooks_callback(
 
 @router.get("/xero/auth-url")
 async def xero_auth_url(user: User = Depends(get_current_user)):
+    if not settings.xero_client_id:
+        return {"error": "Xero integration not configured yet"}
     params = {
         "response_type": "code",
         "client_id": settings.xero_client_id,

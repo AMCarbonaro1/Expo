@@ -99,6 +99,7 @@ export default function IntegrationsPage() {
       if (data.url) {
         window.location.href = data.url;
       } else {
+        alert(data.error || "This integration is not available yet.");
         setActionLoading("");
       }
       return;
@@ -110,6 +111,8 @@ export default function IntegrationsPage() {
       const data = await res.json();
       if (data.status === "connected") {
         await loadIntegrations();
+      } else {
+        alert(data.error || "This integration is not available yet.");
       }
       setActionLoading("");
       return;
