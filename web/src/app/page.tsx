@@ -4,6 +4,7 @@ import ExpoLogo from "@/components/ExpoLogo";
 import StickyNav from "@/components/StickyNav";
 import FadeIn from "@/components/FadeIn";
 import TypingHero from "@/components/TypingHero";
+import HeroVideo from "@/components/HeroVideo";
 import { SquareLogo, PlaidLogo, TwilioLogo, ClaudeLogo } from "@/components/PartnerLogos";
 
 export default function Home() {
@@ -21,17 +22,7 @@ export default function Home() {
           <div className="lg:text-left text-center">
             <TypingHero />
           </div>
-          <div className="max-w-lg mx-auto lg:mx-0 rounded-xl overflow-hidden shadow-lg">
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full"
-            >
-              <source src="/hero-video.mp4" type="video/mp4" />
-            </video>
-          </div>
+          <HeroVideo />
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
             <Link
               href="/signup"
