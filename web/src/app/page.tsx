@@ -340,6 +340,11 @@ export default function Home() {
           <div className="pt-8 flex justify-center opacity-50">
             <ExpoLogo size={20} color="#87867f" textClass="text-sm" />
           </div>
+          <div className="pt-4 flex justify-center gap-4 text-xs text-[#87867f]/60">
+            <Link href="/terms" className="hover:text-[#87867f] transition">Terms of Service</Link>
+            <span>·</span>
+            <Link href="/privacy" className="hover:text-[#87867f] transition">Privacy Policy</Link>
+          </div>
         </div>
       </section>
     </div>

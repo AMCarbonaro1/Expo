@@ -586,7 +586,7 @@ export default function GetStartedPage() {
       <section className="bg-[#0f1923] text-white/30 py-8">
         <div className="max-w-3xl mx-auto px-6 text-center text-xs space-y-2">
           <p>© 2026 Expo by Carbonaro Media · Detroit, MI</p>
-          <p>Terms of Service · Privacy Policy · support@carbonaromedia.com</p>
+          <p><Link href="/terms" className="hover:text-white/60 transition">Terms of Service</Link> · <Link href="/privacy" className="hover:text-white/60 transition">Privacy Policy</Link> · carbonaromedia@gmail.com</p>
           <p className="max-w-lg mx-auto">Results vary. Expo provides data-driven insights based on your POS, bank, and invoice data. Expo does not provide financial or legal advice.</p>
         </div>
       </section>
