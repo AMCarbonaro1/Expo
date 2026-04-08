@@ -24,7 +24,7 @@ export default function GetStartedPage() {
           <span className="block text-xl sm:text-2xl lg:text-3xl mt-3 text-[#87867f] font-normal italic">Without running to the back office or bugging your staff for answers?</span>
         </h1>
         <p className="text-lg sm:text-xl text-[#30302e] max-w-2xl mx-auto mb-8">
-          Expo connects to your POS and bank account — then <strong>texts you</strong> what matters, every single day. No app. No dashboard. No spreadsheets. Just text.
+          Expo connects to your POS and bank account — then you just <strong>text it</strong> whenever you need an answer. Sales, labor, food cost, cash flow — all from one text. No app. No dashboard. No spreadsheets.
         </p>
         <p className="text-sm text-[#87867f] mb-8">⭐⭐⭐⭐⭐ Trusted by restaurant owners across Michigan</p>
         <Link href="/signup" className="inline-block bg-[#d97757] text-white font-semibold px-10 py-4 rounded-lg hover:bg-[#c4654a] transition text-lg shadow-lg">
