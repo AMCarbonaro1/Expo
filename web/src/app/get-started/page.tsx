@@ -21,7 +21,7 @@ export default function GetStartedPage() {
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#d97757]/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#d97757]/5 rounded-full blur-3xl" />
 
-        <div className="relative max-w-4xl mx-auto px-6 pt-8 pb-16">
+        <div className="relative max-w-6xl mx-auto px-6 pt-8 pb-16">
           {/* Nav */}
           <div className="flex items-center justify-between mb-12">
             <div className="flex items-center gap-2">
@@ -49,13 +49,13 @@ export default function GetStartedPage() {
               </span>
               <span className="block text-2xl sm:text-3xl text-white/70 mt-2">about your restaurant...</span>
             </h1>
-            <p className="text-xl sm:text-2xl text-white/50 italic font-serif max-w-2xl mx-auto">
+            <p className="text-xl sm:text-2xl text-white/50 italic font-serif max-w-3xl mx-auto">
               Without running to the back office or bugging your staff for answers?
             </p>
           </div>
 
           {/* Subtitle */}
-          <p className="text-center text-white/60 max-w-xl mx-auto mb-8">
+          <p className="text-center text-white/60 max-w-2xl mx-auto mb-8">
             Expo connects to your POS and bank account — then you just <strong className="text-white">text it</strong> whenever you need an answer. Sales, labor, food cost, cash flow — all from one text.
           </p>
 
@@ -136,7 +136,7 @@ export default function GetStartedPage() {
 
       {/* ═══ 3. AUTHORITY STAT ═══ */}
       <section className="bg-[#e8e6dc] border-b border-[#d4d2c9] py-10">
-        <div className="max-w-2xl mx-auto px-6 text-center">
+        <div className="max-w-3xl mx-auto px-6 text-center">
           <blockquote className="text-lg sm:text-xl text-[#30302e] italic font-serif">
             &quot;Restaurants that track their numbers daily are <strong className="text-[#d97757] not-italic">3x more likely</strong> to survive their first 5 years.&quot;
           </blockquote>
@@ -146,7 +146,7 @@ export default function GetStartedPage() {
 
       {/* ═══ 5. "WHAT IF..." ═══ */}
       <section className="bg-[#e8e6dc] py-16">
-        <div className="max-w-2xl mx-auto px-6 space-y-8 text-center">
+        <div className="max-w-3xl mx-auto px-6 space-y-8 text-center">
           <p className="text-xl sm:text-2xl text-[#30302e] leading-relaxed">
             <strong className="text-[#d97757]">What if</strong> you could check on your restaurant from your kid&apos;s soccer game... just by sending a text?
           </p>
@@ -162,7 +162,7 @@ export default function GetStartedPage() {
 
       {/* ═══ 6. PERSONAL LETTER ═══ */}
       <section className="bg-white border-y border-[#d4d2c9] py-16">
-        <div className="max-w-2xl mx-auto px-6">
+        <div className="max-w-3xl mx-auto px-6">
           <p className="text-sm text-[#87867f] mb-1">From: <strong className="text-[#141413]">Anthony Carbonaro</strong></p>
           <p className="text-sm text-[#87867f] mb-8">Detroit, Michigan</p>
           <div className="space-y-4 text-[#30302e] leading-relaxed">
@@ -192,7 +192,7 @@ export default function GetStartedPage() {
 
       {/* ═══ 7. CHECKBOX ENGAGEMENT ═══ */}
       <section className="bg-[#e8e6dc] py-16">
-        <div className="max-w-2xl mx-auto px-6">
+        <div className="max-w-3xl mx-auto px-6">
           <h2 className="text-2xl sm:text-3xl font-bold font-serif text-center mb-2">Be honest with yourself for a second.</h2>
           <p className="text-[#87867f] text-center mb-8">Check every box that sounds like you:</p>
           <div className="space-y-4">
@@ -231,7 +231,7 @@ export default function GetStartedPage() {
 
       {/* ═══ 8. THE HARD WAY ═══ */}
       <section className="bg-white border-y border-[#d4d2c9] py-16">
-        <div className="max-w-2xl mx-auto px-6">
+        <div className="max-w-3xl mx-auto px-6">
           <h2 className="text-2xl sm:text-3xl font-bold font-serif text-center mb-4">Here&apos;s what &quot;staying on top of your numbers&quot; actually looks like:</h2>
           <p className="text-[#87867f] text-center mb-10">Let&apos;s be real about what it takes:</p>
           <div className="space-y-3">
@@ -260,7 +260,7 @@ export default function GetStartedPage() {
 
       {/* ═══ 9. THE SHORTCUT ═══ */}
       <section className="bg-[#0f1923] text-white py-16">
-        <div className="max-w-3xl mx-auto px-6">
+        <div className="max-w-4xl mx-auto px-6">
           <h2 className="text-3xl sm:text-4xl font-bold font-serif text-center mb-2">What if there was a
             <span className="relative inline-block mx-2">
               shortcut
@@ -290,7 +290,7 @@ export default function GetStartedPage() {
 
       {/* ═══ 10. TESTIMONIALS BLOCK 1 ═══ */}
       <section className="bg-[#e8e6dc] py-16">
-        <div className="max-w-3xl mx-auto px-6">
+        <div className="max-w-4xl mx-auto px-6">
           <h2 className="text-2xl sm:text-3xl font-bold font-serif text-center mb-10">Don&apos;t take our word for it.</h2>
           <div className="grid sm:grid-cols-2 gap-6">
             {[
@@ -311,7 +311,7 @@ export default function GetStartedPage() {
 
       {/* ═══ 11. OFFER STACK ═══ */}
       <section className="bg-white border-y border-[#d4d2c9] py-16">
-        <div className="max-w-2xl mx-auto px-6">
+        <div className="max-w-3xl mx-auto px-6">
           <h2 className="text-2xl sm:text-3xl font-bold font-serif text-center mb-10">Here&apos;s Everything You Get</h2>
           <div className="space-y-3">
             {[
@@ -348,7 +348,7 @@ export default function GetStartedPage() {
 
       {/* ═══ 13. NO CATCH ═══ */}
       <section className="bg-[#e8e6dc] py-16">
-        <div className="max-w-2xl mx-auto px-6">
+        <div className="max-w-3xl mx-auto px-6">
           <h2 className="text-2xl sm:text-3xl font-bold font-serif text-center mb-8">&quot;OK, so what&apos;s the catch?&quot;</h2>
           <div className="space-y-4 text-[#30302e] leading-relaxed">
             <p className="text-center text-xl font-bold">There is no catch. Seriously.</p>
@@ -368,7 +368,7 @@ export default function GetStartedPage() {
 
       {/* ═══ 14. TESTIMONIALS BLOCK 2 ═══ */}
       <section className="bg-white border-y border-[#d4d2c9] py-16">
-        <div className="max-w-3xl mx-auto px-6">
+        <div className="max-w-4xl mx-auto px-6">
           <h2 className="text-2xl sm:text-3xl font-bold font-serif text-center mb-10">More owners. More results.</h2>
           <div className="grid sm:grid-cols-2 gap-6">
             {[
@@ -389,7 +389,7 @@ export default function GetStartedPage() {
 
       {/* ═══ 15. SCARCITY ═══ */}
       <section className="bg-[#0f1923] text-white py-16">
-        <div className="max-w-2xl mx-auto px-6 text-center space-y-4">
+        <div className="max-w-3xl mx-auto px-6 text-center space-y-4">
           <h2 className="text-3xl sm:text-4xl font-bold font-serif">This price
             <span className="relative inline-block mx-2">
               won&apos;t last
@@ -407,7 +407,7 @@ export default function GetStartedPage() {
 
       {/* ═══ 16. GUARANTEE ═══ */}
       <section className="bg-[#e8e6dc] py-16">
-        <div className="max-w-2xl mx-auto px-6 text-center">
+        <div className="max-w-3xl mx-auto px-6 text-center">
           <div className="bg-white border-2 border-[#5a9a6e] rounded-xl p-8 space-y-4 shadow-lg">
             <div className="w-16 h-16 mx-auto rounded-full bg-[#5a9a6e]/10 flex items-center justify-center">
               <svg className="w-8 h-8 text-[#5a9a6e]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
@@ -423,7 +423,7 @@ export default function GetStartedPage() {
 
       {/* ═══ 17. CTA ═══ */}
       <section className="bg-[#0f1923] text-white py-16">
-        <div className="max-w-md mx-auto px-6 text-center space-y-6">
+        <div className="max-w-lg mx-auto px-6 text-center space-y-6">
           <p className="text-xl font-serif">Do you want to keep <span className="line-through text-white/40">guessing</span>... or start <strong className="text-[#d97757]">knowing</strong>?</p>
           <Link href="/signup" className="block w-full bg-[#d97757] text-white font-bold py-5 rounded-lg hover:bg-[#c4654a] transition text-xl shadow-lg shadow-[#d97757]/30">
             GET STARTED — $49/MONTH →
@@ -434,7 +434,7 @@ export default function GetStartedPage() {
 
       {/* ═══ 18. SECRETS LIST ═══ */}
       <section className="bg-[#e8e6dc] py-16">
-        <div className="max-w-2xl mx-auto px-6">
+        <div className="max-w-3xl mx-auto px-6">
           <h2 className="text-2xl sm:text-3xl font-bold font-serif text-center mb-10">What you&apos;ll discover in your first week:</h2>
           <div className="space-y-4">
             {[
@@ -458,7 +458,7 @@ export default function GetStartedPage() {
 
       {/* ═══ 20. FAQ ═══ */}
       <section className="bg-white border-y border-[#d4d2c9] py-16">
-        <div className="max-w-2xl mx-auto px-6">
+        <div className="max-w-3xl mx-auto px-6">
           <h2 className="text-2xl sm:text-3xl font-bold font-serif text-center mb-10">Questions? We&apos;ve got answers.</h2>
           <div className="space-y-6">
             {[
@@ -480,7 +480,7 @@ export default function GetStartedPage() {
 
       {/* ═══ 21. P.S. ═══ */}
       <section className="bg-[#e8e6dc] py-16">
-        <div className="max-w-2xl mx-auto px-6">
+        <div className="max-w-3xl mx-auto px-6">
           <div className="bg-[#0f1923] text-white rounded-xl p-8 space-y-4">
             <p>
               <strong className="text-[#d97757]">P.S.</strong> In case you scrolled straight to the bottom (I would too), here&apos;s the deal:
@@ -503,7 +503,7 @@ export default function GetStartedPage() {
 
       {/* ═══ 22. FOOTER ═══ */}
       <section className="bg-[#0f1923] text-white/30 py-8">
-        <div className="max-w-2xl mx-auto px-6 text-center text-xs space-y-2">
+        <div className="max-w-3xl mx-auto px-6 text-center text-xs space-y-2">
           <p>© 2026 Expo by Carbonaro Media · Detroit, MI</p>
           <p>Terms of Service · Privacy Policy · support@carbonaromedia.com</p>
           <p className="max-w-lg mx-auto">Results vary. Expo provides data-driven insights based on your POS, bank, and invoice data. Expo does not provide financial or legal advice.</p>
