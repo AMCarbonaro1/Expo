@@ -248,7 +248,7 @@ export default function SupportPage() {
                           onChange={(e) => setTicketNotes({ ...ticketNotes, [t.id]: e.target.value })}
                           placeholder="Add notes about this ticket (what was discussed, resolution, etc.)..."
                           className="flex-1 text-sm border border-[#d4d2c9] rounded-lg px-3 py-2 resize-y bg-[#f5f4f0] focus:outline-none focus:border-[#d97757]"
-                          rows={2}
+                          rows={5}
                         />
                         <button
                           onClick={() => saveNotes(t.id)}
