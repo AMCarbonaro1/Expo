@@ -20,9 +20,8 @@ export default function GetStartedPage() {
           Built For Independent Restaurant Owners
         </div>
         <h1 className="font-serif font-bold leading-tight mb-6">
-          <span className="block text-3xl sm:text-4xl lg:text-5xl">What If You Could Ask Your Restaurant <span className="text-[#d97757]">ANYTHING</span>...</span>
-          <span className="block text-3xl sm:text-4xl lg:text-5xl mt-2">And <span className="text-[#d97757]">FINALLY</span> Get A Straight Answer</span>
-          <span className="block text-xl sm:text-2xl lg:text-3xl mt-3 text-[#87867f] font-normal italic">Without Doing Anything But Sending A Text?</span>
+          <span className="block text-3xl sm:text-4xl lg:text-5xl">What if you could text a number that knows <span className="text-[#d97757]">EVERYTHING</span> about your restaurant...</span>
+          <span className="block text-xl sm:text-2xl lg:text-3xl mt-3 text-[#87867f] font-normal italic">Without running to the back office or bugging your staff for answers?</span>
         </h1>
         <p className="text-lg sm:text-xl text-[#30302e] max-w-2xl mx-auto mb-8">
           Expo connects to your POS and bank account — then <strong>texts you</strong> what matters, every single day. No app. No dashboard. No spreadsheets. Just text.
