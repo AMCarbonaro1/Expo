@@ -37,6 +37,9 @@ export default function StickyNav() {
           <a href="#pricing" className="text-sm text-[#87867f] hover:text-[#141413] transition hidden sm:block">
             Pricing
           </a>
+          <Link href="/get-started" className="text-sm text-[#87867f] hover:text-[#141413] transition hidden sm:block">
+            Meet Expo
+          </Link>
           <Link href="/login" className="text-sm text-[#87867f] hover:text-[#141413] transition">
             Log In
           </Link>
