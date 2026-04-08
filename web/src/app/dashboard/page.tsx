@@ -240,12 +240,15 @@ export default function DashboardPage() {
           </p>
           <div className="grid sm:grid-cols-3 gap-2 pt-2">
             {[
-              { text: "How did we do today?", desc: "Daily sales recap" },
-              { text: "Did Lauren make the drop?", desc: "Deposit check" },
-              { text: "What's my food cost?", desc: "Invoice vs sales %" },
-              { text: "Should I cut someone?", desc: "Staffing advice" },
-              { text: "Am I making money?", desc: "Full P&L picture" },
-              { text: "Change my recap to 6am", desc: "Update settings" },
+              { text: "How are we doing right now?", desc: "Live sales pace" },
+              { text: "Who's clocked in?", desc: "Staff on the clock" },
+              { text: "What's selling today?", desc: "Top sellers right now" },
+              { text: "Should I send someone home?", desc: "Real-time staffing" },
+              { text: "Did the deposit go through?", desc: "Bank verification" },
+              { text: "How many gyros have we sold?", desc: "Live item count" },
+              { text: "How does today compare to last week?", desc: "Live comparison" },
+              { text: "Can I afford to hire someone?", desc: "Staffing + cash flow" },
+              { text: "What's my food cost running?", desc: "Invoice vs sales" },
             ].map((ex) => (
               <a
                 key={ex.text}
