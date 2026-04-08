@@ -51,7 +51,7 @@ export function apiFetch(path: string, options: RequestInit = {}) {
 
 function setToken(token: string) {
   localStorage.setItem("expo_token", token);
-  document.cookie = `expo_token=${token}; path=/; max-age=${60 * 60 * 24}; SameSite=Lax`;
+  document.cookie = `expo_token=${token}; path=/; max-age=${60 * 60 * 24}; SameSite=Strict; Secure`;
 }
 
 function clearToken() {

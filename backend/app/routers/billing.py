@@ -115,23 +115,27 @@ async def stripe_webhook(request: Request):
     body = await request.body()
     sig = request.headers.get("stripe-signature", "")
 
-    # Verify signature if webhook secret is set
-    if settings.stripe_webhook_secret:
-        # Stripe signature verification
-        try:
-            parts = dict(item.split("=", 1) for item in sig.split(","))
-            timestamp = parts.get("t", "")
-            v1_sig = parts.get("v1", "")
-            signed_payload = f"{timestamp}.{body.decode()}"
-            expected = hmac.new(
-                settings.stripe_webhook_secret.encode(),
-                signed_payload.encode(),
-                hashlib.sha256,
-            ).hexdigest()
-            if not hmac.compare_digest(expected, v1_sig):
-                raise HTTPException(status_code=400, detail="Invalid signature")
-        except Exception as e:
-            logger.warning(f"Webhook signature check failed: {e}")
+    # Verify Stripe signature — REQUIRED
+    if not settings.stripe_webhook_secret:
+        raise HTTPException(status_code=500, detail="Webhook secret not configured")
+
+    try:
+        parts = dict(item.split("=", 1) for item in sig.split(","))
+        timestamp = parts.get("t", "")
+        v1_sig = parts.get("v1", "")
+        signed_payload = f"{timestamp}.{body.decode()}"
+        expected = hmac.new(
+            settings.stripe_webhook_secret.encode(),
+            signed_payload.encode(),
+            hashlib.sha256,
+        ).hexdigest()
+        if not hmac.compare_digest(expected, v1_sig):
+            raise HTTPException(status_code=400, detail="Invalid signature")
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Webhook signature verification failed: {e}")
+        raise HTTPException(status_code=400, detail="Signature verification failed")
 
     import json
     event = json.loads(body)

@@ -7,8 +7,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import settings
 from app.database import get_db
+from app.dependencies.auth import get_current_user, verify_ownership
 from app.models.bank import PlaidToken
 from app.models.restaurant import Restaurant
+from app.models.user import User
 from app.services.twilio_sms import send_sms
 
 router = APIRouter(prefix="/api/plaid", tags=["plaid"])
@@ -27,9 +29,10 @@ async def _plaid_request(endpoint: str, payload: dict) -> dict:
 
 
 @router.post("/create-link-token")
-async def create_link_token(restaurant_id: int = Query(...)):
+async def create_link_token(user: User = Depends(get_current_user), restaurant_id: int = Query(None)):
+    rid = user.restaurant_id
     data = await _plaid_request("/link/token/create", {
-        "user": {"client_user_id": str(restaurant_id)},
+        "user": {"client_user_id": str(rid)},
         "client_name": "Expo",
         "products": ["transactions"],
         "country_codes": ["US"],
@@ -135,7 +138,7 @@ async function init() {{
         }})
       }});
       document.getElementById('status').innerHTML = '<b>Connected!</b> This window will close.';
-      if (window.opener) {{ window.opener.postMessage('plaid-connected', '*'); }}
+      if (window.opener) {{ window.opener.postMessage('plaid-connected', '{settings.frontend_url}'); }}
       setTimeout(() => window.close(), 1500);
     }},
     onExit: (err) => {{
@@ -151,7 +154,8 @@ init();
 
 
 @router.post("/send-link/{restaurant_id}")
-async def send_bank_link(restaurant_id: int, db: AsyncSession = Depends(get_db)):
+async def send_bank_link(restaurant_id: int, user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
+    verify_ownership(user, restaurant_id)
     result = await db.execute(
         select(Restaurant).where(Restaurant.id == restaurant_id)
     )

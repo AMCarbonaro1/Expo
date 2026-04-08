@@ -1,11 +1,16 @@
 import asyncio
+import base64
+import hashlib
+import hmac
 import logging
+from urllib.parse import urlencode
 
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import Response
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.config import settings
 from app.database import get_db, async_session
 from app.models.message import Message
 from app.models.restaurant import Restaurant
@@ -13,6 +18,18 @@ from app.services.conversation import handle_incoming_message
 from app.services.twilio_sms import normalize_phone, send_sms
 
 logger = logging.getLogger(__name__)
+
+
+def _verify_twilio_signature(url: str, params: dict, signature: str) -> bool:
+    """Verify Twilio webhook request signature."""
+    if not settings.twilio_auth_token:
+        return False
+    # Sort params and append to URL
+    data = url + "".join(f"{k}{params[k]}" for k in sorted(params.keys()))
+    expected = base64.b64encode(
+        hmac.new(settings.twilio_auth_token.encode(), data.encode(), hashlib.sha1).digest()
+    ).decode()
+    return hmac.compare_digest(expected, signature)
 
 router = APIRouter(prefix="/api/sms", tags=["sms"])
 
@@ -42,9 +59,20 @@ async def process_and_reply(
 @router.post("/webhook")
 async def twilio_webhook(
     request: Request,
+    # Twilio signature verification happens inside the handler
     db: AsyncSession = Depends(get_db),
 ):
     form = await request.form()
+
+    # Verify Twilio signature (skip in local dev)
+    if not settings.backend_url.startswith("http://localhost"):
+        twilio_sig = request.headers.get("X-Twilio-Signature", "")
+        webhook_url = f"{settings.backend_url}/api/sms/webhook"
+        form_params = {k: str(v) for k, v in form.items()}
+        if not _verify_twilio_signature(webhook_url, form_params, twilio_sig):
+            logger.warning("Rejected SMS webhook: invalid Twilio signature")
+            raise HTTPException(status_code=403, detail="Invalid signature")
+
     from_number = str(form.get("From", ""))
     body = str(form.get("Body", ""))
     num_media = int(form.get("NumMedia", 0))

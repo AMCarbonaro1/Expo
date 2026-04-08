@@ -8,8 +8,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import settings
 from app.database import get_db
+from app.dependencies.auth import get_current_user, sign_state, verify_state
 from app.models.restaurant import Restaurant
 from app.models.square_data import SquareToken
+from app.models.user import User
 
 router = APIRouter(prefix="/api/square", tags=["square"])
 
@@ -23,12 +25,17 @@ REDIRECT_URI = f"{settings.backend_url}/api/square/callback"
 
 
 @router.get("/auth-url")
-async def get_auth_url(restaurant_id: int = Query(...)):
+async def get_auth_url(
+    user: User = Depends(get_current_user),
+    restaurant_id: int = Query(None),
+):
+    # Use restaurant_id from JWT, ignore query param
+    rid = user.restaurant_id
     params = {
         "client_id": settings.square_application_id,
         "scope": " ".join(SCOPES),
         "session": "false",
-        "state": str(restaurant_id),
+        "state": sign_state(rid),
         "redirect_uri": REDIRECT_URI,
     }
     url = f"{settings.square_base_url}/oauth2/authorize?{urllib.parse.urlencode(params)}"
@@ -41,7 +48,7 @@ async def square_callback(
     state: str = Query(""),
     db: AsyncSession = Depends(get_db),
 ):
-    restaurant_id = int(state) if state else None
+    restaurant_id = verify_state(state)
 
     # Exchange code for tokens
     async with httpx.AsyncClient() as client:

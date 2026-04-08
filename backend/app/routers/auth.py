@@ -1,13 +1,17 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 import bcrypt as _bcrypt
 from jose import jwt
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr, field_validator
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import settings
+
+limiter = Limiter(key_func=get_remote_address)
 from app.database import get_db
 from app.dependencies.auth import get_current_user
 from app.models.invoice import Invoice
@@ -24,17 +28,24 @@ def create_token(user_id: int, restaurant_id: int) -> str:
     payload = {
         "sub": str(user_id),
         "restaurant_id": restaurant_id,
-        "exp": datetime.utcnow() + timedelta(minutes=settings.jwt_expire_minutes),
+        "exp": datetime.now(timezone.utc) + timedelta(minutes=settings.jwt_expire_minutes),
     }
     return jwt.encode(payload, settings.jwt_secret_key, algorithm=settings.jwt_algorithm)
 
 
 class SignupRequest(BaseModel):
-    email: str
+    email: EmailStr
     password: str
     owner_name: str
     restaurant_name: str
     phone: str
+
+    @field_validator("password")
+    @classmethod
+    def password_strength(cls, v: str) -> str:
+        if len(v) < 8:
+            raise ValueError("Password must be at least 8 characters")
+        return v
 
 
 class LoginRequest(BaseModel):
@@ -92,7 +103,8 @@ def _build_auth_response(token: str, user: User, restaurant: Restaurant) -> Auth
 
 
 @router.post("/signup", response_model=AuthResponse)
-async def signup(data: SignupRequest, db: AsyncSession = Depends(get_db)):
+@limiter.limit("3/hour")
+async def signup(request: Request, data: SignupRequest, db: AsyncSession = Depends(get_db)):
     # Check if email exists
     result = await db.execute(select(User).where(User.email == data.email))
     if result.scalar_one_or_none():
@@ -124,7 +136,8 @@ async def signup(data: SignupRequest, db: AsyncSession = Depends(get_db)):
 
 
 @router.post("/login", response_model=AuthResponse)
-async def login(data: LoginRequest, db: AsyncSession = Depends(get_db)):
+@limiter.limit("5/minute")
+async def login(request: Request, data: LoginRequest, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(User).where(User.email == data.email))
     user = result.scalar_one_or_none()
 

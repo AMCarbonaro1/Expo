@@ -1,7 +1,12 @@
+import logging
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
 
 from app.config import settings
 from app.database import init_db
@@ -16,20 +21,29 @@ from app.routers.integrations import router as integrations_router
 from app.routers.plaid_link import router as plaid_link_router
 from app.scheduler import start_scheduler, shutdown_scheduler
 
+logger = logging.getLogger(__name__)
+
+# Rate limiter
+limiter = Limiter(key_func=get_remote_address)
+
 
 async def _seed_admin():
     from sqlalchemy import select
     from app.database import async_session
     from app.models.user import User
+    admin_email = settings.admin_email
+    if not admin_email:
+        return
     try:
         async with async_session() as db:
-            result = await db.execute(select(User).where(User.email == "amcarbonaro@gmail.com"))
+            result = await db.execute(select(User).where(User.email == admin_email))
             user = result.scalar_one_or_none()
             if user and not user.is_admin:
                 user.is_admin = True
                 await db.commit()
-    except Exception:
-        pass
+                logger.info(f"Admin flag set for {admin_email}")
+    except Exception as e:
+        logger.error(f"Admin seed failed: {e}")
 
 
 @asynccontextmanager
@@ -42,6 +56,8 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="Expo", version="0.1.0", lifespan=lifespan)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 app.add_middleware(
     CORSMiddleware,
@@ -51,8 +67,8 @@ app.add_middleware(
         "https://expo-rose-eight.vercel.app",
     ],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"],
 )
 
 

@@ -105,6 +105,9 @@ class Settings(BaseSettings):
     hungerrush_client_id: str = ""
     hungerrush_client_secret: str = ""
 
+    # Admin
+    admin_email: str = ""
+
     # JWT
     jwt_secret_key: str = ""
     jwt_algorithm: str = "HS256"

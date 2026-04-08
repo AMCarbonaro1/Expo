@@ -5,6 +5,8 @@ from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
+from app.dependencies.auth import get_current_user, verify_ownership
+from app.models.user import User
 from app.services.square_sync import sync_orders, sync_labor, compute_daily_summary
 
 router = APIRouter(prefix="/api/square", tags=["sync"])
@@ -36,8 +38,10 @@ class SummaryResponse(BaseModel):
 async def run_sync(
     restaurant_id: int,
     target_date: date = Query(default_factory=date.today),
+    user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
+    verify_ownership(user, restaurant_id)
     orders_count = await sync_orders(db, restaurant_id, target_date)
     shifts_count = await sync_labor(db, restaurant_id, target_date)
     await compute_daily_summary(db, restaurant_id, target_date)
@@ -48,7 +52,9 @@ async def run_sync(
 async def get_summary(
     restaurant_id: int,
     target_date: date = Query(alias="date", default_factory=date.today),
+    user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
+    verify_ownership(user, restaurant_id)
     summary = await compute_daily_summary(db, restaurant_id, target_date)
     return summary
