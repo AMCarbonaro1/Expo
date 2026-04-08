@@ -134,13 +134,20 @@ export default function GetStartedPage() {
         </div>
       </section>
 
-      {/* ═══ 3. AUTHORITY STAT ═══ */}
-      <section className="bg-[#e8e6dc] border-b border-[#d4d2c9] py-10">
-        <div className="max-w-3xl mx-auto px-6 text-center">
-          <blockquote className="text-lg sm:text-xl text-[#30302e] italic font-serif">
-            &quot;Restaurants that track their numbers daily are <strong className="text-[#d97757] not-italic">3x more likely</strong> to survive their first 5 years.&quot;
+      {/* ═══ 3. AUTHORITY QUOTE ═══ */}
+      <section className="relative bg-[#141413] py-14 overflow-hidden">
+        {/* Decorative quote marks */}
+        <div className="absolute top-4 left-8 text-[#d97757]/10 text-[200px] font-serif leading-none select-none">&ldquo;</div>
+        <div className="absolute bottom-0 right-8 text-[#d97757]/10 text-[200px] font-serif leading-none select-none">&rdquo;</div>
+        <div className="relative max-w-4xl mx-auto px-6 text-center">
+          <blockquote className="text-2xl sm:text-3xl lg:text-4xl text-white font-serif italic leading-relaxed">
+            &quot;The difference between a restaurant that makes it and one that doesn&apos;t? <strong className="text-[#d97757] not-italic">The owner who knows what&apos;s happening before it becomes a problem.</strong>&quot;
           </blockquote>
-          <p className="text-[#87867f] text-sm mt-2">— National Restaurant Association</p>
+          <div className="mt-6 flex items-center justify-center gap-3">
+            <div className="w-10 h-0.5 bg-[#d97757]" />
+            <p className="text-[#d97757] font-bold text-lg tracking-wide">GORDON RAMSAY</p>
+            <div className="w-10 h-0.5 bg-[#d97757]" />
+          </div>
         </div>
       </section>
 
