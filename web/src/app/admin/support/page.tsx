@@ -22,6 +22,7 @@ type Msg = { direction: string; body: string; created_at: string };
 export default function SupportPage() {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [filter, setFilter] = useState<"open" | "closed" | "all">("open");
+  const [search, setSearch] = useState("");
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [ticketNotes, setTicketNotes] = useState<Record<number, string>>({});
   const [ticketMessages, setTicketMessages] = useState<Record<number, Msg[]>>({});
@@ -81,9 +82,22 @@ export default function SupportPage() {
     setTimeout(() => setSaveSuccess(null), 2000);
   };
 
+  const ticketNumber = (id: number) => `#EXP-${String(id).padStart(4, "0")}`;
+
   const filtered = tickets.filter((t) => {
-    if (filter === "open") return t.status === "open";
-    if (filter === "closed") return t.status === "closed";
+    if (filter === "open" && t.status !== "open") return false;
+    if (filter === "closed" && t.status !== "closed") return false;
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      return (
+        ticketNumber(t.id).toLowerCase().includes(q) ||
+        t.restaurant_name.toLowerCase().includes(q) ||
+        t.owner_name.toLowerCase().includes(q) ||
+        t.phone.includes(q) ||
+        t.message.toLowerCase().includes(q) ||
+        (t.admin_notes || "").toLowerCase().includes(q)
+      );
+    }
     return true;
   });
 
@@ -116,7 +130,30 @@ export default function SupportPage() {
         </div>
       </div>
 
-      {/* Filter tabs */}
+      {/* Search + Filter */}
+      <div className="relative">
+        <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#87867f]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search by ticket #, name, phone, or notes..."
+          className="w-full bg-white border border-[#d4d2c9] rounded-lg pl-10 pr-4 py-2.5 text-sm text-[#141413] focus:outline-none focus:border-[#d97757]"
+        />
+        {search && (
+          <button
+            onClick={() => setSearch("")}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-[#87867f] hover:text-[#141413]"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        )}
+      </div>
+
       <div className="flex gap-1 border-b border-[#d4d2c9]">
         {([
           { key: "open" as const, label: "Open", count: openCount },
@@ -164,6 +201,7 @@ export default function SupportPage() {
                 >
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-xs font-mono font-bold text-[#87867f]">{ticketNumber(t.id)}</span>
                       <span
                         className={`text-xs font-bold px-2 py-0.5 rounded-full ${
                           t.status === "open"
@@ -233,11 +271,10 @@ export default function SupportPage() {
                       </div>
                     </div>
 
-                    {t.closed_at && (
-                      <p className="text-xs text-[#87867f]">
-                        Closed on {new Date(t.closed_at).toLocaleString()}
-                      </p>
-                    )}
+                    <p className="text-xs text-[#87867f]">
+                      Ticket {ticketNumber(t.id)} · Opened {new Date(t.created_at).toLocaleString()}
+                      {t.closed_at && ` · Closed ${new Date(t.closed_at).toLocaleString()}`}
+                    </p>
 
                     {/* Admin notes */}
                     <div className="space-y-2">
