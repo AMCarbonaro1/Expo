@@ -188,31 +188,85 @@ export default function GetStartedPage() {
       </section>
 
       {/* ═══ 6. PERSONAL LETTER ═══ */}
-      <section className="bg-white border-y border-[#d4d2c9] py-16">
-        <div className="max-w-3xl mx-auto px-6">
-          <p className="text-sm text-[#87867f] mb-1">From: <strong className="text-[#141413]">Anthony Carbonaro</strong></p>
-          <p className="text-sm text-[#87867f] mb-8">Detroit, Michigan</p>
-          <div className="space-y-4 text-[#30302e] leading-relaxed">
-            <p>Dear fellow restaurant owner,</p>
-            <p>I&apos;m going to be honest with you.</p>
-            <p>Running a restaurant is one of the hardest things a person can do. You&apos;re the cook, the manager, the accountant, the HR department, the janitor, and the therapist — all in one.</p>
-            <p>And after a 14-hour day on your feet, the <strong>LAST</strong> thing you want to do is sit down at a computer and look at spreadsheets.</p>
-            <p>I get it. I grew up around this industry. I watched owners pour their entire lives into their restaurants and still not know — <em>really know</em> — if they were making money.</p>
-            <p>Not because they were bad at business. Because the tools available to them were built for people who sit at desks. Not for people who are elbow-deep in a fryer at 2pm on a Tuesday.</p>
-            <p>So I built something different.</p>
-            <p className="text-2xl font-bold font-serif text-[#141413]">I built Expo.</p>
-            <p>It&apos;s not an app. It&apos;s not a dashboard. It&apos;s not software you have to learn.</p>
-            <p>It&apos;s a phone number you text. And it texts you back with real answers about your business.</p>
-            <div className="bg-[#0f1923] rounded-xl p-5 space-y-3 text-sm text-white/80 my-6">
-              <p><span className="text-[#d97757] font-medium">You:</span> &quot;How did we do today?&quot;</p>
-              <p><span className="text-white/50 font-medium">Expo:</span> <em>Yesterday&apos;s sales, labor, and top sellers — in 10 seconds.</em></p>
-              <p><span className="text-[#d97757] font-medium">You:</span> &quot;Did Lauren make the drop?&quot;</p>
-              <p><span className="text-white/50 font-medium">Expo:</span> <em>Confirmed. $2,910 deposited at 9:47pm.</em></p>
-              <p><span className="text-[#d97757] font-medium">You:</span> &quot;Am I making money?&quot;</p>
-              <p><span className="text-white/50 font-medium">Expo:</span> <em>$18K revenue, $5.4K food, $5K labor. Netting ~$2.4K.</em></p>
+      <section className="bg-[#e8e6dc] py-10 px-6">
+        <div className="max-w-3xl mx-auto bg-[#fffdf8] rounded-2xl shadow-xl border border-[#d4d2c9] p-8 sm:p-12 relative">
+          {/* Decorative corner fold */}
+          <div className="absolute top-0 right-0 w-12 h-12 bg-[#e8e6dc] rounded-bl-2xl" />
+          <div className="absolute top-0 right-0 w-12 h-12 border-b border-l border-[#d4d2c9] rounded-bl-2xl" />
+
+          <div className="flex items-center gap-4 mb-8 pb-6 border-b border-[#d4d2c9]">
+            <div className="w-14 h-14 rounded-full bg-[#d97757] flex items-center justify-center text-white font-bold text-xl">A</div>
+            <div>
+              <p className="font-bold text-[#141413] text-lg">Anthony Carbonaro</p>
+              <p className="text-sm text-[#87867f]">Founder, Expo · Detroit, Michigan</p>
             </div>
-            <p>That&apos;s it. You text it like you&apos;d text your manager. Except this one actually has the numbers.</p>
-            <p className="font-medium">— Anthony</p>
+          </div>
+
+          <div className="space-y-5 text-[#30302e] leading-relaxed text-[17px]">
+            <p className="italic text-[#87867f]">Dear fellow restaurant owner,</p>
+
+            <p>I&apos;m going to be <u className="decoration-[#d97757] decoration-2 underline-offset-4">completely honest</u> with you.</p>
+
+            <p>Running a restaurant is one of the <strong>hardest things</strong> a person can do. You&apos;re the cook, the manager, the accountant, the HR department, the janitor, and the therapist — <em>all in one.</em></p>
+
+            <p>And after a 14-hour day on your feet, the <strong className="text-[#c0392b] text-xl">LAST</strong> thing you want to do is sit down at a computer and look at spreadsheets.</p>
+
+            <p>I get it.</p>
+
+            <p>I grew up around this industry. I watched owners pour their <u className="decoration-[#d97757] decoration-2 underline-offset-4">entire lives</u> into their restaurants and still not know — <em className="text-[#d97757]">really know</em> — if they were making money.</p>
+
+            <p>Not because they were bad at business.</p>
+
+            <p>Because the tools available to them were <strong>built for people who sit at desks.</strong> Not for people who are elbow-deep in a fryer at 2pm on a Tuesday.</p>
+
+            <div className="border-l-4 border-[#d97757] pl-6 py-2 my-8 bg-[#d97757]/5 rounded-r-lg">
+              <p className="text-xl font-bold text-[#141413]">So I built something different.</p>
+              <p className="text-2xl font-bold font-serif text-[#d97757] mt-1">I built Expo.</p>
+            </div>
+
+            <p>It&apos;s <s className="text-[#87867f]">not an app</s>. It&apos;s <s className="text-[#87867f]">not a dashboard</s>. It&apos;s <s className="text-[#87867f]">not software you have to learn</s>.</p>
+
+            <p className="text-lg">It&apos;s a <u className="decoration-[#d97757] decoration-2 underline-offset-4 font-bold">phone number you text</u>. And it texts you back with <strong className="text-[#d97757]">real answers</strong> about your business.</p>
+
+            <div className="bg-[#0f1923] rounded-xl p-6 space-y-4 text-base text-white/80 my-8 shadow-lg">
+              <div className="flex gap-3">
+                <span className="text-[#d97757] font-bold text-sm w-10 flex-shrink-0">YOU:</span>
+                <span>&quot;How did we do today?&quot;</span>
+              </div>
+              <div className="flex gap-3">
+                <span className="text-[#5a9a6e] font-bold text-sm w-10 flex-shrink-0">EXPO:</span>
+                <span className="italic text-white/60">&quot;$3,847 across 187 orders. 8% above your Tuesday average. Labor at 28.3%.&quot;</span>
+              </div>
+              <div className="border-t border-white/10 pt-4 flex gap-3">
+                <span className="text-[#d97757] font-bold text-sm w-10 flex-shrink-0">YOU:</span>
+                <span>&quot;Did Lauren make the drop?&quot;</span>
+              </div>
+              <div className="flex gap-3">
+                <span className="text-[#5a9a6e] font-bold text-sm w-10 flex-shrink-0">EXPO:</span>
+                <span className="italic text-white/60">&quot;Yes. $2,910 deposited at 9:47pm. Everything matches.&quot;</span>
+              </div>
+              <div className="border-t border-white/10 pt-4 flex gap-3">
+                <span className="text-[#d97757] font-bold text-sm w-10 flex-shrink-0">YOU:</span>
+                <span>&quot;Am I making money?&quot;</span>
+              </div>
+              <div className="flex gap-3">
+                <span className="text-[#5a9a6e] font-bold text-sm w-10 flex-shrink-0">EXPO:</span>
+                <span className="italic text-white/60">&quot;$18K revenue, $5.4K food, $5K labor, $4.2K rent. Netting ~$2.4K. Raising your avg ticket by $2 would add $3K/month.&quot;</span>
+              </div>
+            </div>
+
+            <p>That&apos;s it. That&apos;s the <em>whole thing.</em></p>
+
+            <p>You text it like you&apos;d text your manager. Except this one <u className="decoration-[#d97757] decoration-2 underline-offset-4"><strong>actually has the numbers.</strong></u></p>
+
+            <p>If that sounds like something you&apos;ve been waiting for...</p>
+
+            <p className="text-xl font-bold text-[#d97757]">Keep reading. ↓</p>
+
+            <div className="pt-4 border-t border-[#d4d2c9] mt-8">
+              <p className="font-bold text-[#141413] text-lg">— Anthony Carbonaro</p>
+              <p className="text-sm text-[#87867f]">Founder, Expo</p>
+            </div>
           </div>
         </div>
       </section>
