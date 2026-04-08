@@ -564,7 +564,7 @@ export default function GetStartedPage() {
         <div className="max-w-3xl mx-auto px-6">
           <div className="bg-[#0f1923] text-white rounded-xl p-8 space-y-4">
             <p>
-              <strong className="text-[#d97757]">P.S.</strong> In case you scrolled straight to the bottom (I would too), here&apos;s the deal:
+              <strong className="text-[#d97757]">P.S.</strong>{" "}In case you scrolled straight to the bottom (I would too), here&apos;s the deal:
             </p>
             <p className="text-white/70">
               Expo connects to your Square POS and bank, then lets you text it about anything — mid-rush, from the kitchen, from your couch at midnight. What&apos;s selling, who&apos;s clocked in, did the deposit go through, should you send someone home. Plus morning recaps, invoice scanning, and alerts when something needs your attention.
