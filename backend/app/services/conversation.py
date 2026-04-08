@@ -15,6 +15,7 @@ from app.services.context_builder import (
     get_recent_summaries,
     get_weekly_comparison,
 )
+from app.services.square_realtime import get_realtime_snapshot
 from app.services.first_sync import maybe_first_sync
 from app.services.invoice_processor import (
     confirm_invoice,
@@ -115,6 +116,9 @@ async def handle_incoming_message(
     invoices = await get_invoice_history(db, restaurant_id)
     weekly = await get_weekly_comparison(db, restaurant_id)
 
+    # Fetch real-time data from Square (live POS data)
+    realtime = await get_realtime_snapshot(db, restaurant_id)
+
     # Fetch recent alerts
     alert_result = await db.execute(
         select(Alert).where(Alert.restaurant_id == restaurant_id)
@@ -126,6 +130,7 @@ async def handle_incoming_message(
         restaurant, summaries, alerts=recent_alerts,
         food_cost=food_cost, bank_summary=bank,
         invoice_history=invoices, weekly_comparison=weekly,
+        realtime=realtime,
     )
 
     recent_messages = await get_recent_messages(db, restaurant_id)

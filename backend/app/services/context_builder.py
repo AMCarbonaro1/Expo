@@ -230,6 +230,7 @@ def build_system_prompt(
     bank_summary: dict | None = None,
     invoice_history: list[dict] | None = None,
     weekly_comparison: dict | None = None,
+    realtime: dict | None = None,
 ) -> str:
     prompt = f"""You are Expo, an SMS-based AI business partner for restaurant owners. You communicate via text message.
 
@@ -265,6 +266,46 @@ CURRENT SETTINGS:
             )
     else:
         prompt += "\nNo daily summaries available yet — data is still being collected.\n"
+
+    if realtime:
+        prompt += f"\n🔴 LIVE RIGHT NOW (as of {realtime.get('as_of', 'now')}):\n"
+        today = realtime.get("today", {})
+        if today:
+            prompt += (
+                f"- Sales so far: ${today.get('total_sales', 0):,.0f} across {today.get('order_count', 0)} orders (${today.get('avg_ticket', 0):.2f} avg ticket)\n"
+                f"- Open orders right now: {today.get('open_orders', 0)}\n"
+            )
+            if today.get("busiest_hour") is not None:
+                h = today["busiest_hour"]
+                ampm = "am" if h < 12 else "pm"
+                display_h = h if h <= 12 else h - 12
+                if display_h == 0: display_h = 12
+                prompt += f"- Busiest hour so far: {display_h}{ampm}\n"
+
+        labor = realtime.get("labor", {})
+        if labor:
+            prompt += (
+                f"- Staff clocked in: {labor.get('currently_clocked_in', 0)} people\n"
+                f"- Labor cost today: ${labor.get('total_labor_cost_today', 0):,.0f} ({labor.get('labor_percentage', 0):.1f}% of sales)\n"
+            )
+            for staff in labor.get("staff_on_clock", [])[:5]:
+                prompt += f"  - {staff.get('job_title', 'Staff')} (clocked in {staff.get('hours_so_far', 0)}hrs, ${staff.get('cost_so_far', 0):.0f} cost)\n"
+
+        top_items = realtime.get("top_items", [])
+        if top_items:
+            prompt += "- Top sellers today:\n"
+            for item in top_items[:5]:
+                prompt += f"  - {item['name']}: {item['qty']} sold (${item['revenue']:,.0f})\n"
+
+        payments = realtime.get("payments", {})
+        if payments:
+            prompt += f"- Payment mix: ${payments.get('card', 0):,.0f} card, ${payments.get('cash', 0):,.0f} cash, ${payments.get('total_tips', 0):,.0f} tips\n"
+
+        server_perf = realtime.get("server_performance", [])
+        if server_perf:
+            prompt += "- Server performance today:\n"
+            for s in server_perf[:5]:
+                prompt += f"  - Team member {s['team_member_id'][:8]}...: ${s['sales']:,.0f} sales, ${s['tips']:,.0f} tips, {s['transactions']} transactions\n"
 
     if weekly_comparison:
         wc = weekly_comparison
@@ -320,9 +361,16 @@ WEEK OVER WEEK:
     prompt += """
 GUIDELINES FOR CONVERSATIONS:
 
-Data Questions:
-- When asked about sales, labor, food cost: reference specific numbers from the data above
-- When asked "how did we do": give yesterday's sales, compare to the same weekday average from the summaries
+Real-Time (Mid-Shift) Questions — USE THE "LIVE RIGHT NOW" DATA ABOVE:
+- When asked "how are we doing" / "how's today" / "where are we at": use the LIVE data, not yesterday's
+- When asked about specific items ("how many gyros sold"): check top_items from live data
+- When asked "who's clocked in" / "who's working": list the staff from live labor data
+- When asked "should I send someone home" / "should I cut someone": compare current sales pace vs staff cost from live data
+- When asked about current sales, orders, or pace: always use LIVE data first, then compare to historical averages
+- When asked about payments or tips today: reference live payment breakdown
+
+Historical Data Questions:
+- When asked "how did we do yesterday" or about past days: use the daily summaries
 - When asked about trends: look at the daily summaries and identify patterns (up/down/flat, best/worst days)
 - When asked to compare periods: use the week-over-week data and daily summaries
 - When asked about a specific vendor or product: reference the invoice history
