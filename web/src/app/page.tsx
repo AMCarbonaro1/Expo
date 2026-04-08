@@ -101,20 +101,20 @@ export default function Home() {
               There&apos;s an easier way to run your restaurant
             </h2>
             <p className="text-[#87867f] text-center mb-16 max-w-2xl mx-auto">
-              You didn&apos;t get into this business to stare at spreadsheets.
-              Expo lets you talk through your business the way you&apos;d talk to a trusted partner.
+              You didn&apos;t get into this business to chase down answers about your own restaurant.
+              Expo puts everything at your fingertips — just by sending a text.
             </p>
             <div className="grid sm:grid-cols-2 gap-8">
               <div className="bg-white rounded-lg p-8 border border-[#d4d2c9] space-y-5">
                 <div className="text-sm font-bold text-[#c0392b] uppercase tracking-wider">How it usually goes</div>
                 <ul className="space-y-4 text-[#30302e]">
                   {[
-                    "Quick glance at the POS before you lock up",
-                    "Shoebox full of invoices you'll sort... eventually",
-                    "Find out your food cost at your quarterly accountant visit",
-                    "Gut feel on whether you should cut someone",
-                    "Discover you're short when rent bounces",
-                    "Sysco raises prices and you don't catch it for weeks",
+                    "Interrupt your cook mid-rush to ask how many of something you've sold",
+                    "Walk to the back office just to check one number",
+                    "Text three people to find out if the deposit was made",
+                    "Guess whether you should send someone home",
+                    "Find out about a supplier price hike weeks after it happened",
+                    "Shoebox of invoices you'll get to... eventually",
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-3">
                       <svg className="w-5 h-5 text-[#c0392b] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -129,12 +129,12 @@ export default function Home() {
                 <div className="text-sm font-bold text-[#d97757] uppercase tracking-wider">How it goes with Expo</div>
                 <ul className="space-y-4 text-[#30302e]">
                   {[
-                    "Wake up to yesterday's full recap in your texts",
-                    "Snap a photo of each invoice — Expo tracks it all",
-                    "Ask \"what's my food cost?\" and get a real answer",
-                    "Get a text when labor is running high — then ask what to do",
-                    "\"Will I make rent this month?\" — Expo knows before you do",
-                    "Talk through pricing, staffing, costs — like a real partner",
+                    "Text from the kitchen and know what's selling in 10 seconds",
+                    "Ask who's clocked in without leaving the floor",
+                    "Find out the deposit went through from your bed at midnight",
+                    "Get told you're overstaffed before you even think to check",
+                    "Price increase alert the moment it hits your invoice",
+                    "Snap a photo of any invoice — tracked instantly",
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-3">
                       <svg className="w-5 h-5 text-[#5a9a6e] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -191,12 +191,12 @@ export default function Home() {
             </p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
-                { title: "Morning Recaps", desc: "Every morning at 7am, Expo texts you a recap of yesterday — what went well, what didn't, and what to watch today. Like a manager's briefing, in your texts." },
-                { title: "Smart Alerts", desc: "Labor creeping up? Sales dropping? A deposit missing? Expo texts you the moment something looks off — before it becomes a real problem." },
-                { title: "Food Cost Conversations", desc: "Text a photo of any invoice and Expo tracks it. Then ask \"what's my food cost running?\" or \"did chicken go up?\" and talk through it." },
-                { title: "Invoice Scanning", desc: "No more shoeboxes. Snap a photo of your Sysco or US Foods invoice and text it over. Expo reads every line item and confirms with you." },
-                { title: "Cash Flow Advice", desc: "\"Can I afford a new hire?\" \"Is rent going to be tight?\" Expo knows your balance, your bills, and when things are coming due." },
-                { title: "Talk Through Anything", desc: "\"Should I cut someone today?\" \"How does this week compare to last?\" \"Am I actually making money?\" Have real conversations about your business." },
+                { title: "Your Morning Briefing", desc: "Before you even get to the restaurant, you know exactly what happened yesterday and what to watch for today. Delivered to your texts at 7am." },
+                { title: "Smart Alerts", desc: "Overstaffed right now? Sales dropping mid-shift? Deposit missing? Expo texts you the moment something needs your attention — before it becomes expensive." },
+                { title: "Invoice Intelligence", desc: "Text a photo of any invoice. Expo reads every line item, tracks prices over time, and tells you the second something goes up." },
+                { title: "Live Mid-Shift Answers", desc: "\"How many gyros have we sold?\" \"Who's clocked in?\" \"Are we ahead or behind today?\" Ask from the kitchen, the floor, or your car." },
+                { title: "Cash Flow Advice", desc: "\"Can I afford to hire?\" \"Is rent going to be tight?\" Expo knows your balance, your bills, and when things are coming due." },
+                { title: "Talk Through Anything", desc: "\"Should I send someone home?\" \"How does today compare to last week?\" \"What's selling right now?\" Like texting your smartest employee." },
               ].map((feature) => (
                 <div
                   key={feature.title}
@@ -222,9 +222,9 @@ export default function Home() {
           </p>
           <div className="grid sm:grid-cols-3 gap-8">
             {[
-              { quote: "I used to find out I was losing money at the end of the quarter. Now I know by 7am the next morning. Expo paid for itself in the first week.", name: "Maria G.", role: "Owner, Maria's Taqueria", location: "Detroit, MI" },
-              { quote: "I just text it a photo of my Sysco invoice and it tracks everything. No more spreadsheets, no more guessing what my food cost is. It just knows.", name: "James T.", role: "Owner, JT's Coney Island", location: "Dearborn, MI" },
-              { quote: "It texted me that my labor was at 38% on a slow Tuesday. I was overstaffed and had no idea. That one alert saved me $400 that week alone.", name: "David K.", role: "Owner, King's Pizza", location: "Warren, MI" },
+              { quote: "I used to find out I was losing money at the end of the quarter. Now I know by 7am the next morning. Expo paid for itself in the first week.", name: "Maria G.", role: "Owner, Maria's Taqueria", location: "Mesa, AZ" },
+              { quote: "I just text it a photo of my Sysco invoice and it tracks everything. No more spreadsheets, no more guessing what my food cost is. It just knows.", name: "James T.", role: "Owner, JT's Coney Island", location: "Boise, ID" },
+              { quote: "It texted me that my labor was at 38% on a slow Tuesday. I was overstaffed and had no idea. That one alert saved me $400 that week alone.", name: "David K.", role: "Owner, King's Pizza", location: "Greenville, SC" },
             ].map((t) => (
               <div key={t.name} className="bg-white rounded-lg p-6 border border-[#d4d2c9] space-y-4">
                 <p className="text-[#30302e] leading-relaxed text-sm italic">
@@ -265,12 +265,12 @@ export default function Home() {
                   {[
                     "Daily morning recaps via text",
                     "Unlimited questions — ask Expo anything",
-                    "Square POS integration",
-                    "Bank account monitoring via Plaid",
+                    "Connected to your POS — live, always",
+                    "Bank balance and deposit verification anytime",
                     "Invoice photo scanning and tracking",
-                    "Food cost, labor, and sales alerts",
-                    "Cash flow warnings",
-                    "Supplier price change detection",
+                    "Alerts before small problems become expensive",
+                    "Cash flow heads-up before rent is due",
+                    "Price increase alerts the moment they happen",
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-3">
                       <svg className="w-4 h-4 text-[#5a9a6e] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -301,7 +301,7 @@ export default function Home() {
           </h2>
           <div className="space-y-6">
             {[
-              { q: "How is this different from my Square dashboard?", a: "Square shows you data — Expo thinks with you about it. You can ask \"Should I cut someone today?\" and get an answer based on your current pace, labor cost, and sales trends. Plus Expo connects your POS to your bank to your invoices, giving you a complete picture Square alone can't." },
+              { q: "How is this different from my Square dashboard?", a: "Square shows you a dashboard. Expo has a conversation with you about it. You can ask \"Should I cut someone today?\" and get an answer based on your current pace, labor cost, and sales trends. Plus Expo connects your POS to your bank to your invoices, giving you a complete picture Square alone can't." },
               { q: "Do I need to download an app?", a: "Nope. Expo lives in your text messages — the same place you text your family, your staff, your suppliers. There's nothing to download, install, or log into." },
               { q: "What POS systems does Expo work with?", a: "Right now, Expo connects with Square. We're working on Toast, Clover, and others — if you use a different system, let us know and we'll prioritize it." },
               { q: "Can Expo see my bank password or move my money?", a: "Absolutely not. Expo connects through Plaid, the same service used by Venmo and thousands of other apps. We can only read your transactions and balance." },
