@@ -108,7 +108,7 @@ export default function GetStartedPage() {
           </div>
 
           {/* Subtitle — below video */}
-          <p className="text-center text-white/60 max-w-2xl mx-auto mt-10 mb-4">
+          <p className="text-center text-lg sm:text-xl text-white/80 font-serif max-w-2xl mx-auto mt-10 mb-4 leading-relaxed">
             Expo connects to your POS and bank account — then you just <strong className="text-white">text it</strong> from wherever you are. Mid-rush, on the floor, from your kid&apos;s game. Orders, sales, deposits, staffing — any question, any time.
           </p>
 
