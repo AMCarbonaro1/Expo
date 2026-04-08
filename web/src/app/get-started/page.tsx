@@ -375,10 +375,10 @@ export default function GetStartedPage() {
           <h2 className="text-2xl sm:text-3xl font-bold font-serif text-center mb-10">Don&apos;t take our word for it.</h2>
           <div className="grid sm:grid-cols-2 gap-6">
             {[
-              { name: "Maria G.", role: "Maria's Taqueria · Detroit", quote: "I used to find out I was losing money at the end of the quarter. Now I know by 7am the next morning. Expo paid for itself in the first week." },
-              { name: "James T.", role: "JT's Coney Island · Dearborn", quote: "I just text it a photo of my Sysco invoice and it tracks everything. No more spreadsheets. It just knows." },
-              { name: "David K.", role: "King's Pizza · Warren", quote: "It texted me that my labor was at 38% on a slow Tuesday. I was overstaffed and had no idea. That one alert saved me $400." },
-              { name: "Sarah M.", role: "Sarah's Diner · Southfield", quote: "I texted 'am I making money?' at 11pm from my couch. For the first time in 10 years, I actually knew where I stood." },
+              { name: "Maria G.", role: "Maria's Taqueria · Mesa, AZ", quote: "I used to find out I was losing money at the end of the quarter. Now I know by 7am the next morning. Expo paid for itself in the first week." },
+              { name: "James T.", role: "JT's Grill · Boise, ID", quote: "I just text it a photo of my Sysco invoice and it tracks everything. No more spreadsheets. It just knows." },
+              { name: "David K.", role: "King's Pizza · Greenville, SC", quote: "It texted me that my labor was at 38% on a slow Tuesday. I was overstaffed and had no idea. That one alert saved me $400." },
+              { name: "Sarah M.", role: "Sarah's Diner · Bend, OR", quote: "I texted 'am I making money?' at 11pm from my couch. For the first time in 10 years, I actually knew where I stood." },
             ].map((t) => (
               <div key={t.name} className="bg-white border border-[#d4d2c9] rounded-xl p-6 space-y-3 shadow-sm">
                 <div className="flex gap-0.5">{[...Array(5)].map((_, i) => <svg key={i} className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>)}</div>
@@ -453,10 +453,10 @@ export default function GetStartedPage() {
           <h2 className="text-2xl sm:text-3xl font-bold font-serif text-center mb-10">More owners. More results.</h2>
           <div className="grid sm:grid-cols-2 gap-6">
             {[
-              { name: "Mike R.", role: "Mike's Gyro House · Hamtramck", quote: "I texted Expo at 2am asking if my closer made the deposit. It confirmed a $2,910 deposit hit my Chase account at 9:47pm. I went back to sleep." },
-              { name: "Lisa P.", role: "Lisa's Tacos · Ferndale", quote: "I took a photo of my US Foods invoice. Ten seconds later, Expo told me chicken breast went up 8% and gyro meat went up 19%. I adjusted my menu prices that day." },
-              { name: "Tony V.", role: "Tony's Family Restaurant · Livonia", quote: "My morning recap text is the first thing I read every day. It's like having a CFO for $49 a month." },
-              { name: "Carmen D.", role: "Carmen's Kitchen · Westland", quote: "I asked 'can I afford to hire someone?' and it did the math. No accountant has ever given me an answer that fast." },
+              { name: "Mike R.", role: "Mike's Gyro House · Provo, UT", quote: "I texted Expo at 2am asking if my closer made the deposit. It confirmed a $2,910 deposit hit my Chase account at 9:47pm. I went back to sleep." },
+              { name: "Lisa P.", role: "Lisa's Tacos · Fort Collins, CO", quote: "I took a photo of my US Foods invoice. Ten seconds later, Expo told me chicken breast went up 8% and gyro meat went up 19%. I adjusted my menu prices that day." },
+              { name: "Tony V.", role: "Tony's Family Restaurant · Savannah, GA", quote: "My morning recap text is the first thing I read every day. It's like having a CFO for $49 a month." },
+              { name: "Carmen D.", role: "Carmen's Kitchen · Chattanooga, TN", quote: "I asked 'can I afford to hire someone?' and it did the math. No accountant has ever given me an answer that fast." },
             ].map((t) => (
               <div key={t.name} className="bg-[#f5f4f0] border border-[#d4d2c9] rounded-xl p-6 space-y-3">
                 <div className="flex gap-0.5">{[...Array(5)].map((_, i) => <svg key={i} className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>)}</div>
