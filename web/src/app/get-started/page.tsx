@@ -152,19 +152,21 @@ export default function GetStartedPage() {
         </div>
       </div>
 
-      {/* ═══ 3. AUTHORITY QUOTE ═══ */}
-      <section className="relative bg-[#141413] pt-20 pb-14 overflow-hidden">
-        {/* Decorative quote marks */}
-        <div className="absolute top-4 left-8 text-[#d97757]/10 text-[200px] font-serif leading-none select-none">&ldquo;</div>
-        <div className="absolute bottom-0 right-8 text-[#d97757]/10 text-[200px] font-serif leading-none select-none">&rdquo;</div>
-        <div className="relative max-w-4xl mx-auto px-6 text-center">
-          <blockquote className="text-2xl sm:text-3xl lg:text-4xl text-white font-serif italic leading-relaxed">
-            &quot;The difference between a restaurant that makes it and one that doesn&apos;t? <strong className="text-[#d97757] not-italic">The owner who knows what&apos;s happening before it becomes a problem.</strong>&quot;
-          </blockquote>
-          <div className="mt-6 flex items-center justify-center gap-3">
-            <div className="w-10 h-0.5 bg-[#d97757]" />
-            <p className="text-[#d97757] font-bold text-lg tracking-wide">GORDON RAMSAY</p>
-            <div className="w-10 h-0.5 bg-[#d97757]" />
+      {/* ═══ 3. AUTHORITY QUOTE — floating dark card ═══ */}
+      <section className="bg-[#e8e6dc] pt-14 pb-8 px-6">
+        <div className="relative max-w-4xl mx-auto bg-[#141413] rounded-2xl shadow-2xl py-14 px-8 sm:px-14 overflow-hidden">
+          {/* Decorative quote marks */}
+          <div className="absolute top-2 left-6 text-[#d97757]/10 text-[180px] font-serif leading-none select-none">&ldquo;</div>
+          <div className="absolute bottom-[-2rem] right-6 text-[#d97757]/10 text-[180px] font-serif leading-none select-none">&rdquo;</div>
+          <div className="relative text-center">
+            <blockquote className="text-2xl sm:text-3xl lg:text-4xl text-white font-serif italic leading-relaxed">
+              &quot;The difference between a restaurant that makes it and one that doesn&apos;t? <strong className="text-[#d97757] not-italic">The owner who knows what&apos;s happening before it becomes a problem.</strong>&quot;
+            </blockquote>
+            <div className="mt-6 flex items-center justify-center gap-3">
+              <div className="w-10 h-0.5 bg-[#d97757]" />
+              <p className="text-[#d97757] font-bold text-lg tracking-wide">GORDON RAMSAY</p>
+              <div className="w-10 h-0.5 bg-[#d97757]" />
+            </div>
           </div>
         </div>
       </section>
@@ -254,9 +256,9 @@ export default function GetStartedPage() {
         </div>
       </section>
 
-      {/* ═══ 8. THE HARD WAY ═══ */}
-      <section className="bg-white border-y border-[#d4d2c9] py-16">
-        <div className="max-w-3xl mx-auto px-6">
+      {/* ═══ 8. THE HARD WAY — floating card ═══ */}
+      <section className="bg-[#e8e6dc] py-10 px-6">
+        <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl border border-[#d4d2c9] p-8 sm:p-12">
           <h2 className="text-2xl sm:text-3xl font-bold font-serif text-center mb-4">Here&apos;s what &quot;staying on top of your numbers&quot; actually looks like:</h2>
           <p className="text-[#87867f] text-center mb-10">Let&apos;s be real about what it takes:</p>
           <div className="space-y-3">
@@ -270,9 +272,9 @@ export default function GetStartedPage() {
               { icon: "👀", text: "Verify that your closers are making deposits on time" },
               { icon: "📅", text: "Compare this week to last week, this month to last month" },
             ].map((item, i) => (
-              <div key={i} className="flex items-start gap-3 bg-[#f5f4f0] rounded-lg p-4">
+              <div key={i} className="flex items-start gap-3 bg-[#fdf2f0] border border-[#c0392b]/10 rounded-lg p-4">
                 <span className="text-xl">{item.icon}</span>
-                <span className="text-[#30302e] text-sm line-through decoration-[#c0392b]/40">{item.text}</span>
+                <span className="text-[#30302e] text-sm line-through decoration-[#c0392b]/50 decoration-2">{item.text}</span>
               </div>
             ))}
           </div>
@@ -334,9 +336,9 @@ export default function GetStartedPage() {
         </div>
       </section>
 
-      {/* ═══ 11. OFFER STACK ═══ */}
-      <section className="bg-white border-y border-[#d4d2c9] py-16">
-        <div className="max-w-3xl mx-auto px-6">
+      {/* ═══ 11. OFFER STACK — floating card ═══ */}
+      <section className="bg-[#e8e6dc] py-10 px-6">
+        <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-2xl border border-[#d4d2c9] p-8 sm:p-12">
           <h2 className="text-2xl sm:text-3xl font-bold font-serif text-center mb-10">Here&apos;s Everything You Get</h2>
           <div className="space-y-3">
             {[
