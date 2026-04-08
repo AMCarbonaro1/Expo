@@ -56,7 +56,7 @@ export default function GetStartedPage() {
 
           {/* Subtitle */}
           <p className="text-center text-white/60 max-w-2xl mx-auto mb-8">
-            Expo connects to your POS and bank account — then you just <strong className="text-white">text it</strong> whenever you need an answer. Sales, labor, food cost, cash flow — all from one text.
+            Expo connects to your POS and bank account — then you just <strong className="text-white">text it</strong> from wherever you are. Mid-rush, on the floor, from your kid&apos;s game. Orders, sales, deposits, staffing — any question, any time.
           </p>
 
           {/* Stars */}
@@ -175,13 +175,13 @@ export default function GetStartedPage() {
       <section className="bg-[#e8e6dc] py-16">
         <div className="max-w-3xl mx-auto px-6 space-y-8 text-center">
           <p className="text-xl sm:text-2xl text-[#30302e] leading-relaxed">
-            <strong className="text-[#d97757]">What if</strong> you could check on your restaurant from your kid&apos;s soccer game... just by sending a text?
+            <strong className="text-[#d97757]">What if</strong> you could text one number from the kitchen and instantly know how many gyro platters you&apos;ve sold today — without pulling anyone off the line?
           </p>
           <p className="text-xl sm:text-2xl text-[#30302e] leading-relaxed">
-            <strong className="text-[#d97757]">What if</strong> you knew your food cost, your labor percentage, and your bank balance before you even got to the restaurant?
+            <strong className="text-[#d97757]">What if</strong> you could check if the deposit went through from your bed at midnight — instead of worrying about it until morning?
           </p>
           <p className="text-xl sm:text-2xl text-[#30302e] leading-relaxed">
-            <strong className="text-[#d97757]">What if</strong> someone was watching your numbers while you sleep — and texted you the second something looked off?
+            <strong className="text-[#d97757]">What if</strong> you had a partner watching everything in real time — and it texted YOU when something needed attention, before you even had to ask?
           </p>
           <p className="text-3xl font-bold font-serif text-[#141413] pt-4">That&apos;s Expo.</p>
         </div>
@@ -231,27 +231,27 @@ export default function GetStartedPage() {
             <div className="bg-[#0f1923] rounded-xl p-6 space-y-4 text-base text-white/80 my-8 shadow-lg">
               <div className="flex gap-3">
                 <span className="text-[#d97757] font-bold text-sm w-10 flex-shrink-0">YOU:</span>
-                <span>&quot;How did we do today?&quot;</span>
+                <span>&quot;How many gyro platters have we sold today?&quot;</span>
               </div>
               <div className="flex gap-3">
                 <span className="text-[#5a9a6e] font-bold text-sm w-10 flex-shrink-0">EXPO:</span>
-                <span className="italic text-white/60">&quot;$3,847 across 187 orders. 8% above your Tuesday average. Labor at 28.3%.&quot;</span>
+                <span className="italic text-white/60">&quot;43 gyro platters so far. That&apos;s your #1 seller today. You&apos;re at $3,200 with 4 hours left.&quot;</span>
               </div>
               <div className="border-t border-white/10 pt-4 flex gap-3">
                 <span className="text-[#d97757] font-bold text-sm w-10 flex-shrink-0">YOU:</span>
-                <span>&quot;Did Lauren make the drop?&quot;</span>
+                <span>&quot;Should I send someone home? It&apos;s slowing down.&quot;</span>
               </div>
               <div className="flex gap-3">
                 <span className="text-[#5a9a6e] font-bold text-sm w-10 flex-shrink-0">EXPO:</span>
-                <span className="italic text-white/60">&quot;Yes. $2,910 deposited at 9:47pm. Everything matches.&quot;</span>
+                <span className="italic text-white/60">&quot;You&apos;ve got 4 people on and sales are trending 20% below your usual Wednesday evening. I&apos;d cut your newest person now — saves you ~$45 tonight.&quot;</span>
               </div>
               <div className="border-t border-white/10 pt-4 flex gap-3">
                 <span className="text-[#d97757] font-bold text-sm w-10 flex-shrink-0">YOU:</span>
-                <span>&quot;Am I making money?&quot;</span>
+                <span>&quot;Did Lauren make the drop tonight?&quot;</span>
               </div>
               <div className="flex gap-3">
                 <span className="text-[#5a9a6e] font-bold text-sm w-10 flex-shrink-0">EXPO:</span>
-                <span className="italic text-white/60">&quot;$18K revenue, $5.4K food, $5K labor, $4.2K rent. Netting ~$2.4K. Raising your avg ticket by $2 would add $3K/month.&quot;</span>
+                <span className="italic text-white/60">&quot;Yes. $2,910 deposited at 9:47pm. Matches your card sales. Go to sleep.&quot;</span>
               </div>
             </div>
 
@@ -278,13 +278,13 @@ export default function GetStartedPage() {
           <p className="text-[#87867f] text-center mb-8">Check every box that sounds like you:</p>
           <div className="space-y-4">
             {[
-              "You glance at the POS before you lock up, but you don't really analyze anything",
+              "You interrupt your cooks mid-rush to ask how many of something you've sold",
+              "You walk to the back office just to check one number on the POS screen",
               "You have a pile of invoices somewhere that you'll \"get to eventually\"",
-              "You find out your real food cost when your accountant tells you — 90 days too late",
               "You've been burned by a supplier raising prices and you didn't catch it for weeks",
-              "You make staffing decisions based on gut feel because you don't have time to check the data",
+              "You make staffing decisions on gut feel because you're too busy to check the data",
               "You've laid in bed at night wondering if your closer made the bank deposit",
-              "You know you should be tracking your numbers more closely, but who has the time?",
+              "You can't get a straight answer about your business without stopping everything you're doing",
             ].map((text, i) => (
               <label key={i} className="flex items-start gap-3 cursor-pointer group" onClick={() => {
                 const newChecks = [...checks];
@@ -317,14 +317,14 @@ export default function GetStartedPage() {
           <p className="text-[#87867f] text-center mb-10">Let&apos;s be real about what it takes:</p>
           <div className="space-y-3">
             {[
-              { icon: "✍️", text: "Check your POS sales report every single night before you leave" },
+              { icon: "🏃", text: "Walk to the back office every time you want to check a number" },
+              { icon: "🗣️", text: "Interrupt your servers and cooks to ask about orders and counts" },
               { icon: "📋", text: "Collect and organize every supplier invoice from every delivery" },
               { icon: "📊", text: "Enter each invoice line item into a spreadsheet to track food cost" },
-              { icon: "🏦", text: "Log into your bank app daily to check deposits and account balance" },
-              { icon: "🧮", text: "Manually calculate your food cost percentage every week" },
-              { icon: "📞", text: "Call your accountant quarterly for a $500 meeting" },
-              { icon: "👀", text: "Verify that your closers are making deposits on time" },
-              { icon: "📅", text: "Compare this week to last week, this month to last month" },
+              { icon: "🏦", text: "Log into your bank app to check if the deposit went through" },
+              { icon: "🧮", text: "Try to figure out if you're overstaffed while you're mid-rush" },
+              { icon: "📞", text: "Call your accountant quarterly for a $500 meeting to find out how you did" },
+              { icon: "😰", text: "Lay awake at night wondering if everything got done" },
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-3 bg-[#fdf2f0] border border-[#c0392b]/10 rounded-lg p-4">
                 <span className="text-xl">{item.icon}</span>
@@ -354,7 +354,7 @@ export default function GetStartedPage() {
           <div className="grid sm:grid-cols-3 gap-8">
             {[
               { num: "1", title: "CONNECT", time: "60 seconds", desc: "One tap to connect your Square POS. One tap to connect your bank. Expo pulls everything automatically. You set it up once. Expo does the rest forever." },
-              { num: "2", title: "TEXT", time: "10 seconds", desc: "Ask Expo anything in plain English. \"How did we do today?\" \"Should I cut someone?\" Text it a photo of any invoice — it reads every line item instantly." },
+              { num: "2", title: "TEXT", time: "10 seconds", desc: "Ask Expo anything from wherever you are. \"How many gyros have we sold?\" \"Should I send someone home?\" \"What's selling right now?\" Text it a photo of any invoice — it reads every line item instantly." },
               { num: "3", title: "KNOW", time: "24/7", desc: "Morning recap at 7am. Alerts when labor spikes, food cost creeps, deposits are missing, or cash flow is tight. A partner who never sleeps." },
             ].map((s) => (
               <div key={s.num} className="text-center space-y-4">
@@ -396,12 +396,12 @@ export default function GetStartedPage() {
           <h2 className="text-2xl sm:text-3xl font-bold font-serif text-center mb-10">Here&apos;s Everything You Get</h2>
           <div className="space-y-3">
             {[
-              { item: "Unlimited AI Business Conversations via SMS", value: "$297/mo" },
-              { item: "Square POS Integration + Automatic Daily Sync", value: "$49/mo" },
-              { item: "Bank Account Monitoring + Cash Flow Alerts", value: "$49/mo" },
-              { item: "Invoice Photo Scanning + Food Cost Tracking", value: "$79/mo" },
-              { item: "Daily Morning Recaps at 7am", value: "$29/mo" },
-              { item: "Smart Alerts (labor, sales, deposits, price changes)", value: "$49/mo" },
+              { item: "Text Expo anything, anytime — unlimited conversations", value: "$297/mo" },
+              { item: "Real-time POS data — orders, sales, menu mix, staff", value: "$49/mo" },
+              { item: "Bank monitoring — deposits, balance, cash flow alerts", value: "$49/mo" },
+              { item: "Invoice scanning — snap a photo, food cost tracked instantly", value: "$79/mo" },
+              { item: "Morning recaps + mid-day check-ins at 7am", value: "$29/mo" },
+              { item: "Smart alerts — overstaffed, price hikes, missing deposits", value: "$49/mo" },
             ].map((row) => (
               <div key={row.item} className="flex items-center justify-between py-3 border-b border-[#d4d2c9] last:border-0">
                 <span className="text-[#30302e] text-sm flex items-center gap-2">
@@ -519,14 +519,14 @@ export default function GetStartedPage() {
           <h2 className="text-2xl sm:text-3xl font-bold font-serif text-center mb-10">What you&apos;ll discover in your first week:</h2>
           <div className="space-y-4">
             {[
-              "Your REAL food cost percentage — not what you think it is",
-              "Whether your deposits match your POS sales",
-              "Which days you're overstaffed and which you're understaffed",
-              "Your top sellers — and worst performers dragging down your ticket",
-              "How much your supplier prices changed this month",
-              "Whether your bank can cover rent + payroll next week",
-              "Your labor percentage vs the 30% industry target",
-              "Your actual busiest and slowest hours",
+              "What's selling right now — and what's not moving, mid-shift",
+              "Whether you're overstaffed TODAY and should send someone home",
+              "If your deposit actually went through — from your bed at midnight",
+              "Your real food cost — not what you think it is, what the invoices say",
+              "How much your supplier prices changed since the last order",
+              "Whether your bank balance can cover rent + payroll next week",
+              "How today compares to this same day last week — in real time",
+              "What your staff is actually doing — hours, sales per server, clock-in times",
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-3">
                 <span className="w-8 h-8 rounded-full bg-[#d97757] text-white flex items-center justify-center text-sm font-bold flex-shrink-0">{i + 1}</span>
@@ -567,7 +567,7 @@ export default function GetStartedPage() {
               <strong className="text-[#d97757]">P.S.</strong> In case you scrolled straight to the bottom (I would too), here&apos;s the deal:
             </p>
             <p className="text-white/70">
-              Expo connects to your Square POS and bank, then lets you run your restaurant from text messages. Morning recaps. Smart alerts. Invoice scanning. Cash flow monitoring. A partner who never sleeps.
+              Expo connects to your Square POS and bank, then lets you text it about anything — mid-rush, from the kitchen, from your couch at midnight. What&apos;s selling, who&apos;s clocked in, did the deposit go through, should you send someone home. Plus morning recaps, invoice scanning, and alerts when something needs your attention.
             </p>
             <p className="text-white/70">
               <span className="line-through text-white/40">$197/month</span> → <strong className="text-[#d97757]">$49/month</strong> right now. Cancel anytime. 30-day money-back guarantee.
