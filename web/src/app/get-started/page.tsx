@@ -124,18 +124,36 @@ export default function GetStartedPage() {
             </div>
           </div>
 
-          {/* Trust logos */}
-          <div className="flex flex-wrap justify-center items-center gap-8 mt-12 opacity-40">
-            <span className="text-sm font-semibold tracking-wider">SQUARE</span>
-            <span className="text-sm font-semibold tracking-wider">PLAID</span>
-            <span className="text-sm font-semibold tracking-wider">CLAUDE AI</span>
-            <span className="text-sm font-semibold tracking-wider">TWILIO</span>
-          </div>
         </div>
       </section>
 
+      {/* ═══ TRUST LOGOS — floating between hero and quote ═══ */}
+      <div className="relative z-10 -mt-8 mb-[-2rem] px-6">
+        <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-xl border border-[#d4d2c9] py-5 px-8">
+          <p className="text-center text-[10px] font-bold text-[#87867f] uppercase tracking-[0.2em] mb-3">Powered By Industry Leaders</p>
+          <div className="flex flex-wrap justify-center items-center gap-8 sm:gap-12">
+            <div className="flex items-center gap-2 text-[#141413]/60">
+              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M4.01 0A4.01 4.01 0 000 4.01v15.98A4.01 4.01 0 004.01 24h15.98A4.01 4.01 0 0024 19.99V4.01A4.01 4.01 0 0019.99 0H4.01zm2.04 6.05h11.9c.56 0 1.01.45 1.01 1.01v9.88c0 .56-.45 1.01-1.01 1.01H6.05c-.56 0-1.01-.45-1.01-1.01V7.06c0-.56.45-1.01 1.01-1.01z"/></svg>
+              <span className="font-bold text-sm">Square</span>
+            </div>
+            <div className="flex items-center gap-2 text-[#141413]/60">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9.5" y="2" width="5" height="5" rx="1"/><rect x="17" y="2" width="5" height="5" rx="1"/><rect x="2" y="9.5" width="5" height="5" rx="1"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><rect x="17" y="9.5" width="5" height="5" rx="1"/><rect x="2" y="17" width="5" height="5" rx="1"/><rect x="9.5" y="17" width="5" height="5" rx="1"/><rect x="17" y="17" width="5" height="5" rx="1"/></svg>
+              <span className="font-bold text-sm">Plaid</span>
+            </div>
+            <div className="flex items-center gap-2 text-[#141413]/60">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 20.4a8.4 8.4 0 110-16.8 8.4 8.4 0 010 16.8zm3.6-11.4a1.8 1.8 0 11-3.6 0 1.8 1.8 0 013.6 0zm0 6a1.8 1.8 0 11-3.6 0 1.8 1.8 0 013.6 0zm-6-6a1.8 1.8 0 11-3.6 0 1.8 1.8 0 013.6 0zm0 6a1.8 1.8 0 11-3.6 0 1.8 1.8 0 013.6 0z"/></svg>
+              <span className="font-bold text-sm">Twilio</span>
+            </div>
+            <div className="flex items-center gap-2 text-[#141413]/60">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-1-2H7l-1 2H4l5-10h2l5 10h-2l-1-2h-2zm.5-4L10 9.5 8.5 13h3z"/></svg>
+              <span className="font-bold text-sm">Claude AI</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* ═══ 3. AUTHORITY QUOTE ═══ */}
-      <section className="relative bg-[#141413] py-14 overflow-hidden">
+      <section className="relative bg-[#141413] pt-20 pb-14 overflow-hidden">
         {/* Decorative quote marks */}
         <div className="absolute top-4 left-8 text-[#d97757]/10 text-[200px] font-serif leading-none select-none">&ldquo;</div>
         <div className="absolute bottom-0 right-8 text-[#d97757]/10 text-[200px] font-serif leading-none select-none">&rdquo;</div>
