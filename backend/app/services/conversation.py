@@ -1,10 +1,15 @@
+import logging
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.message import Message
 from app.models.restaurant import Restaurant
+from app.models.support_ticket import SupportTicket
 from app.services.claude_service import get_claude_response
 from app.models.alert import Alert
+
+logger = logging.getLogger(__name__)
 from app.services.context_builder import (
     build_conversation_history,
     build_system_prompt,
@@ -42,6 +47,25 @@ async def handle_incoming_message(
     media_url: str | None = None,
     media_content_type: str | None = None,
 ) -> str:
+    # Check for "Contact Support" keyword — create ticket, then continue normally
+    support_prefix = ""
+    if body.strip().lower() == "contact support":
+        rest_result = await db.execute(
+            select(Restaurant).where(Restaurant.id == restaurant_id)
+        )
+        rest = rest_result.scalar_one_or_none()
+        phone = rest.phone if rest else "unknown"
+        ticket = SupportTicket(
+            restaurant_id=restaurant_id,
+            phone=phone,
+            message=body.strip(),
+            status="open",
+        )
+        db.add(ticket)
+        await db.commit()
+        logger.info(f"Support ticket created for restaurant {restaurant_id} (phone: {phone})")
+        support_prefix = "Got it — someone from our team will reach out to you shortly.\n\n"
+
     # Check for pending settings confirmation
     pending_setting = await get_pending_change(db, restaurant_id)
     if pending_setting and not media_url:
@@ -139,12 +163,15 @@ async def handle_incoming_message(
 
     response = await get_claude_response(system_prompt, conversation)
 
+    # Prepend support ticket acknowledgment if applicable
+    full_response = support_prefix + response if support_prefix else response
+
     out_msg = Message(
         restaurant_id=restaurant_id,
         direction="out",
-        body=response,
+        body=full_response,
     )
     db.add(out_msg)
     await db.commit()
 
-    return response
+    return full_response

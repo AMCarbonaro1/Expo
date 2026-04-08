@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends, Query
 from pydantic import BaseModel
@@ -14,6 +14,7 @@ from app.models.message import Message
 from app.models.restaurant import Restaurant
 from app.models.square_data import SquareToken, Order, OrderItem, LaborEntry, DailySummary
 from app.models.settings_change import PendingSettingsChange
+from app.models.support_ticket import SupportTicket
 from app.models.user import User
 from app.services.morning_send import send_morning_recaps
 from app.services.nightly_pipeline import run_nightly_pipeline
@@ -777,3 +778,96 @@ async def error_logs(admin: User = Depends(get_admin_user), db: AsyncSession = D
         ],
         "stale_syncs": stale_syncs,
     }
+
+
+# ─── Support Tickets ────────────────────────────────────────────
+
+
+@router.get("/support-tickets")
+async def list_support_tickets(admin: User = Depends(get_admin_user), db: AsyncSession = Depends(get_db)):
+    """List all support tickets, open first, then closed."""
+    result = await db.execute(
+        select(SupportTicket, Restaurant.restaurant_name, Restaurant.owner_name)
+        .join(Restaurant, SupportTicket.restaurant_id == Restaurant.id)
+        .order_by(
+            # open tickets first
+            sa_func.case((SupportTicket.status == "open", 0), else_=1),
+            SupportTicket.created_at.desc(),
+        )
+    )
+    rows = result.all()
+    return [
+        {
+            "id": ticket.id,
+            "restaurant_id": ticket.restaurant_id,
+            "restaurant_name": rname,
+            "owner_name": oname,
+            "phone": ticket.phone,
+            "message": ticket.message,
+            "status": ticket.status,
+            "admin_notes": ticket.admin_notes,
+            "created_at": str(ticket.created_at),
+            "closed_at": str(ticket.closed_at) if ticket.closed_at else None,
+        }
+        for ticket, rname, oname in rows
+    ]
+
+
+class TicketUpdate(BaseModel):
+    status: str | None = None
+    admin_notes: str | None = None
+
+
+@router.put("/support-tickets/{ticket_id}")
+async def update_support_ticket(
+    ticket_id: int,
+    payload: TicketUpdate,
+    admin: User = Depends(get_admin_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Update a support ticket's status and/or admin notes."""
+    result = await db.execute(select(SupportTicket).where(SupportTicket.id == ticket_id))
+    ticket = result.scalar_one_or_none()
+    if not ticket:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail="Ticket not found")
+
+    if payload.status is not None:
+        ticket.status = payload.status
+        if payload.status == "closed" and not ticket.closed_at:
+            ticket.closed_at = datetime.now(timezone.utc)
+        elif payload.status == "open":
+            ticket.closed_at = None
+
+    if payload.admin_notes is not None:
+        ticket.admin_notes = payload.admin_notes
+
+    await db.commit()
+    return {"ok": True, "status": ticket.status}
+
+
+@router.get("/accounts/{restaurant_id}/support-tickets")
+async def account_support_tickets(
+    restaurant_id: int,
+    admin: User = Depends(get_admin_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """List support tickets for a specific account."""
+    result = await db.execute(
+        select(SupportTicket)
+        .where(SupportTicket.restaurant_id == restaurant_id)
+        .order_by(SupportTicket.created_at.desc())
+    )
+    tickets = result.scalars().all()
+    return [
+        {
+            "id": t.id,
+            "phone": t.phone,
+            "message": t.message,
+            "status": t.status,
+            "admin_notes": t.admin_notes,
+            "created_at": str(t.created_at),
+            "closed_at": str(t.closed_at) if t.closed_at else None,
+        }
+        for t in tickets
+    ]

@@ -434,7 +434,7 @@ export default function GetStartedPage() {
           <div className="space-y-4 text-[#30302e] leading-relaxed">
             <p className="text-center text-xl font-bold">There is no catch. Seriously.</p>
             <p><strong>There&apos;s no setup fee.</strong> You connect your accounts in 5 minutes.</p>
-            <p><strong>There&apos;s no annual contract.</strong> Cancel anytime with one text.</p>
+            <p><strong>There&apos;s no annual contract.</strong> Text &quot;Contact Support&quot; anytime and we&apos;ll handle it.</p>
             <p><strong>There&apos;s no hidden upsell.</strong> $49/month is $49/month. Period.</p>
             <p className="text-[#87867f] italic pt-4">&quot;So why is it so affordable?&quot;</p>
             <ol className="space-y-3 list-decimal list-inside">
@@ -495,7 +495,7 @@ export default function GetStartedPage() {
             </div>
             <h2 className="text-2xl font-bold font-serif text-[#141413]">The &quot;Text Me Back&quot; Guarantee</h2>
             <p className="text-[#30302e] leading-relaxed">
-              Try Expo for 30 days. If you don&apos;t have a better grip on your numbers — text us &quot;cancel&quot; and I&apos;ll refund every penny.
+              Try Expo for 30 days. If you don&apos;t have a better grip on your numbers — just text &quot;Contact Support&quot; and we&apos;ll take care of you personally.
             </p>
             <p className="text-lg font-bold text-[#5a9a6e]">You literally cannot lose.</p>
           </div>
@@ -548,7 +548,7 @@ export default function GetStartedPage() {
               { q: "What if I'm not good with technology?", a: "That's exactly who we built this for. Your 70-year-old mother could use it." },
               { q: "How is this different from my Square dashboard?", a: "Square shows data. Expo thinks with you. Try asking Square \"should I cut someone today?\" — it can't answer that. Expo can." },
               { q: "Can Expo move my money?", a: "Absolutely not. Read-only access through Plaid. We can never move money or see your password." },
-              { q: "How do I cancel?", a: "Text us \"cancel\" or email support. No contracts. No fees. No guilt trip." },
+              { q: "How do I cancel?", a: "Text \"Contact Support\" and we'll call you personally. No contracts. No fees. No guilt trip." },
             ].map((item) => (
               <div key={item.q} className="border-b border-[#d4d2c9] pb-6 last:border-0">
                 <h3 className="font-bold text-[#141413] mb-2">{item.q}</h3>

@@ -17,7 +17,7 @@ export default function AccountDetailPage() {
   const { id } = useParams();
   const router = useRouter();
   const [account, setAccount] = useState<AccountDetail | null>(null);
-  const [tab, setTab] = useState<"messages" | "alerts" | "summaries">("messages");
+  const [tab, setTab] = useState<"messages" | "alerts" | "summaries" | "support">("messages");
   const [tabData, setTabData] = useState<Record<string, unknown[]>>({});
   const [actionLoading, setActionLoading] = useState("");
   const [actionResult, setActionResult] = useState("");
@@ -54,8 +54,11 @@ export default function AccountDetailPage() {
 
   useEffect(() => {
     if (!tabData[tab]) {
-      apiFetch(`/api/admin/accounts/${id}/${tab}`).then((r) => r.json()).then((data) => {
-        setTabData((prev) => ({ ...prev, [tab]: data[tab] || [] }));
+      const endpoint = tab === "support"
+        ? `/api/admin/accounts/${id}/support-tickets`
+        : `/api/admin/accounts/${id}/${tab}`;
+      apiFetch(endpoint).then((r) => r.json()).then((data) => {
+        setTabData((prev) => ({ ...prev, [tab]: Array.isArray(data) ? data : (data[tab] || []) }));
       });
     }
   }, [tab, id]);
@@ -376,7 +379,7 @@ export default function AccountDetailPage() {
       {/* Data tabs */}
       <div className="bg-white border border-[#d4d2c9] rounded-lg overflow-hidden">
         <div className="flex border-b border-[#d4d2c9]">
-          {(["messages", "alerts", "summaries"] as const).map((t) => (
+          {(["messages", "alerts", "summaries", "support"] as const).map((t) => (
             <button key={t} onClick={() => setTab(t)}
               className={`px-4 py-3 text-sm font-medium transition ${tab === t ? "border-b-2 border-[#d97757] text-[#d97757]" : "text-[#87867f] hover:text-[#141413]"}`}>
               {t.charAt(0).toUpperCase() + t.slice(1)}
@@ -407,6 +410,23 @@ export default function AccountDetailPage() {
                     <p className="text-[#141413]">{a.message}</p>
                     <p className="text-[#87867f] text-xs">{new Date(a.created_at).toLocaleString()}</p>
                   </div>
+                </div>
+              ))}
+            </div>
+          ) : tab === "support" ? (
+            <div className="space-y-3">
+              {(tabData.support as { id: number; phone: string; message: string; status: string; admin_notes: string | null; created_at: string; closed_at: string | null }[]).map((t) => (
+                <div key={t.id} className={`border rounded-lg p-3 space-y-2 ${t.status === "open" ? "border-[#c0392b]/30 bg-[#c0392b]/5" : "border-[#d4d2c9] bg-[#f5f4f0]"}`}>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${t.status === "open" ? "bg-[#c0392b]/10 text-[#c0392b]" : "bg-[#5a9a6e]/10 text-[#5a9a6e]"}`}>{t.status}</span>
+                      <a href={`tel:${t.phone}`} className="text-[#d97757] text-sm font-medium hover:underline">{t.phone}</a>
+                    </div>
+                    <span className="text-[#87867f] text-xs">{new Date(t.created_at).toLocaleString()}</span>
+                  </div>
+                  <p className="text-sm text-[#30302e] italic">&quot;{t.message}&quot;</p>
+                  {t.admin_notes && <p className="text-xs text-[#87867f]">Notes: {t.admin_notes}</p>}
+                  {t.closed_at && <p className="text-xs text-[#87867f]">Closed: {new Date(t.closed_at).toLocaleString()}</p>}
                 </div>
               ))}
             </div>
