@@ -2,7 +2,7 @@ from datetime import date, datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends, Query
 from pydantic import BaseModel
-from sqlalchemy import select, delete, func as sa_func, and_
+from sqlalchemy import case, select, delete, func as sa_func, and_
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
@@ -791,7 +791,7 @@ async def list_support_tickets(admin: User = Depends(get_admin_user), db: AsyncS
         .join(Restaurant, SupportTicket.restaurant_id == Restaurant.id)
         .order_by(
             # open tickets first
-            sa_func.case((SupportTicket.status == "open", 0), else_=1),
+            case((SupportTicket.status == "open", 0), else_=1),
             SupportTicket.created_at.desc(),
         )
     )
