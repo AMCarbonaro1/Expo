@@ -33,7 +33,7 @@ export default function GetStartedPage() {
 
           {/* Top banner */}
           <div className="bg-[#d97757] text-white text-center text-sm font-bold py-2 px-4 rounded-lg mb-8 tracking-wide">
-            FOR INDEPENDENT RESTAURANT OWNERS WHO ARE TIRED OF GUESSING
+            BUILT FOR INDEPENDENT RESTAURANT OWNERS ON SQUARE
           </div>
 
           {/* Headline */}
@@ -121,7 +121,7 @@ export default function GetStartedPage() {
                 </svg>
               ))}
             </div>
-            <span className="text-white/50 text-sm">Trusted by restaurant owners across Michigan</span>
+            <span className="text-white/50 text-sm">Trusted by restaurant owners across the U.S.</span>
           </div>
 
         </div>
