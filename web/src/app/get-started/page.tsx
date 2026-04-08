@@ -175,13 +175,13 @@ export default function GetStartedPage() {
       <section className="bg-[#e8e6dc] py-16">
         <div className="max-w-3xl mx-auto px-6 space-y-8 text-center">
           <p className="text-xl sm:text-2xl text-[#30302e] leading-relaxed">
-            <strong className="text-[#d97757]">What if</strong> you could text one number from the kitchen and instantly know how many gyro platters you&apos;ve sold today — without pulling anyone off the line?
+            <strong className="text-[#d97757]">What if</strong>{" "}you could text one number from the kitchen and instantly know how many gyro platters you&apos;ve sold today — without pulling anyone off the line?
           </p>
           <p className="text-xl sm:text-2xl text-[#30302e] leading-relaxed">
-            <strong className="text-[#d97757]">What if</strong> you could check if the deposit went through from your bed at midnight — instead of worrying about it until morning?
+            <strong className="text-[#d97757]">What if</strong>{" "}you could check if the deposit went through from your bed at midnight — instead of worrying about it until morning?
           </p>
           <p className="text-xl sm:text-2xl text-[#30302e] leading-relaxed">
-            <strong className="text-[#d97757]">What if</strong> you had a partner watching everything in real time — and it texted YOU when something needed attention, before you even had to ask?
+            <strong className="text-[#d97757]">What if</strong>{" "}you had a partner watching everything in real time — and it texted YOU when something needed attention, before you even had to ask?
           </p>
           <p className="text-3xl font-bold font-serif text-[#141413] pt-4">That&apos;s Expo.</p>
         </div>
