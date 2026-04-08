@@ -835,7 +835,7 @@ async def update_support_ticket(
     if payload.status is not None:
         ticket.status = payload.status
         if payload.status == "closed" and not ticket.closed_at:
-            ticket.closed_at = datetime.now(timezone.utc)
+            ticket.closed_at = datetime.utcnow()
         elif payload.status == "open":
             ticket.closed_at = None
 
