@@ -209,7 +209,7 @@ export default function GetStartedPage() {
 
             <p>Running a restaurant is one of the <strong>hardest things</strong> a person can do. You&apos;re the cook, the manager, the accountant, the HR department, the janitor, and the therapist — <em>all in one.</em></p>
 
-            <p>And after a 14-hour day on your feet, the <strong className="text-[#c0392b] text-xl">LAST</strong> thing you want to do is sit down at a computer and look at spreadsheets.</p>
+            <p>And every time you need an answer about your own business, you either have to <u className="decoration-[#d97757] decoration-2 underline-offset-4">interrupt someone who&apos;s busy</u>, walk to the back, or just... <strong className="text-[#c0392b] text-xl">guess.</strong></p>
 
             <p>I get it.</p>
 
@@ -257,7 +257,7 @@ export default function GetStartedPage() {
 
             <p>That&apos;s it. That&apos;s the <em>whole thing.</em></p>
 
-            <p>You text it like you&apos;d text your manager. Except this one <u className="decoration-[#d97757] decoration-2 underline-offset-4"><strong>actually has the numbers.</strong></u></p>
+            <p>You text it like you&apos;d text your best employee. Except this one <u className="decoration-[#d97757] decoration-2 underline-offset-4"><strong>sees everything, remembers everything, and is never too busy to answer.</strong></u></p>
 
             <p>If that sounds like something you&apos;ve been waiting for...</p>
 
