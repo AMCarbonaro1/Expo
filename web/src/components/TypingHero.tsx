@@ -111,7 +111,7 @@ export default function TypingHero() {
         <LogoSignal size={48} color="#d97757" />
       </div>
       <div className="min-h-[3rem] sm:min-h-[3.5rem] lg:min-h-[4rem] flex items-center">
-        <span className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#141413] font-serif">
+        <span className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#d97757] font-serif">
           {displayText}
           <span className="animate-pulse text-[#d97757]">|</span>
         </span>
