@@ -27,5 +27,6 @@ async def init_db():
     import app.models.settings_change  # noqa: F401
     import app.models.integration  # noqa: F401
     import app.models.support_ticket  # noqa: F401
+    import app.models.beta_application  # noqa: F401
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)

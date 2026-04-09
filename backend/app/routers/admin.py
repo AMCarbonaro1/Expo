@@ -15,6 +15,7 @@ from app.models.restaurant import Restaurant
 from app.models.square_data import SquareToken, Order, OrderItem, LaborEntry, DailySummary
 from app.models.settings_change import PendingSettingsChange
 from app.models.support_ticket import SupportTicket
+from app.models.beta_application import BetaApplication
 from app.models.user import User
 from app.services.morning_send import send_morning_recaps
 from app.services.nightly_pipeline import run_nightly_pipeline
@@ -870,4 +871,29 @@ async def account_support_tickets(
             "closed_at": str(t.closed_at) if t.closed_at else None,
         }
         for t in tickets
+    ]
+
+
+# ─── Beta Applications ──────────────────────────────────────────
+
+
+@router.get("/beta-applications")
+async def list_beta_applications(admin: User = Depends(get_admin_user), db: AsyncSession = Depends(get_db)):
+    """List all beta applications, newest first."""
+    result = await db.execute(
+        select(BetaApplication).order_by(BetaApplication.created_at.desc())
+    )
+    apps = result.scalars().all()
+    return [
+        {
+            "id": a.id,
+            "name": a.name,
+            "restaurant_name": a.restaurant_name,
+            "phone": a.phone,
+            "city": a.city,
+            "pos_system": a.pos_system,
+            "years_open": a.years_open,
+            "created_at": str(a.created_at),
+        }
+        for a in apps
     ]

@@ -29,6 +29,7 @@ from app.routers.auth import router as auth_router
 from app.routers.billing import router as billing_router
 from app.routers.integrations import router as integrations_router
 from app.routers.plaid_link import router as plaid_link_router
+from app.routers.beta import router as beta_router
 from app.scheduler import start_scheduler, shutdown_scheduler
 
 logger = logging.getLogger(__name__)
@@ -91,6 +92,7 @@ app.include_router(plaid_link_router)
 app.include_router(auth_router)
 app.include_router(billing_router)
 app.include_router(integrations_router)
+app.include_router(beta_router)
 
 
 @app.get("/health")
