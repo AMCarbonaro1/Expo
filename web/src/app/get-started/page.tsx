@@ -317,17 +317,19 @@ export default function GetStartedPage() {
           <p className="text-[#87867f] text-center mb-10">Let&apos;s be real about what it takes:</p>
           <div className="space-y-3">
             {[
-              { icon: "🏃", text: "Walk to the back office every time you want to check a number" },
-              { icon: "🗣️", text: "Interrupt your servers and cooks to ask about orders and counts" },
-              { icon: "📋", text: "Collect and organize every supplier invoice from every delivery" },
-              { icon: "📊", text: "Enter each invoice line item into a spreadsheet to track food cost" },
-              { icon: "🏦", text: "Log into your bank app to check if the deposit went through" },
-              { icon: "🧮", text: "Try to figure out if you're overstaffed while you're mid-rush" },
-              { icon: "📞", text: "Call your accountant quarterly for a $500 meeting to find out how you did" },
-              { icon: "😰", text: "Lay awake at night wondering if everything got done" },
+              { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>, text: "Walk to the back office every time you want to check a number" },
+              { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>, text: "Interrupt your servers and cooks to ask about orders and counts" },
+              { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>, text: "Collect and organize every supplier invoice from every delivery" },
+              { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>, text: "Enter each invoice line item into a spreadsheet to track food cost" },
+              { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 6l9-4 9 4M3 6v14l9 4 9-4V6M3 6l9 4 9-4M12 10v10" /></svg>, text: "Log into your bank app to check if the deposit went through" },
+              { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>, text: "Try to figure out if you're overstaffed while you're mid-rush" },
+              { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>, text: "Call your accountant quarterly for a $500 meeting to find out how you did" },
+              { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>, text: "Lay awake at night wondering if everything got done" },
             ].map((item, i) => (
-              <div key={i} className="flex items-start gap-3 bg-[#fdf2f0] border border-[#c0392b]/10 rounded-lg p-4">
-                <span className="text-xl">{item.icon}</span>
+              <div key={i} className="flex items-center gap-4 bg-[#fdf2f0] border border-[#c0392b]/10 rounded-lg p-4">
+                <div className="w-9 h-9 rounded-full bg-[#c0392b]/10 text-[#c0392b] flex items-center justify-center flex-shrink-0">
+                  {item.icon}
+                </div>
                 <span className="text-[#30302e] text-sm line-through decoration-[#c0392b]/50 decoration-2">{item.text}</span>
               </div>
             ))}
