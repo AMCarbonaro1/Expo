@@ -235,7 +235,7 @@ export default function DashboardPage() {
             </a>
           </div>
           <p className="text-[#87867f] text-sm">
-            Text <span className="font-medium text-[#141413]">(313) 474-9394</span> anytime.
+            Text <span className="font-medium text-[#141413]">(313) 474-9394</span>{" "}anytime.
             Save this number as &quot;Expo&quot; in your contacts.
           </p>
           <div className="grid sm:grid-cols-3 gap-2 pt-2">
