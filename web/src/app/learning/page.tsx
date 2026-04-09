@@ -95,7 +95,7 @@ export default function LearningPage() {
       {/* Categories */}
       {categories.map((cat, i) => (
         <FadeIn key={cat.title}>
-          <section className={i % 2 === 0 ? "bg-white border-y border-[#d4d2c9]" : ""}>
+          <section id={cat.title.toLowerCase().replace(/\s+/g, "-")} className={i % 2 === 0 ? "bg-white border-y border-[#d4d2c9]" : ""}>
             <div className="max-w-3xl mx-auto px-6 py-16 sm:py-20">
               <div className="mb-8">
                 <h2 className="text-2xl font-bold font-serif mb-2">{cat.title}</h2>
