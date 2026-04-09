@@ -1,6 +1,7 @@
 import logging
 from contextlib import asynccontextmanager
 
+import sentry_sdk
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -9,6 +10,15 @@ from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
 
 from app.config import settings
+
+# Initialize Sentry error monitoring
+if settings.sentry_dsn:
+    sentry_sdk.init(
+        dsn=settings.sentry_dsn,
+        send_default_pii=True,
+        traces_sample_rate=0.1,
+        environment="production" if "carbonaromedia" in settings.backend_url else "development",
+    )
 from app.database import init_db
 from app.routers.restaurants import router as restaurants_router
 from app.routers.square_oauth import router as square_oauth_router

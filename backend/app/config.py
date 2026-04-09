@@ -105,6 +105,9 @@ class Settings(BaseSettings):
     hungerrush_client_id: str = ""
     hungerrush_client_secret: str = ""
 
+    # Sentry
+    sentry_dsn: str = ""
+
     # Admin
     admin_email: str = ""
 
