@@ -8,7 +8,7 @@ export default function Footer({ variant = "light" }: { variant?: "light" | "dar
         <div className="max-w-6xl mx-auto px-6 py-10">
           <div className="grid sm:grid-cols-4 gap-8 mb-8">
             <div>
-              <ExpoLogo size={20} color="#87867f" textClass="text-sm" />
+              <ExpoLogo size={20} color="#d97757" textColor="#d97757" textClass="text-sm" />
               <p className="text-white/30 text-xs mt-3 leading-relaxed">
                 The AI business partner for independent restaurant owners.
               </p>
