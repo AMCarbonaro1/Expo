@@ -1,5 +1,5 @@
-import Link from "next/link";
 import StickyNav from "@/components/StickyNav";
+import Footer from "@/components/Footer";
 
 export default function PrivacyPolicy() {
   return (
@@ -184,17 +184,7 @@ export default function PrivacyPolicy() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-[#d4d2c9] py-8">
-        <div className="max-w-3xl mx-auto px-6 text-center text-xs text-[#87867f] space-y-2">
-          <div className="flex justify-center gap-4">
-            <Link href="/terms" className="hover:text-[#141413] transition">Terms of Service</Link>
-            <span>·</span>
-            <Link href="/privacy" className="hover:text-[#141413] transition">Privacy Policy</Link>
-          </div>
-          <p>&copy; {new Date().getFullYear()} Carbonaro Media LLC. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

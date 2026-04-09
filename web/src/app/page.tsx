@@ -1,8 +1,8 @@
 import Link from "next/link";
 import PhoneMockup from "@/components/PhoneMockup";
-import ExpoLogo from "@/components/ExpoLogo";
 import StickyNav from "@/components/StickyNav";
 import FadeIn from "@/components/FadeIn";
+import Footer from "@/components/Footer";
 import TypingHero from "@/components/TypingHero";
 import AccordionFAQ from "@/components/AccordionFAQ";
 import { SquareLogo, PlaidLogo, TwilioLogo, ClaudeLogo } from "@/components/PartnerLogos";
@@ -521,21 +521,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="border-t border-white/10">
-          <div className="max-w-3xl mx-auto px-6 py-8 text-center space-y-4">
-            <div className="flex justify-center opacity-50">
-              <ExpoLogo size={20} color="#87867f" textClass="text-sm" />
-            </div>
-            <div className="flex justify-center gap-6 text-xs text-white/30">
-              <Link href="/get-started" className="hover:text-white/60 transition">Meet Expo</Link>
-              <Link href="/terms" className="hover:text-white/60 transition">Terms</Link>
-              <Link href="/privacy" className="hover:text-white/60 transition">Privacy</Link>
-              <Link href="/login" className="hover:text-white/60 transition">Login</Link>
-            </div>
-            <p className="text-xs text-white/20">&copy; {new Date().getFullYear()} Carbonaro Media LLC. All rights reserved.</p>
-          </div>
-        </div>
+        <Footer variant="dark" />
       </section>
     </div>
   );
