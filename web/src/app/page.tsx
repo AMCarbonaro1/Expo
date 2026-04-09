@@ -15,15 +15,11 @@ export default function Home() {
 
       {/* ═══ 1. HERO — Full-width video background + TypingHero ═══ */}
       <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
-        {/* Video background placeholder — dark navy until video URL is added */}
+        {/* Video background */}
         <div className="absolute inset-0 bg-[#0f1923]">
-          {/* Replace this div with <video> when ready:
           <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover">
             <source src="/hero-video.mp4" type="video/mp4" />
-          </video> */}
-          <div className="absolute inset-0 opacity-[0.04]" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }} />
+          </video>
         </div>
         {/* Dark overlay for readability */}
         <div className="absolute inset-0 bg-black/40" />
