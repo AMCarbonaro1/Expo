@@ -152,6 +152,29 @@ export default function SignupPage() {
               </div>
             </div>
 
+            {/* SMS Consent Disclosure — A2P 10DLC Required */}
+            <div className="bg-[#f5f4f0] border border-[#d4d2c9] rounded-lg p-4">
+              <label className="flex items-start gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  required
+                  className="mt-1 w-4 h-4 rounded border-[#d4d2c9] text-[#d97757] focus:ring-[#d97757] accent-[#d97757] flex-shrink-0"
+                />
+                <span className="text-xs text-[#30302e] leading-relaxed">
+                  By providing your phone number and creating an account, you consent to receive SMS text messages
+                  from Expo at the number provided, including AI-powered responses, daily morning recaps, business
+                  alerts, invoice confirmations, and support replies. <strong>Message frequency varies</strong> based on your usage.
+                  <strong>Message and data rates may apply.</strong> Reply <strong>STOP</strong> to unsubscribe at any time.
+                  Reply <strong>HELP</strong> for help. Your consent to receive messages is not a condition of any purchase and
+                  is not shared with third parties for their marketing purposes. See our{" "}
+                  <Link href="/privacy" target="_blank" className="text-[#d97757] hover:underline">Privacy Policy</Link>
+                  {" "}and{" "}
+                  <Link href="/terms" target="_blank" className="text-[#d97757] hover:underline">Terms of Service</Link>
+                  {" "}for details.
+                </span>
+              </label>
+            </div>
+
             <div>
               <label className="block text-sm text-[#30302e] mb-1.5 font-medium">Restaurant Name</label>
               <input

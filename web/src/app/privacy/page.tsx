@@ -108,8 +108,9 @@ export default function PrivacyPolicy() {
               <li>Message frequency varies based on your usage — conversational messages are sent when you text us, daily recaps are sent once per morning, and alerts are sent as needed</li>
               <li>Standard message and data rates may apply depending on your carrier and plan</li>
               <li>You can opt out of all messages at any time by texting <strong>STOP</strong></li>
-              <li>For help, text <strong>Contact Support</strong> and our team will reach out to you</li>
-              <li>Your consent to receive messages is not shared with any third party</li>
+              <li>For help, text <strong>HELP</strong> or &quot;Contact Support&quot; and our team will reach out to you</li>
+              <li>Your consent to receive SMS messages is not a condition of any purchase</li>
+              <li>Your consent to receive messages is not shared with any third party for their marketing purposes</li>
             </ul>
           </section>
 
